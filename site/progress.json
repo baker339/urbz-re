@@ -1,8 +1,8 @@
 {
-  "commit": "",
+  "commit": "5bc9eb4",
   "repo": "https://github.com/baker339/urbz-re",
   "functions": 3665,
-  "named": 117,
+  "named": 137,
   "code_bytes": 799136,
   "matched_bytes": 0,
   "named_functions": [
@@ -245,6 +245,13 @@
       "notes_address": "02006224"
     },
     {
+      "address": "02006310",
+      "name": "alloc_rows",
+      "module": "main",
+      "description": "For each slot, reserves 0xa400 bytes at 02122300 + slot * 0x210 and splits them into 0x148 rows of 0x80 bytes. Also reserves 0x1c0 bytes for the 0x1a4 request. Then enables VRAM banks B and D and sets bit 4 of both display registers.",
+      "notes_address": "02006310"
+    },
+    {
       "address": "02006530",
       "name": "call_run_bytes",
       "module": "main",
@@ -301,6 +308,20 @@
       "notes_address": "02012690"
     },
     {
+      "address": "02018620",
+      "name": "blank_display",
+      "module": "main",
+      "description": "Writes 0 to both display registers, 0x04000000 and 0x04001000. Writes 0x81 to VRAM bank A at 0x04000240, turning that bank on as background memory. set_display_a(1, 0, 0) stays off because the show flag is still 0.",
+      "notes_address": "02018620"
+    },
+    {
+      "address": "02020214",
+      "name": "init_palettes",
+      "module": "main",
+      "description": "For slot 1, then slot 0, reserves two 0x800-byte buffers. One is paired with that screen\u2019s background palette and one with its object palette.",
+      "notes_address": "02020214"
+    },
+    {
       "address": "02021390",
       "name": "apply_flag",
       "module": "main",
@@ -327,6 +348,13 @@
       "module": "main",
       "description": "Command handler 1. Looks up the object from entry bytes +4 and +5, calls set_mode(object, 1), and sets flags bit 0x8. The entry is 8 bytes.",
       "notes_address": "02022b8c"
+    },
+    {
+      "address": "0202d984",
+      "name": "set_callbacks",
+      "module": "main",
+      "description": "Stores 01ff8c50 at 02123498 and 01ff82b4 at 0212349c. Both addresses are functions in the ITCM copy. Other functions load those two words and call them.",
+      "notes_address": "0202d984"
     },
     {
       "address": "02032b08",
@@ -378,6 +406,27 @@
       "notes_address": "02034924"
     },
     {
+      "address": "02035e40",
+      "name": "alloc_extra",
+      "module": "main",
+      "description": "Calls five setup functions. One returns immediately. The others reserve a 0x400-byte block, an 0x8c00-byte block, and two 0xc80-byte row lists.",
+      "notes_address": "02035e40"
+    },
+    {
+      "address": "0203b310",
+      "name": "mark_block",
+      "module": "main",
+      "description": "Clears the byte at 02141d70 and a run of halfwords in that block, then stores the halfword 1 at 02141d72.",
+      "notes_address": "0203b310"
+    },
+    {
+      "address": "0203b37c",
+      "name": "start_vblank",
+      "module": "main",
+      "description": "Replaces the V-Blank handler with 01ff86fc, sets IE bit 0 and DISPSTAT bit 3, turns the master interrupt switch on, and stores 0203b344 at 027c0028.",
+      "notes_address": "0203b37c"
+    },
+    {
       "address": "0203b3dc",
       "name": "set_frame_counter",
       "module": "main",
@@ -406,6 +455,13 @@
       "notes_address": "0204da44"
     },
     {
+      "address": "0204e0e0",
+      "name": "init_slots",
+      "module": "main",
+      "description": "Clears the two 0x8c-byte records at 027c0070 and 027c00fc. Copies the first 11 words into the two groups at +0x2c and +0x58, then writes 0x83 at +0x2c. Slot 0 also reserves 0x800 bytes.",
+      "notes_address": "0204e0e0"
+    },
+    {
       "address": "0204e3d8",
       "name": "zero_memory",
       "module": "main",
@@ -418,6 +474,48 @@
       "module": "main",
       "description": "Reads arena 0, the free main RAM from 0214de20 to 023c0000. Rounds the ends to multiples of 32, which they already are, then saves that range and adds 1 to the count at 02142000.",
       "notes_address": "0204e570"
+    },
+    {
+      "address": "0205dafc",
+      "name": "clear_state",
+      "module": "main",
+      "description": "Stores 0 at 02142100, 0214210c, and 02142110. A nearby function sets those same words to 1.",
+      "notes_address": "0205dafc"
+    },
+    {
+      "address": "02064f3c",
+      "name": "do_nothing_3",
+      "module": "main",
+      "description": "Returns immediately. The bytes are 1e ff 2f e1. alloc_extra calls it.",
+      "notes_address": "02064f3c"
+    },
+    {
+      "address": "02067134",
+      "name": "init_slot_blocks",
+      "module": "main",
+      "description": "Builds a 0x132c-byte record per slot at 021422ac. The first word points 8 bytes into the record. Slot 0\u2019s next word points at 02142ab4. The helpers run once with the slot at 1 and once at 0.",
+      "notes_address": "02067134"
+    },
+    {
+      "address": "0206f36c",
+      "name": "alloc_slot_rows",
+      "module": "main",
+      "description": "For each slot, at 02144a48 + slot * 0x150, reserves 0x54 rows of 0x14 bytes and 0x48 rows of 5 bytes, plus four 0x60-byte blocks. Clears the words at +0 and +4.",
+      "notes_address": "0206f36c"
+    },
+    {
+      "address": "020713e8",
+      "name": "init_node",
+      "module": "main",
+      "description": "Points 02144ce8 at 02144d44 and fills that record: 0, 1, 0, -1, and the halfword 0xffff at +0x10. Also points 02144cec at 02144d30.",
+      "notes_address": "020713e8"
+    },
+    {
+      "address": "0207a25c",
+      "name": "alloc_block",
+      "module": "main",
+      "description": "Asks the main-memory range for 0x9c4 bytes. The allocator rounds that up to 0x9e0 and stores the pointer at 02146ef8.",
+      "notes_address": "0207a25c"
     },
     {
       "address": "0207ee88",
@@ -434,11 +532,53 @@
       "notes_address": "0208093c"
     },
     {
+      "address": "02080964",
+      "name": "init_fade",
+      "module": "main",
+      "description": "Writes 1, 0, and 0x3f at 02147190 and again at 021471b0. Those are the two slot records. set_fade stored 0x10 just after each group, at 0214719c and 021471bc.",
+      "notes_address": "02080964"
+    },
+    {
+      "address": "020823e8",
+      "name": "do_nothing_4",
+      "module": "main",
+      "description": "Returns immediately. The bytes are 1e ff 2f e1, which is bx lr.",
+      "notes_address": "020823e8"
+    },
+    {
+      "address": "0209858c",
+      "name": "clear_area",
+      "module": "main",
+      "description": "Clears 0x260 bytes at 021486a0, then stores the byte 0x20 at 021488fa. FUN_02098488 then clears 0x28 bytes at 02148678 and 0xc00 bytes at 02148c00.",
+      "notes_address": "0209858c"
+    },
+    {
       "address": "020a6e50",
       "name": "reserve_block",
       "module": "main",
       "description": "Looks up file 0x37 from the table at 0211be40, stores the byte 0x2e at 02148f70, then asks the main-memory range for 0x400 bytes and stores that pointer at 02148f74.",
       "notes_address": "020a6e50"
+    },
+    {
+      "address": "020abd18",
+      "name": "clear_entry",
+      "module": "main",
+      "description": "For one index, stores the pointer 02148fec at 02148fe8 + index * 16, stores 0 at 02148fec + index * 16 and 02148ff4 + index * 16, and clears bit 0 of the byte at offset 8.",
+      "notes_address": "020abd18"
+    },
+    {
+      "address": "020abd58",
+      "name": "init_four",
+      "module": "main",
+      "description": "Calls clear_entry with 0, 1, 2, and 3. The early return Ghidra marked unreachable is the check before the first pass, and the counter starts at 0.",
+      "notes_address": "020abd58"
+    },
+    {
+      "address": "020ae578",
+      "name": "clear_slot_buffers",
+      "module": "main",
+      "description": "Saves the slot, then for slot 0 and slot 1 clears 0x400 bytes at 02149864 + slot * 0x400 and fills 0x400 bytes at 02149064 + slot * 0x400 with 0xff. Restores the slot afterward.",
+      "notes_address": "020ae578"
     },
     {
       "address": "020b4f88",

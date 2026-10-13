@@ -566,24 +566,24 @@ main: ; 0x02000b00
     mov r0, #0x3f
     mov r1, #0x10
     bl set_fade
-    bl func_0204e0e0
-    bl func_020ae578
-    bl func_02018620
-    bl func_02006310
-    bl func_02020214
-    bl func_0202d984
-    bl func_02035e40
-    bl func_02067134
-    bl func_0206f36c
-    bl func_02080964
-    bl func_020823e8
-    bl func_0205dafc
-    bl func_0207a25c
-    bl func_020abd58
-    bl func_020713e8
-    bl func_0209858c
-    bl func_0203b37c
-    bl func_0203b310
+    bl init_slots
+    bl clear_slot_buffers
+    bl blank_display
+    bl alloc_rows
+    bl init_palettes
+    bl set_callbacks
+    bl alloc_extra
+    bl init_slot_blocks
+    bl alloc_slot_rows
+    bl init_fade
+    bl do_nothing_4
+    bl clear_state
+    bl alloc_block
+    bl init_four
+    bl init_node
+    bl clear_area
+    bl start_vblank
+    bl mark_block
     bl func_020bd0e4
     bl func_0207a1d0
     ldr r0, .L_02000c88
@@ -6922,9 +6922,9 @@ func_020062ec: ; 0x020062ec
     bx lr
     arm_func_end func_020062ec
 
-    .global func_02006310
-    arm_func_start func_02006310
-func_02006310: ; 0x02006310
+    .global alloc_rows
+    arm_func_start alloc_rows
+alloc_rows: ; 0x02006310
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     mov r0, #0x148
@@ -6989,7 +6989,7 @@ func_02006310: ; 0x02006310
 .L_02006400: .word data_02121ac4
 .L_02006404: .word 0xffcfffef
 .L_02006408: .word 0x4001000
-    arm_func_end func_02006310
+    arm_func_end alloc_rows
 
     .global func_0200640c
     arm_func_start func_0200640c
@@ -28011,9 +28011,9 @@ func_020185e8: ; 0x020185e8
     bx lr
     arm_func_end func_020185e8
 
-    .global func_02018620
-    arm_func_start func_02018620
-func_02018620: ; 0x02018620
+    .global blank_display
+    arm_func_start blank_display
+blank_display: ; 0x02018620
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov r2, #0x0
@@ -28045,7 +28045,7 @@ func_02018620: ; 0x02018620
     bx lr
 .L_02018694: .word 0x4001000
 .L_02018698: .word data_027c0004
-    arm_func_end func_02018620
+    arm_func_end blank_display
 
     .global func_0201869c
     arm_func_start func_0201869c
@@ -37070,9 +37070,9 @@ func_020201fc: ; 0x020201fc
 .L_02020210: .word func_020201a4
     arm_func_end func_020201fc
 
-    .global func_02020214
-    arm_func_start func_02020214
-func_02020214: ; 0x02020214
+    .global init_palettes
+    arm_func_start init_palettes
+init_palettes: ; 0x02020214
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov r3, #0x1
@@ -37115,7 +37115,7 @@ func_02020214: ; 0x02020214
 .L_020202b0: .word data_02122ffc
 .L_020202b4: .word data_027c0004
 .L_020202b8: .word 0x5000200
-    arm_func_end func_02020214
+    arm_func_end init_palettes
 
     .global func_020202bc
     arm_func_start func_020202bc
@@ -52774,9 +52774,9 @@ func_0202d978: ; 0x0202d978
     bx lr
     arm_func_end func_0202d978
 
-    .global func_0202d984
-    arm_func_start func_0202d984
-func_0202d984: ; 0x0202d984
+    .global set_callbacks
+    arm_func_start set_callbacks
+set_callbacks: ; 0x0202d984
     ldr r3, .L_0202d9a0
     ldr r1, .L_0202d9a4
     ldr r2, .L_0202d9a8
@@ -52788,7 +52788,7 @@ func_0202d984: ; 0x0202d984
 .L_0202d9a4: .word data_0212349c
 .L_0202d9a8: .word func_01ff8c50
 .L_0202d9ac: .word data_02123498
-    arm_func_end func_0202d984
+    arm_func_end set_callbacks
 
     .global func_0202d9b0
     arm_func_start func_0202d9b0
@@ -62806,20 +62806,20 @@ func_02035d5c: ; 0x02035d5c
 .L_02035e3c: .word data_02141b90
     arm_func_end func_02035d5c
 
-    .global func_02035e40
-    arm_func_start func_02035e40
-func_02035e40: ; 0x02035e40
+    .global alloc_extra
+    arm_func_start alloc_extra
+alloc_extra: ; 0x02035e40
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     bl func_02032a60
-    bl func_02064f3c
+    bl do_nothing_3
     bl func_02069648
     bl func_02084740
     bl func_02086350
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_02035e40
+    arm_func_end alloc_extra
 
     .global func_02035e68
     arm_func_start func_02035e68
@@ -69035,9 +69035,9 @@ func_0203b2ac: ; 0x0203b2ac
 .L_0203b30c: .word data_02141d70
     arm_func_end func_0203b2ac
 
-    .global func_0203b310
-    arm_func_start func_0203b310
-func_0203b310: ; 0x0203b310
+    .global mark_block
+    arm_func_start mark_block
+mark_block: ; 0x0203b310
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     bl func_0203b298
@@ -69050,7 +69050,7 @@ func_0203b310: ; 0x0203b310
     ldmia sp!, {lr}
     bx lr
 .L_0203b33c: .word data_02141d70
-    arm_func_end func_0203b310
+    arm_func_end mark_block
 
     .global func_0203b340
     arm_func_start func_0203b340
@@ -69082,9 +69082,9 @@ func_0203b350: ; 0x0203b350
 .L_0203b378: .word func_0203b340
     arm_func_end func_0203b350
 
-    .global func_0203b37c
-    arm_func_start func_0203b37c
-func_0203b37c: ; 0x0203b37c
+    .global start_vblank
+    arm_func_start start_vblank
+start_vblank: ; 0x0203b37c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r1, .L_0203b3cc
@@ -69109,7 +69109,7 @@ func_0203b37c: ; 0x0203b37c
 .L_0203b3d0: .word func_0203b344
 .L_0203b3d4: .word 0x4000208
 .L_0203b3d8: .word 0x4000004
-    arm_func_end func_0203b37c
+    arm_func_end start_vblank
 
     .global set_frame_counter
     arm_func_start set_frame_counter
@@ -91099,9 +91099,9 @@ func_0204e0ac: ; 0x0204e0ac
 .L_0204e0dc: .word data_027c0070
     arm_func_end func_0204e0ac
 
-    .global func_0204e0e0
-    arm_func_start func_0204e0e0
-func_0204e0e0: ; 0x0204e0e0
+    .global init_slots
+    arm_func_start init_slots
+init_slots: ; 0x0204e0e0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     ldr r1, .L_0204e1a8
@@ -91160,7 +91160,7 @@ func_0204e0e0: ; 0x0204e0e0
 .L_0204e1b0: .word data_027c006c
 .L_0204e1b4: .word data_027c0070
 .L_0204e1b8: .word data_027c0004
-    arm_func_end func_0204e0e0
+    arm_func_end init_slots
 
     .global func_0204e1bc
     arm_func_start func_0204e1bc
@@ -109091,9 +109091,9 @@ func_0205da90: ; 0x0205da90
 .L_0205daf8: .word data_02142100
     arm_func_end func_0205da90
 
-    .global func_0205dafc
-    arm_func_start func_0205dafc
-func_0205dafc: ; 0x0205dafc
+    .global clear_state
+    arm_func_start clear_state
+clear_state: ; 0x0205dafc
     ldr r2, .L_0205db1c
     mov r3, #0x0
     ldr r1, .L_0205db20
@@ -109105,7 +109105,7 @@ func_0205dafc: ; 0x0205dafc
 .L_0205db1c: .word data_02142110
 .L_0205db20: .word data_0214210c
 .L_0205db24: .word data_02142100
-    arm_func_end func_0205dafc
+    arm_func_end clear_state
 
     .global func_0205db28
     arm_func_start func_0205db28
@@ -117557,11 +117557,11 @@ func_02064ed8: ; 0x02064ed8
 .L_02064f38: .word data_0214112c
     arm_func_end func_02064ed8
 
-    .global func_02064f3c
-    arm_func_start func_02064f3c
-func_02064f3c: ; 0x02064f3c
+    .global do_nothing_3
+    arm_func_start do_nothing_3
+do_nothing_3: ; 0x02064f3c
     bx lr
-    arm_func_end func_02064f3c
+    arm_func_end do_nothing_3
 
     .global func_02064f40
     arm_func_start func_02064f40
@@ -120181,9 +120181,9 @@ func_020670a8: ; 0x020670a8
 .L_02067130: .word data_021422ac
     arm_func_end func_020670a8
 
-    .global func_02067134
-    arm_func_start func_02067134
-func_02067134: ; 0x02067134
+    .global init_slot_blocks
+    arm_func_start init_slot_blocks
+init_slot_blocks: ; 0x02067134
     stmdb sp!, {r4, r5, r6, lr}
     ldr r0, .L_020671dc
     mov r4, #0x1
@@ -120231,7 +120231,7 @@ func_02067134: ; 0x02067134
 .L_020671e4: .word data_027c0004
 .L_020671e8: .word 0x808
 .L_020671ec: .word data_021422b0
-    arm_func_end func_02067134
+    arm_func_end init_slot_blocks
 
     .global func_020671f0
     arm_func_start func_020671f0
@@ -129723,9 +129723,9 @@ func_0206f314: ; 0x0206f314
 .L_0206f368: .word 0xffff
     arm_func_end func_0206f314
 
-    .global func_0206f36c
-    arm_func_start func_0206f36c
-func_0206f36c: ; 0x0206f36c
+    .global alloc_slot_rows
+    arm_func_start alloc_slot_rows
+alloc_slot_rows: ; 0x0206f36c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x1c
     mov r0, #0x168
@@ -129807,7 +129807,7 @@ func_0206f36c: ; 0x0206f36c
     bx lr
 .L_0206f4a0: .word data_02144a48
 .L_0206f4a4: .word data_027c0004
-    arm_func_end func_0206f36c
+    arm_func_end alloc_slot_rows
 
     .global func_0206f4a8
     arm_func_start func_0206f4a8
@@ -132108,9 +132108,9 @@ func_0207121c: ; 0x0207121c
 .L_020713e4: .word data_027c0078
     arm_func_end func_0207121c
 
-    .global func_020713e8
-    arm_func_start func_020713e8
-func_020713e8: ; 0x020713e8
+    .global init_node
+    arm_func_start init_node
+init_node: ; 0x020713e8
     ldr r3, .L_02071438
     ldr r1, .L_0207143c
     ldr r2, .L_02071440
@@ -132136,7 +132136,7 @@ func_020713e8: ; 0x020713e8
 .L_02071440: .word data_02144d44
 .L_02071444: .word data_02144ce8
 .L_02071448: .word 0xffff
-    arm_func_end func_020713e8
+    arm_func_end init_node
 
     .global func_0207144c
     arm_func_start func_0207144c
@@ -142391,9 +142391,9 @@ func_0207a1d0: ; 0x0207a1d0
 .L_0207a258: .word data_02146f08
     arm_func_end func_0207a1d0
 
-    .global func_0207a25c
-    arm_func_start func_0207a25c
-func_0207a25c: ; 0x0207a25c
+    .global alloc_block
+    arm_func_start alloc_block
+alloc_block: ; 0x0207a25c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_0207a280
@@ -142405,7 +142405,7 @@ func_0207a25c: ; 0x0207a25c
     bx lr
 .L_0207a280: .word 0x9c4
 .L_0207a284: .word data_02146ef8
-    arm_func_end func_0207a25c
+    arm_func_end alloc_block
 
     .global func_0207a288
     arm_func_start func_0207a288
@@ -150183,9 +150183,9 @@ set_fade: ; 0x0208093c
 .L_02080960: .word func_02080584
     arm_func_end set_fade
 
-    .global func_02080964
-    arm_func_start func_02080964
-func_02080964: ; 0x02080964
+    .global init_fade
+    arm_func_start init_fade
+init_fade: ; 0x02080964
     ldr r0, .L_02080990
     mov r3, #0x3f
     mov r2, #0x1
@@ -150198,7 +150198,7 @@ func_02080964: ; 0x02080964
     str r1, [r0, #0x24]
     bx lr
 .L_02080990: .word data_02147190
-    arm_func_end func_02080964
+    arm_func_end init_fade
 
     .global func_02080994
     arm_func_start func_02080994
@@ -152080,11 +152080,11 @@ func_0208226c: ; 0x0208226c
 .L_020823e4: .word data_021472bc
     arm_func_end func_0208226c
 
-    .global func_020823e8
-    arm_func_start func_020823e8
-func_020823e8: ; 0x020823e8
+    .global do_nothing_4
+    arm_func_start do_nothing_4
+do_nothing_4: ; 0x020823e8
     bx lr
-    arm_func_end func_020823e8
+    arm_func_end do_nothing_4
 
     .global func_020823ec
     arm_func_start func_020823ec
@@ -177649,9 +177649,9 @@ func_02098488: ; 0x02098488
 .L_02098588: .word 0xffff
     arm_func_end func_02098488
 
-    .global func_0209858c
-    arm_func_start func_0209858c
-func_0209858c: ; 0x0209858c
+    .global clear_area
+    arm_func_start clear_area
+clear_area: ; 0x0209858c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_020985c0
@@ -177666,7 +177666,7 @@ func_0209858c: ; 0x0209858c
     ldmia sp!, {lr}
     bx lr
 .L_020985c0: .word data_021486a0
-    arm_func_end func_0209858c
+    arm_func_end clear_area
 
     .global func_020985c4
     arm_func_start func_020985c4
@@ -200155,9 +200155,9 @@ func_020abcd8: ; 0x020abcd8
 .L_020abd14: .word data_02148ff4
     arm_func_end func_020abcd8
 
-    .global func_020abd18
-    arm_func_start func_020abd18
-func_020abd18: ; 0x020abd18
+    .global clear_entry
+    arm_func_start clear_entry
+clear_entry: ; 0x020abd18
     ldr r3, .L_020abd4c
     ldr r2, .L_020abd50
     add r1, r3, r0, lsl #0x4
@@ -200174,11 +200174,11 @@ func_020abd18: ; 0x020abd18
 .L_020abd4c: .word data_02148fe8
 .L_020abd50: .word data_02148fec
 .L_020abd54: .word data_02148ff4
-    arm_func_end func_020abd18
+    arm_func_end clear_entry
 
-    .global func_020abd58
-    arm_func_start func_020abd58
-func_020abd58: ; 0x020abd58
+    .global init_four
+    arm_func_start init_four
+init_four: ; 0x020abd58
     stmdb sp!, {r4, lr}
     mov r4, #0x0
     cmp r4, #0x4
@@ -200186,13 +200186,13 @@ func_020abd58: ; 0x020abd58
     bxge lr
 .L_020abd6c:
     mov r0, r4
-    bl func_020abd18
+    bl clear_entry
     add r4, r4, #0x1
     cmp r4, #0x4
     blt .L_020abd6c
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020abd58
+    arm_func_end init_four
 
     .global func_020abd88
     arm_func_start func_020abd88
@@ -203254,9 +203254,9 @@ func_020ae520: ; 0x020ae520
 .L_020ae574: .word data_02149064
     arm_func_end func_020ae520
 
-    .global func_020ae578
-    arm_func_start func_020ae578
-func_020ae578: ; 0x020ae578
+    .global clear_slot_buffers
+    arm_func_start clear_slot_buffers
+clear_slot_buffers: ; 0x020ae578
     stmdb sp!, {r4, lr}
     ldr r1, .L_020ae5b4
     mov r0, #0x0
@@ -203273,7 +203273,7 @@ func_020ae578: ; 0x020ae578
     ldmia sp!, {r4, lr}
     bx lr
 .L_020ae5b4: .word data_027c0004
-    arm_func_end func_020ae578
+    arm_func_end clear_slot_buffers
 
     .global func_020ae5b8
     arm_func_start func_020ae5b8

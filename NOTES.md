@@ -4,7 +4,7 @@ Nintendo DS ROM, The Urbz. ARM9 is little-endian ARMv5. Addresses below are runt
 
 This file is the map. Add a line when a chat finds something. Do not re-walk startup from scratch.
 
-ARM9 functions read: 103 of about 2,800. About 4%. That 2,800 is only functions that start by saving registers, so smaller functions are extra.
+ARM9 functions read: 121 of about 2,800. About 4%. That 2,800 is only functions that start by saving registers, so smaller functions are extra.
 
 `[█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]` 4%
 
@@ -40,10 +40,12 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `020125c0` | `spawn` | Creates objects for the byte at object `+0x120`. A `0` in an entry means that object has not been created yet. An empty `+0x5c` is filled with `sort_point`. |
 | `02012690` | `run_bytes` | Reads the bytes at object `+0x120` and `+0x121`. A byte that passes the check is used: the first goes to `spawn`, the second to `run_commands`. |
 | `02018620` | `blank_display` | Writes 0 to both display registers, `0x04000000` and `0x04001000`. Writes `0x81` to VRAM bank A at `0x04000240`, turning that bank on as background memory. `set_display_a(1, 0, 0)` stays off because the show flag is still 0. |
+| `02020214` | `init_palettes` | For slot 1, then slot 0, reserves two `0x800`-byte buffers. One is paired with that screen’s background palette and one with its object palette. |
 | `02021390` | `apply_flag` | Sets or clears one flag bit. The first byte picks the bit. `1` sets it through `set_flags`. Any other value clears it through `clear_flags`. |
 | `02022b00` | `cmd_set_flag` | Command handler 3. Looks up the object from entry bytes `+4` and `+5`. Byte `+6` picks a flag bit. Byte `+7` equal to `1` sets it, and any other value clears it. |
 | `02022b34` | `cmd_set_value` | Command handler 2. Looks up the object from entry bytes `+4` and `+5`, stores the short at entry `+6` into object `+0x14`, and sets bit `0x8` on the byte at `+0x106`. A negative short becomes 0. |
 | `02022b8c` | `cmd_set_mode` | Command handler 1. Looks up the object from entry bytes `+4` and `+5`, calls `set_mode(object, 1)`, and sets flags bit `0x8`. The entry is 8 bytes. |
+| `0202d984` | `set_callbacks` | Stores `01ff8c50` at `02123498` and `01ff82b4` at `0212349c`. Both addresses are functions in the ITCM copy. Other functions load those two words and call them. |
 | `02032b08` | `load_file` | Loads one file from `rom.bin`. |
 | `02032ca8` | `lookup_file` | Returns the pointer already stored for a file. An id of `0x344A` or higher is already a pointer and is returned unchanged. |
 | `02033050` | `init_fs` | Sets up the filesystem for the device named `rom`. `main` calls it once, with interrupts on, before the boot files are loaded. |
@@ -51,6 +53,9 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `02033a48` | `load_boot_file` | Loads one of the eight boot files and copies its header into the `0x14`-byte record at `02140d60`. |
 | `02034754` | `attach_file` | Attaches one loaded boot file to the current slot. The slot word is `027c0004`. The `0x3c`-byte block starts at `02140ce8`. |
 | `02034924` | `load_boot_files` | Calls `load_boot_file` for indexes 0 through 7, then clears the slot blocks at `02140ce8`. |
+| `02035e40` | `alloc_extra` | Calls five setup functions. One returns immediately. The others reserve a `0x400`-byte block, an `0x8c00`-byte block, and two `0xc80`-byte row lists. |
+| `0203b310` | `mark_block` | Clears the byte at `02141d70` and a run of halfwords in that block, then stores the halfword 1 at `02141d72`. |
+| `0203b37c` | `start_vblank` | Replaces the V-Blank handler with `01ff86fc`, sets IE bit 0 and DISPSTAT bit 3, turns the master interrupt switch on, and stores `0203b344` at `027c0028`. |
 | `0203b3dc` | `set_frame_counter` | Stores `027c0028` at `027c0020`. `frame` reads the counter through that pointer, so the new count is at `027c0044` and the accepted count is at `027c0048`. |
 | `0204d51c` | `clamp_positive` | Turns a negative short into 0 and keeps a positive short. `cmd_set_value` uses it on the short at entry `+6` before storing it at object `+0x14`. |
 | `0204da30` | `cosine` | Adds `0x40` to the angle index and jumps to `sine`. That is one quarter turn. |
@@ -58,10 +63,21 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `0204e0e0` | `init_slots` | Clears the two `0x8c`-byte records at `027c0070` and `027c00fc`. Copies the first 11 words into the two groups at `+0x2c` and `+0x58`, then writes `0x83` at `+0x2c`. Slot 0 also reserves `0x800` bytes. |
 | `0204e3d8` | `zero_memory` | Writes zeros through a range of bytes. `load_boot_files` uses it to clear `0x3c` bytes at each slot block. |
 | `0204e570` | `take_main_memory` | Reads arena 0, the free main RAM from `0214de20` to `023c0000`. Rounds the ends to multiples of 32, which they already are, then saves that range and adds 1 to the count at `02142000`. |
+| `0205dafc` | `clear_state` | Stores 0 at `02142100`, `0214210c`, and `02142110`. A nearby function sets those same words to 1. |
+| `02064f3c` | `do_nothing_3` | Returns immediately. The bytes are `1e ff 2f e1`. `alloc_extra` calls it. |
+| `02067134` | `init_slot_blocks` | Builds a `0x132c`-byte record per slot at `021422ac`. The first word points 8 bytes into the record. Slot 0’s next word points at `02142ab4`. The helpers run once with the slot at 1 and once at 0. |
+| `0206f36c` | `alloc_slot_rows` | For each slot, at `02144a48 + slot * 0x150`, reserves `0x54` rows of `0x14` bytes and `0x48` rows of 5 bytes, plus four `0x60`-byte blocks. Clears the words at `+0` and `+4`. |
+| `020713e8` | `init_node` | Points `02144ce8` at `02144d44` and fills that record: `0`, `1`, `0`, `-1`, and the halfword `0xffff` at `+0x10`. Also points `02144cec` at `02144d30`. |
+| `0207a25c` | `alloc_block` | Asks the main-memory range for `0x9c4` bytes. The allocator rounds that up to `0x9e0` and stores the pointer at `02146ef8`. |
 | `0207ee88` | `init_header` | Reserves `0xfe0` bytes and stores the pointer at `0214711c`. On a zeroed header, copies `URBZ0010` from `020f7328` to `021470fc`, clears the block, and passes `(0x20, 0x40)` and `(0x1000, 0x40)` with that pointer. |
 | `0208093c` | `set_fade` | Stores the second argument in the current slot’s record at `0214719c + slot * 0x20`, then calls `02080584`. Command `0x3f` writes the master brightness. `main` uses slot 1, then slot 0, both with `0x10`, writing `0x4010` to `0x0400106c` and `0x0400006c`. |
+| `02080964` | `init_fade` | Writes `1`, `0`, and `0x3f` at `02147190` and again at `021471b0`. Those are the two slot records. `set_fade` stored `0x10` just after each group, at `0214719c` and `021471bc`. |
+| `020823e8` | `do_nothing_4` | Returns immediately. The bytes are `1e ff 2f e1`, which is `bx lr`. |
+| `0209858c` | `clear_area` | Clears `0x260` bytes at `021486a0`, then stores the byte `0x20` at `021488fa`. `FUN_02098488` then clears `0x28` bytes at `02148678` and `0xc00` bytes at `02148c00`. |
 | `020a6e50` | `reserve_block` | Looks up file `0x37` from the table at `0211be40`, stores the byte `0x2e` at `02148f70`, then asks the main-memory range for `0x400` bytes and stores that pointer at `02148f74`. |
 | `020ae578` | `clear_slot_buffers` | Saves the slot, then for slot 0 and slot 1 clears `0x400` bytes at `02149864 + slot * 0x400` and fills `0x400` bytes at `02149064 + slot * 0x400` with `0xff`. Restores the slot afterward. |
+| `020abd18` | `clear_entry` | For one index, stores the pointer `02148fec` at `02148fe8 + index * 16`, stores 0 at `02148fec + index * 16` and `02148ff4 + index * 16`, and clears bit 0 of the byte at offset 8. |
+| `020abd58` | `init_four` | Calls `clear_entry` with 0, 1, 2, and 3. The early return Ghidra marked unreachable is the check before the first pass, and the counter starts at 0. |
 | `020b4f88` | `init_records` | Runs once. Clears three words at `0214a18c` and two words at `0214a9fc` and `0214aa14`. Builds 32 records of `0x1c` bytes at `0214a1b0`, then 16 records of `0x44` bytes at `0214a530`. The first of those 16 is linked from `0214a198`. |
 | `020b5ea8` | `do_nothing` | Returns immediately. `main` calls it just before `FUN_020b5ffc`. |
 | `020b5ef4` | `set_display_a` | Writes the first screen's display register. Saves the mode ushort at `0214af2c`. If the flag at `0212195c` is 0, the mode is forced to 0. |
@@ -104,8 +120,10 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `020b842c` | `dma_fill` | Fills a range through DMA channel `param_1`. Boot uses channel 3 to fill display registers with 0. Waits while bit 31 of the channel control word is set. |
 | `020b84c8` | `fill_words` | Writes one value, as a word, from a start address through a byte count. `add_heap` uses it to store 0 between the two markers. |
 | `020b8924` | `init_channel_7` | Runs once. Registers channel 7 and waits for bit 7, fills 255 records of `0x18` bytes at `0214b580`, then clears eight 12-byte records at `0214cd80`. |
+| `020bca74` | `on_channel_5` | Handler for channel 5. Returns when its third argument is greater than or equal to 0. |
 | `020bc754` | `on_channel_8` | Handler for channel 8. Returns when its third argument is 0. Otherwise, if a function is stored at `0214cf34`, it calls that function and clears the pointer. |
 | `020bc840` | `init_channel_8` | Runs once. Clears the two words at `0214cf30`, waits for channel 8, registers `on_channel_8`, clears the first halfword of four 8-byte records at `0214cf54`, and copies the word at `027ffc3c` to `0214cf2c`. |
+| `020bd0e4` | `init_channel_5` | Runs once. Clears five words at `0214cf78`, waits until bit 5 is set at `027fff8c`, and registers `on_channel_5` at `0214cdfc`. |
 | `020bd560` | `on_channel_11` | Handler for channel 11. Returns immediately unless the first argument is `0xb`. |
 | `020bdacc` | `init_messages` | Runs the record setup once, then always registers channel 14. The record is `0214cfc0`: three zeros at `+0x18`, `+0x1c`, and `+0x20`, and `-1` at `+0x24`. |
 | `020be368` | `on_channel_14` | Handler for channel 14. If the low 6 bits of the message are `0x11`, stores 1 at `0214d7e0`. |
