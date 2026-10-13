@@ -1,0 +1,851 @@
+{
+  "commit": "",
+  "repo": "https://github.com/baker339/urbz-re",
+  "functions": 3665,
+  "named": 117,
+  "code_bytes": 799136,
+  "matched_bytes": 0,
+  "named_functions": [
+    {
+      "address": "01ff89f0",
+      "name": "run_slots",
+      "module": "itcm",
+      "description": "Runs once for slot 0 and once for slot 1, then calls update_slot. The copy that frame calls is at 01ff89f0.",
+      "notes_address": "021224b0"
+    },
+    {
+      "address": "01ff9998",
+      "name": "start_dma",
+      "module": "itcm",
+      "description": "Turns interrupts off, writes a DMA channel's source, destination, and control word, then restores interrupts. Runs from the ITCM copy at 01ff9998. The control word is stored last, and its top bit starts the copy.",
+      "notes_address": "02123458"
+    },
+    {
+      "address": "0200006c",
+      "name": "HuffUnCompReadByCallback",
+      "module": "main",
+      "description": "",
+      "notes_address": "0200006c"
+    },
+    {
+      "address": "020000de",
+      "name": "CpuSet",
+      "module": "main",
+      "description": "",
+      "notes_address": "020000de"
+    },
+    {
+      "address": "02000142",
+      "name": "Sqrt",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000142"
+    },
+    {
+      "address": "020001a2",
+      "name": "Mod",
+      "module": "main",
+      "description": "",
+      "notes_address": "020001a2"
+    },
+    {
+      "address": "02000204",
+      "name": "BitUnPack",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000204"
+    },
+    {
+      "address": "0200027a",
+      "name": "WaitByLoop",
+      "module": "main",
+      "description": "",
+      "notes_address": "0200027a"
+    },
+    {
+      "address": "020002ec",
+      "name": "IntrWait",
+      "module": "main",
+      "description": "",
+      "notes_address": "020002ec"
+    },
+    {
+      "address": "02000364",
+      "name": "Div",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000364"
+    },
+    {
+      "address": "020003ce",
+      "name": "RLUnCompReadByCallbackWrite16bit",
+      "module": "main",
+      "description": "",
+      "notes_address": "020003ce"
+    },
+    {
+      "address": "0200043c",
+      "name": "wait_vblank",
+      "module": "main",
+      "description": "Waits for the next vertical blank. Thumb swi 5.",
+      "notes_address": "0200043c"
+    },
+    {
+      "address": "020004a0",
+      "name": "LZ77UnCompReadNormalWrite8bit",
+      "module": "main",
+      "description": "",
+      "notes_address": "020004a0"
+    },
+    {
+      "address": "02000510",
+      "name": "SoftReset",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000510"
+    },
+    {
+      "address": "02000582",
+      "name": "Halt",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000582"
+    },
+    {
+      "address": "020005f2",
+      "name": "GetCRC16",
+      "module": "main",
+      "description": "",
+      "notes_address": "020005f2"
+    },
+    {
+      "address": "02000662",
+      "name": "LZ77UnCompReadByCallbackWrite16bit",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000662"
+    },
+    {
+      "address": "020006ce",
+      "name": "CpuFastSet",
+      "module": "main",
+      "description": "",
+      "notes_address": "020006ce"
+    },
+    {
+      "address": "0200072c",
+      "name": "RLUnCompReadNormalWrite8bit",
+      "module": "main",
+      "description": "",
+      "notes_address": "0200072c"
+    },
+    {
+      "address": "02000792",
+      "name": "IsDebugger",
+      "module": "main",
+      "description": "",
+      "notes_address": "02000792"
+    },
+    {
+      "address": "02000800",
+      "name": "startup",
+      "module": "main",
+      "description": "Turns interrupts off, sets up the caches, copies the ITCM block, clears memory, and jumps to main.",
+      "notes_address": "02000800"
+    },
+    {
+      "address": "020008d8",
+      "name": "unpack",
+      "module": "main",
+      "description": "Unpacks bytes by walking backward. startup calls it once with a null pointer, so it returns immediately. Nothing else calls it.",
+      "notes_address": "020008d8"
+    },
+    {
+      "address": "020009ec",
+      "name": "AutoloadCallback",
+      "module": "main",
+      "description": "",
+      "notes_address": "020009ec"
+    },
+    {
+      "address": "02000b00",
+      "name": "main",
+      "module": "main",
+      "description": "Turns the hardware on, initializes subsystems once, then calls frame forever.",
+      "notes_address": "02000b00"
+    },
+    {
+      "address": "02000cb4",
+      "name": "enable_screen_b",
+      "module": "main",
+      "description": "Turns on the second screen's normal picture. Sets bit 0x10000 in 0x04001000 just before the frame loop.",
+      "notes_address": "02000cb4"
+    },
+    {
+      "address": "02000ce0",
+      "name": "frame",
+      "module": "main",
+      "description": "Runs both slots, then waits until two vertical blanks have passed.",
+      "notes_address": "02000ce0"
+    },
+    {
+      "address": "02000e20",
+      "name": "set_mode",
+      "module": "main",
+      "description": "Writes the mode byte at object +0x104. Sets bit 0 of +0x106 and clears +0x105.",
+      "notes_address": "02000e20"
+    },
+    {
+      "address": "02000eb0",
+      "name": "clear_flags",
+      "module": "main",
+      "description": "Clears bits in flags at object +0xc.",
+      "notes_address": "02000eb0"
+    },
+    {
+      "address": "02000ec8",
+      "name": "set_flags",
+      "module": "main",
+      "description": "Sets bits in flags at object +0xc.",
+      "notes_address": "02000ec8"
+    },
+    {
+      "address": "02001314",
+      "name": "sort_point",
+      "module": "main",
+      "description": "Writes the four shorts the draw sort reads. A new object stores this at +0x5c when that pointer is empty.",
+      "notes_address": "02001314"
+    },
+    {
+      "address": "02003678",
+      "name": "on_screen",
+      "module": "main",
+      "description": "Tests one object against the 256 by 192 screen. Overlap sets flags bit 0x1000. The selected view also sets bit 0x40000000.",
+      "notes_address": "02003678"
+    },
+    {
+      "address": "02003a40",
+      "name": "update_objects",
+      "module": "main",
+      "description": "Walks a slot's object lists and updates each object. Draws when the second argument is 1.",
+      "notes_address": "02003a40"
+    },
+    {
+      "address": "02005a98",
+      "name": "update_anim",
+      "module": "main",
+      "description": "Steps one object's animation and writes the frame rectangle into the edge fields.",
+      "notes_address": "02005a98"
+    },
+    {
+      "address": "02006224",
+      "name": "update_slot",
+      "module": "main",
+      "description": "Reads the slot at 027c0004 and calls update_objects with that slot's list heads.",
+      "notes_address": "02006224"
+    },
+    {
+      "address": "02006530",
+      "name": "call_run_bytes",
+      "module": "main",
+      "description": "Jumps to run_bytes with the bytes at object +0x120 and +0x121. follow_link calls it when the linked animation has finished.",
+      "notes_address": "02006530"
+    },
+    {
+      "address": "02006548",
+      "name": "follow_link",
+      "module": "main",
+      "description": "One behavior stored at object +0x4c. Watches the mode byte and the linked object at +0x11c. When that object's animation has finished, it runs the two bytes and calls set_mode(object, 1).",
+      "notes_address": "02006548"
+    },
+    {
+      "address": "02006820",
+      "name": "wobble",
+      "module": "main",
+      "description": "Adds a wave to pos_b. X goes through cosine. Y goes through sine.",
+      "notes_address": "02006820"
+    },
+    {
+      "address": "02012460",
+      "name": "lookup_spawn",
+      "module": "main",
+      "description": "Returns the object pointer spawn saved. The first argument picks the group, and the second picks the entry.",
+      "notes_address": "02012460"
+    },
+    {
+      "address": "0201251c",
+      "name": "check_byte",
+      "module": "main",
+      "description": "Returns 0 when run_bytes should skip a byte. A 0 byte is skipped. A 1 is skipped when bit 0 is set at 0212279c. Any other non-zero byte returns 1.",
+      "notes_address": "0201251c"
+    },
+    {
+      "address": "02012550",
+      "name": "run_commands",
+      "module": "main",
+      "description": "Runs the byte at object +0x121 as a packed list. A word of 0 ends the list. Any other word picks a handler, then the walk steps forward by that handler's stride.",
+      "notes_address": "02012550"
+    },
+    {
+      "address": "020125c0",
+      "name": "spawn",
+      "module": "main",
+      "description": "Creates objects for the byte at object +0x120. A 0 in an entry means that object has not been created yet. An empty +0x5c is filled with sort_point.",
+      "notes_address": "020125c0"
+    },
+    {
+      "address": "02012690",
+      "name": "run_bytes",
+      "module": "main",
+      "description": "Reads the bytes at object +0x120 and +0x121. A byte that passes the check is used: the first goes to spawn, the second to run_commands.",
+      "notes_address": "02012690"
+    },
+    {
+      "address": "02021390",
+      "name": "apply_flag",
+      "module": "main",
+      "description": "Sets or clears one flag bit. The first byte picks the bit. 1 sets it through set_flags. Any other value clears it through clear_flags.",
+      "notes_address": "02021390"
+    },
+    {
+      "address": "02022b00",
+      "name": "cmd_set_flag",
+      "module": "main",
+      "description": "Command handler 3. Looks up the object from entry bytes +4 and +5. Byte +6 picks a flag bit. Byte +7 equal to 1 sets it, and any other value clears it.",
+      "notes_address": "02022b00"
+    },
+    {
+      "address": "02022b34",
+      "name": "cmd_set_value",
+      "module": "main",
+      "description": "Command handler 2. Looks up the object from entry bytes +4 and +5, stores the short at entry +6 into object +0x14, and sets bit 0x8 on the byte at +0x106. A negative short becomes 0.",
+      "notes_address": "02022b34"
+    },
+    {
+      "address": "02022b8c",
+      "name": "cmd_set_mode",
+      "module": "main",
+      "description": "Command handler 1. Looks up the object from entry bytes +4 and +5, calls set_mode(object, 1), and sets flags bit 0x8. The entry is 8 bytes.",
+      "notes_address": "02022b8c"
+    },
+    {
+      "address": "02032b08",
+      "name": "load_file",
+      "module": "main",
+      "description": "Loads one file from rom.bin.",
+      "notes_address": "02032b08"
+    },
+    {
+      "address": "02032ca8",
+      "name": "lookup_file",
+      "module": "main",
+      "description": "Returns the pointer already stored for a file. An id of 0x344A or higher is already a pointer and is returned unchanged.",
+      "notes_address": "02032ca8"
+    },
+    {
+      "address": "02033050",
+      "name": "init_fs",
+      "module": "main",
+      "description": "Sets up the filesystem for the device named rom. main calls it once, with interrupts on, before the boot files are loaded.",
+      "notes_address": "02033050"
+    },
+    {
+      "address": "02033760",
+      "name": "copy_blocks",
+      "module": "main",
+      "description": "Copies blocks of words for the current slot. The block size is the word at slot-block +0x24. It does not read the 32-piece list.",
+      "notes_address": "02033760"
+    },
+    {
+      "address": "02033a48",
+      "name": "load_boot_file",
+      "module": "main",
+      "description": "Loads one of the eight boot files and copies its header into the 0x14-byte record at 02140d60.",
+      "notes_address": "02033a48"
+    },
+    {
+      "address": "02034754",
+      "name": "attach_file",
+      "module": "main",
+      "description": "Attaches one loaded boot file to the current slot. The slot word is 027c0004. The 0x3c-byte block starts at 02140ce8.",
+      "notes_address": "02034754"
+    },
+    {
+      "address": "02034924",
+      "name": "load_boot_files",
+      "module": "main",
+      "description": "Calls load_boot_file for indexes 0 through 7, then clears the slot blocks at 02140ce8.",
+      "notes_address": "02034924"
+    },
+    {
+      "address": "0203b3dc",
+      "name": "set_frame_counter",
+      "module": "main",
+      "description": "Stores 027c0028 at 027c0020. frame reads the counter through that pointer, so the new count is at 027c0044 and the accepted count is at 027c0048.",
+      "notes_address": "0203b3dc"
+    },
+    {
+      "address": "0204d51c",
+      "name": "clamp_positive",
+      "module": "main",
+      "description": "Turns a negative short into 0 and keeps a positive short. cmd_set_value uses it on the short at entry +6 before storing it at object +0x14.",
+      "notes_address": "0204d51c"
+    },
+    {
+      "address": "0204da30",
+      "name": "cosine",
+      "module": "main",
+      "description": "Adds 0x40 to the angle index and jumps to sine. That is one quarter turn.",
+      "notes_address": "0204da30"
+    },
+    {
+      "address": "0204da44",
+      "name": "sine",
+      "module": "main",
+      "description": "Looks up one quarter of a 256-step circle. The peak value is 0x10000, one pixel.",
+      "notes_address": "0204da44"
+    },
+    {
+      "address": "0204e3d8",
+      "name": "zero_memory",
+      "module": "main",
+      "description": "Writes zeros through a range of bytes. load_boot_files uses it to clear 0x3c bytes at each slot block.",
+      "notes_address": "0204e3d8"
+    },
+    {
+      "address": "0204e570",
+      "name": "take_main_memory",
+      "module": "main",
+      "description": "Reads arena 0, the free main RAM from 0214de20 to 023c0000. Rounds the ends to multiples of 32, which they already are, then saves that range and adds 1 to the count at 02142000.",
+      "notes_address": "0204e570"
+    },
+    {
+      "address": "0207ee88",
+      "name": "init_header",
+      "module": "main",
+      "description": "Reserves 0xfe0 bytes and stores the pointer at 0214711c. On a zeroed header, copies URBZ0010 from 020f7328 to 021470fc, clears the block, and passes (0x20, 0x40) and (0x1000, 0x40) with that pointer.",
+      "notes_address": "0207ee88"
+    },
+    {
+      "address": "0208093c",
+      "name": "set_fade",
+      "module": "main",
+      "description": "Stores the second argument in the current slot\u2019s record at 0214719c + slot * 0x20, then calls 02080584. Command 0x3f writes the master brightness. main uses slot 1, then slot 0, both with 0x10, writing 0x4010 to 0x0400106c and 0x0400006c.",
+      "notes_address": "0208093c"
+    },
+    {
+      "address": "020a6e50",
+      "name": "reserve_block",
+      "module": "main",
+      "description": "Looks up file 0x37 from the table at 0211be40, stores the byte 0x2e at 02148f70, then asks the main-memory range for 0x400 bytes and stores that pointer at 02148f74.",
+      "notes_address": "020a6e50"
+    },
+    {
+      "address": "020b4f88",
+      "name": "init_records",
+      "module": "main",
+      "description": "Runs once. Clears three words at 0214a18c and two words at 0214a9fc and 0214aa14. Builds 32 records of 0x1c bytes at 0214a1b0, then 16 records of 0x44 bytes at 0214a530. The first of those 16 is linked from 0214a198.",
+      "notes_address": "020b4f88"
+    },
+    {
+      "address": "020b5ea8",
+      "name": "do_nothing",
+      "module": "main",
+      "description": "Returns immediately. main calls it just before FUN_020b5ffc.",
+      "notes_address": "020b5ea8"
+    },
+    {
+      "address": "020b5ef4",
+      "name": "set_display_a",
+      "module": "main",
+      "description": "Writes the first screen's display register. Saves the mode ushort at 0214af2c. If the flag at 0212195c is 0, the mode is forced to 0.",
+      "notes_address": "020b5ef4"
+    },
+    {
+      "address": "020b5f68",
+      "name": "show_display_a",
+      "module": "main",
+      "description": "Puts the saved mode back on the first screen. A saved 0 becomes mode 1, the normal picture. Sets the flag at 0212195c to 1.",
+      "notes_address": "020b5f68"
+    },
+    {
+      "address": "020b5fb4",
+      "name": "hide_display_a",
+      "module": "main",
+      "description": "Saves bits 16 and 17 of the first screen into 0214af2c, clears the flag at 0212195c, and clears those two bits so the picture is off.",
+      "notes_address": "020b5fb4"
+    },
+    {
+      "address": "020b5ffc",
+      "name": "reset_display",
+      "module": "main",
+      "description": "Turns the screens on, disables VRAM, clears both display register blocks, and sets background 2 and 3 on each screen back to normal size.",
+      "notes_address": "020b5ffc"
+    },
+    {
+      "address": "020b6158",
+      "name": "disable_vram",
+      "module": "main",
+      "description": "Disables every VRAM bank by writing 0 to 0x04000240\u20130x04000246 and 0x04000248. Also clears 13 ushorts at 0214af30.",
+      "notes_address": "020b6158"
+    },
+    {
+      "address": "020b6ae0",
+      "name": "allow_interrupts",
+      "module": "main",
+      "description": "Turns the master switch 0x04000208 off, ORs the argument into the enable mask 0x04000210, restores the switch, and returns the old mask. main calls it with 1, then with 0x40000.",
+      "notes_address": "020b6ae0"
+    },
+    {
+      "address": "020b6b4c",
+      "name": "set_irq_handler",
+      "module": "main",
+      "description": "For each set bit in the mask, stores a handler. Bits 0\u20132, 7, and 12\u201321 write one word in the table at 02121974. Bits 3\u20136 and 8\u201311 write a 12-byte record at 0214af4c: the handler, then 1, then 0. main passes mask 1 and 02000c94, so only the V-Blank slot changes.",
+      "notes_address": "020b6b4c"
+    },
+    {
+      "address": "020b6bdc",
+      "name": "clear_flag",
+      "module": "main",
+      "description": "Stores the halfword 0 at 027c0188, which is 0x188 bytes into the block copied to 027c0000. Later code treats a nonzero value there as a one-shot.",
+      "notes_address": "020b6bdc"
+    },
+    {
+      "address": "020b6efc",
+      "name": "init_lock",
+      "module": "main",
+      "description": "Runs once. Takes id 0x7e on the word at 027ffff0, waits until the halfword at 027ffff6 is 0, fills the small table at 027fffb0, gives both cartridge slots to the ARM7, releases 0x7e, and takes id 0x7f.",
+      "notes_address": "020b6efc"
+    },
+    {
+      "address": "020b6fec",
+      "name": "halt",
+      "module": "main",
+      "description": "Turns interrupts on, then waits for an interrupt forever. fill_heap_head stores 020b6ff0, the instruction after the register save.",
+      "notes_address": "020b6fec"
+    },
+    {
+      "address": "020b7000",
+      "name": "set_heap_word",
+      "module": "main",
+      "description": "With interrupts off, replaces the word at heap header +0x10 and returns the old word. init_heap passes 0.",
+      "notes_address": "020b7000"
+    },
+    {
+      "address": "020b70f0",
+      "name": "switch_heap",
+      "module": "main",
+      "description": "If the CPU is in interrupt mode, or a ushort flag is set, stores 1 and returns. Otherwise compares two heap records and may switch.",
+      "notes_address": "020b70f0"
+    },
+    {
+      "address": "020b71b8",
+      "name": "find_marked_heap",
+      "module": "main",
+      "description": "Walks the heap list at header +0xc and returns the first heap whose +0x64 is 1. Returns 0 when none is marked.",
+      "notes_address": "020b71b8"
+    },
+    {
+      "address": "020b7218",
+      "name": "mark_heaps",
+      "module": "main",
+      "description": "The argument is a ushort mask. For each heap whose slot bit is set, +0x64 is set to 1. Then the mask is cleared.",
+      "notes_address": "020b7218"
+    },
+    {
+      "address": "020b72f4",
+      "name": "release_heap",
+      "module": "main",
+      "description": "Turns interrupts off, loads the heap record through header +8, clears that heap's slot, and sets +0x64 to 2.",
+      "notes_address": "020b72f4"
+    },
+    {
+      "address": "020b734c",
+      "name": "add_heap",
+      "module": "main",
+      "description": "With interrupts off, picks a slot, writes the two end markers, and clears the bytes between them. init_heap uses it for a 0xc8-byte range ending at 0214b200.",
+      "notes_address": "020b734c"
+    },
+    {
+      "address": "020b744c",
+      "name": "init_heap",
+      "module": "main",
+      "description": "Runs once. Records the free range 027c01a0\u2013027c37c0 and writes a marker at each end.",
+      "notes_address": "020b744c"
+    },
+    {
+      "address": "020b7614",
+      "name": "insert_heap",
+      "module": "main",
+      "description": "Links a heap into the list at header +0xc. The next heap is +0x68. Smaller +0x70 values come first.",
+      "notes_address": "020b7614"
+    },
+    {
+      "address": "020b767c",
+      "name": "find_heap_slot",
+      "module": "main",
+      "description": "Returns the index of the first zero word in the 16 slots at heap header +0x14. Returns -1 when all 16 are full.",
+      "notes_address": "020b767c"
+    },
+    {
+      "address": "020b76ac",
+      "name": "fill_heap_head",
+      "module": "main",
+      "description": "Fills the front of a heap record. Stores 0x1f when the code pointer is even and 0x3f when it is odd. Zeros the words from +4 through +0x34, and the word at +0x3c.",
+      "notes_address": "020b76ac"
+    },
+    {
+      "address": "020b7710",
+      "name": "save_context",
+      "module": "main",
+      "description": "Saves the CPU state into the heap record and returns 0, so switch_heap takes the normal switch path. Calls save_divider with the record plus 0x48 first. That copies the divider numerator from 0x04000290, the denominator from 0x04000298, the square-root input from 0x040002b8, and the mode bits from 0x04000280 and 0x040002b0.",
+      "notes_address": "020b7710"
+    },
+    {
+      "address": "020b775c",
+      "name": "restore_context",
+      "module": "main",
+      "description": "Calls restore_divider with the record plus 0x48, loads the saved registers, and resumes with subs pc, lr, #4. That instruction is the jumptable warning.",
+      "notes_address": "020b775c"
+    },
+    {
+      "address": "020b7920",
+      "name": "return_zero",
+      "module": "main",
+      "description": "Returns 0. main would store 1 vblank if this returned anything else, so frame keeps waiting for two.",
+      "notes_address": "020b7920"
+    },
+    {
+      "address": "020b79d8",
+      "name": "pop_heap_node",
+      "module": "main",
+      "description": "Removes the first node in the list at heap record +0x7c and returns it. The next node is at the node's +0x10. +0x80 is cleared when the list becomes empty.",
+      "notes_address": "020b79d8"
+    },
+    {
+      "address": "020b7abc",
+      "name": "drain_heap",
+      "module": "main",
+      "description": "If the word at +0x7c is 0, returns. Otherwise takes items from pop_heap_node until that word is 0.",
+      "notes_address": "020b7abc"
+    },
+    {
+      "address": "020b7cb4",
+      "name": "init_subsystems",
+      "module": "main",
+      "description": "Calls the IPC handshake, init_heap, and several other setup functions. main calls init_heap again afterward, and that second call returns immediately.",
+      "notes_address": "020b7cb4"
+    },
+    {
+      "address": "020b7e70",
+      "name": "do_nothing_2",
+      "module": "main",
+      "description": "Returns immediately. init_subsystems calls it. The bytes are 1e ff 2f e1, which is bx lr.",
+      "notes_address": "020b7e70"
+    },
+    {
+      "address": "020b7e74",
+      "name": "init_arenas",
+      "module": "main",
+      "description": "Runs once. Writes the low and high address of seven memory areas into tables at 027fe23c and 027fe260.",
+      "notes_address": "020b7e74"
+    },
+    {
+      "address": "020b8144",
+      "name": "init_irq",
+      "module": "main",
+      "description": "Installs 020b7fc0 as the ARM9 interrupt handler at 027ffd9c and 027c3fdc, unless a handler in 02600000\u2013027fffff is already saved and bit 30 of the check word is set.",
+      "notes_address": "020b8144"
+    },
+    {
+      "address": "020b81d4",
+      "name": "clear_vcount",
+      "module": "main",
+      "description": "Runs once. Clears the two words at 0214b294, then clears bit 2 of 0x04000210 while 0x04000208 is off. Bit 2 is the V-Counter interrupt.",
+      "notes_address": "020b81d4"
+    },
+    {
+      "address": "020b8228",
+      "name": "enable_irq",
+      "module": "main",
+      "description": "Clears the interrupt-disable bit and returns the old flag.",
+      "notes_address": "020b8228"
+    },
+    {
+      "address": "020b823c",
+      "name": "disable_irq",
+      "module": "main",
+      "description": "Reads the interrupt flag, turns interrupts off, and returns the old flag.",
+      "notes_address": "020b823c"
+    },
+    {
+      "address": "020b8250",
+      "name": "restore_irq",
+      "module": "main",
+      "description": "Writes that saved flag back.",
+      "notes_address": "020b8250"
+    },
+    {
+      "address": "020b82a0",
+      "name": "wait_irq",
+      "module": "main",
+      "description": "Puts the CPU to sleep until the next interrupt. mov r0, #0, then the coprocessor wait.",
+      "notes_address": "020b82a0"
+    },
+    {
+      "address": "020b82cc",
+      "name": "on_channel_12",
+      "module": "main",
+      "description": "Handler for channel 12. If bits 8\u201314 of the message are 0x10, stores the halfword 1 at 0214b2a0. Any other value does not return.",
+      "notes_address": "020b82cc"
+    },
+    {
+      "address": "020b8310",
+      "name": "init_channel_12",
+      "module": "main",
+      "description": "Runs once. Waits until bit 12 is set at 027fff8c, then stores on_channel_12 at 0214ce18 and sets bit 12 at 027fff88.",
+      "notes_address": "020b8310"
+    },
+    {
+      "address": "020b8378",
+      "name": "set_wram",
+      "module": "main",
+      "description": "Stores one byte at 0x04000247. init_subsystems passes 3, which gives all 32KB of shared WRAM to the ARM7.",
+      "notes_address": "020b8378"
+    },
+    {
+      "address": "020b842c",
+      "name": "dma_fill",
+      "module": "main",
+      "description": "Fills a range through DMA channel param_1. Boot uses channel 3 to fill display registers with 0. Waits while bit 31 of the channel control word is set.",
+      "notes_address": "020b842c"
+    },
+    {
+      "address": "020b84c8",
+      "name": "fill_words",
+      "module": "main",
+      "description": "Writes one value, as a word, from a start address through a byte count. add_heap uses it to store 0 between the two markers.",
+      "notes_address": "020b84c8"
+    },
+    {
+      "address": "020b8924",
+      "name": "init_channel_7",
+      "module": "main",
+      "description": "Runs once. Registers channel 7 and waits for bit 7, fills 255 records of 0x18 bytes at 0214b580, then clears eight 12-byte records at 0214cd80.",
+      "notes_address": "020b8924"
+    },
+    {
+      "address": "020bb330",
+      "name": "register_rom",
+      "module": "main",
+      "description": "Registers the device object at 0214ce94 under the name rom. Opening \"/\" uses that device.",
+      "notes_address": "020bb330"
+    },
+    {
+      "address": "020bb54c",
+      "name": "restore_divider",
+      "module": "main",
+      "description": "Writes the saved divider and square-root values back to 0x04000280, 0x04000290, 0x04000298, 0x040002b0, and 0x040002b8.",
+      "notes_address": "020bb54c"
+    },
+    {
+      "address": "020bb5b8",
+      "name": "save_divider",
+      "module": "main",
+      "description": "Copies the hardware divider and square-root unit into the record. save_context calls it with the heap record plus 0x48.",
+      "notes_address": "020bb5b8"
+    },
+    {
+      "address": "020bbda4",
+      "name": "init_ipc",
+      "module": "main",
+      "description": "Runs once. Calls the IPC handshake thunk, waits until FUN_020b9754(6, 1) returns nonzero, then passes 6 and the function at 020bbe34 to FUN_020b977c.",
+      "notes_address": "020bbda4"
+    },
+    {
+      "address": "020bc754",
+      "name": "on_channel_8",
+      "module": "main",
+      "description": "Handler for channel 8. Returns when its third argument is 0. Otherwise, if a function is stored at 0214cf34, it calls that function and clears the pointer.",
+      "notes_address": "020bc754"
+    },
+    {
+      "address": "020bc840",
+      "name": "init_channel_8",
+      "module": "main",
+      "description": "Runs once. Clears the two words at 0214cf30, waits for channel 8, registers on_channel_8, clears the first halfword of four 8-byte records at 0214cf54, and copies the word at 027ffc3c to 0214cf2c.",
+      "notes_address": "020bc840"
+    },
+    {
+      "address": "020bd560",
+      "name": "on_channel_11",
+      "module": "main",
+      "description": "Handler for channel 11. Returns immediately unless the first argument is 0xb.",
+      "notes_address": "020bd560"
+    },
+    {
+      "address": "020bdacc",
+      "name": "init_messages",
+      "module": "main",
+      "description": "Runs the record setup once, then always registers channel 14. The record is 0214cfc0: three zeros at +0x18, +0x1c, and +0x20, and -1 at +0x24.",
+      "notes_address": "020bdacc"
+    },
+    {
+      "address": "020bdc98",
+      "name": "read_card",
+      "module": "main",
+      "description": "Reads bytes off the game card. The rom device uses it to pull a file out of rom.bin.",
+      "notes_address": "020bdc98"
+    },
+    {
+      "address": "020be368",
+      "name": "on_channel_14",
+      "module": "main",
+      "description": "Handler for channel 14. If the low 6 bits of the message are 0x11, stores 1 at 0214d7e0.",
+      "notes_address": "020be368"
+    },
+    {
+      "address": "020be714",
+      "name": "on_channel_13",
+      "module": "main",
+      "description": "Lasting handler for channel 13. If the low 6 bits of the message are 0x11, calls the function pointer at 0214d7f4.",
+      "notes_address": "020be714"
+    },
+    {
+      "address": "020be774",
+      "name": "ack_channel_13",
+      "module": "main",
+      "description": "Temporary handler for channel 13. If the low 6 bits of the message are 1, stores the halfword 1 at 0214d7e8.",
+      "notes_address": "020be774"
+    },
+    {
+      "address": "020be96c",
+      "name": "init_channel_13",
+      "module": "main",
+      "description": "Runs once. Registers ack_channel_13, runs the cartridge setup, then replaces that handler with on_channel_13 and clears 0214d7f4.",
+      "notes_address": "020be96c"
+    }
+  ],
+  "open": [
+    {
+      "title": "CodeWarrior version",
+      "detail": "Matching C waits on the compiler this game was built with.",
+      "href": "https://github.com/baker339/urbz-re/issues/1"
+    },
+    {
+      "title": "ARM7",
+      "detail": "The helper CPU is not in the split yet.",
+      "href": "https://github.com/baker339/urbz-re/blob/main/CONTRIBUTING.md#arm7"
+    },
+    {
+      "title": "Dialogue, missions, and menus",
+      "detail": "None of these systems are mapped.",
+      "href": "https://github.com/baker339/urbz-re/blob/main/CONTRIBUTING.md#still-open"
+    },
+    {
+      "title": "SoundData.rom",
+      "detail": "The second archive on the cartridge is unread.",
+      "href": "https://github.com/baker339/urbz-re/blob/main/CONTRIBUTING.md#still-open"
+    }
+  ]
+}

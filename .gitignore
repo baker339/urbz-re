@@ -1,0 +1,9 @@
+files/
+extract/
+build/
+baserom.nds
+*.nds
+*.bin
+.DS_Store
+__pycache__/
+tools/dsd

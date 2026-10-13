@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Urbz DS decomp</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c1915;
+      --muted: #5c564c;
+      --paper: #f6f3ec;
+      --card: #fffdf8;
+      --line: #ddd4c4;
+      --named: #2f5d50;
+      --matched: #8a4b2f;
+      --link: #1d4e89;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.5 system-ui, sans-serif;
+    }
+    main { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    h1 { font-size: 1.8rem; line-height: 1.2; margin: 0 0 0.4rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 0.6rem; }
+    a { color: var(--link); }
+    p { margin: 0.4rem 0; }
+    .lede { color: var(--muted); max-width: 40rem; }
+    .bars { display: grid; gap: 1rem; margin-top: 1.5rem; }
+    .bar-label { display: flex; justify-content: space-between; gap: 1rem; font-variant-numeric: tabular-nums; }
+    .track { height: 0.7rem; background: var(--line); border-radius: 999px; overflow: hidden; }
+    .fill { height: 100%; width: 0; }
+    .named .fill { background: var(--named); }
+    .matched .fill { background: var(--matched); }
+    .note { color: var(--muted); font-size: 0.92rem; margin-top: 0.8rem; }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-top: 1rem;
+    }
+    ol { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+    .open { list-style: none; padding: 0; margin: 0; }
+    .open li { padding: 0.45rem 0; border-top: 1px solid var(--line); }
+    .open li:first-child { border-top: 0; }
+    .open span { color: var(--muted); }
+    label { display: block; margin: 0.8rem 0 0.4rem; }
+    input {
+      width: min(100%, 24rem);
+      font: inherit;
+      padding: 0.4rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--card);
+      color: inherit;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--line); }
+    th { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+    code { font-family: ui-monospace, monospace; font-size: 0.9em; }
+    .count { color: var(--muted); font-size: 0.92rem; }
+    button {
+      font: inherit;
+      background: var(--named);
+      color: white;
+      border: 0;
+      border-radius: 6px;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+    }
+    button a { color: inherit; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>The Urbz DS</h1>
+    <p class="lede">Decompilation of the USA cartridge. The ROM stays on your machine. This page counts names and matched bytes from the repository.</p>
+    <p id="meta" class="note"></p>
+
+    <section class="bars" id="bars"></section>
+    <p class="note">A function counts as named when its symbol is not an automatic <code>func_</code> name. dsd finds every function it can, which is a wider set than the notes' count of functions that save registers. Matched bytes are code built from C. That number stays at zero until the compiler version is known.</p>
+
+    <h2>Claim a function</h2>
+    <div class="panel">
+      <ol>
+        <li>Open an issue with the address.</li>
+        <li>Change that one symbol.</li>
+        <li>Open a pull request.</li>
+      </ol>
+      <p><a id="claim" href="#">Open a claim</a></p>
+    </div>
+
+    <h2>Still open</h2>
+    <ul class="open" id="open"></ul>
+
+    <h2>Named functions</h2>
+    <label for="filter">Filter by name or address</label>
+    <input id="filter" type="search" placeholder="spawn or 020065" autocomplete="off">
+    <p id="shown" class="count"></p>
+    <table>
+      <thead>
+        <tr><th>Address</th><th>Name</th><th>Module</th><th>What it does</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+  <script>
+    const bars = document.querySelector("#bars");
+    const rows = document.querySelector("#rows");
+    const shown = document.querySelector("#shown");
+    const filter = document.querySelector("#filter");
+
+    function percent(part, whole) {
+      if (!whole) return 0;
+      return Math.min(100, (part / whole) * 100);
+    }
+
+    function bar(className, title, part, whole, extra) {
+      const section = document.createElement("section");
+      section.className = className;
+      const label = document.createElement("div");
+      label.className = "bar-label";
+      const name = document.createElement("span");
+      name.textContent = title;
+      const count = document.createElement("span");
+      count.textContent = extra;
+      label.append(name, count);
+      const track = document.createElement("div");
+      track.className = "track";
+      const fill = document.createElement("div");
+      fill.className = "fill";
+      fill.style.width = percent(part, whole) + "%";
+      track.append(fill);
+      section.append(label, track);
+      return section;
+    }
+
+    function cell(text) {
+      const td = document.createElement("td");
+      td.textContent = text;
+      return td;
+    }
+
+    function draw(data, query) {
+      const q = query.trim().toLowerCase();
+      rows.replaceChildren();
+      let visible = 0;
+      for (const fn of data.named_functions) {
+        const hay = [fn.address, fn.notes_address, fn.name, fn.description, fn.module]
+          .join(" ")
+          .toLowerCase();
+        if (q && !hay.includes(q)) continue;
+        visible += 1;
+        const tr = document.createElement("tr");
+        const address = document.createElement("td");
+        const code = document.createElement("code");
+        code.textContent = fn.address;
+        address.append(code);
+        const name = document.createElement("td");
+        const nameCode = document.createElement("code");
+        nameCode.textContent = fn.name;
+        name.append(nameCode);
+        tr.append(address, name, cell(fn.module), cell(fn.description || ""));
+        rows.append(tr);
+      }
+      shown.textContent = "Showing " + visible + " of " + data.named_functions.length;
+    }
+
+    fetch("progress.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const meta = document.querySelector("#meta");
+        meta.textContent = data.commit
+          ? "Numbers from commit " + data.commit + "."
+          : "Numbers from the working tree.";
+        const repo = document.createElement("a");
+        repo.href = data.repo;
+        repo.textContent = "Repository";
+        meta.append(" ", repo);
+
+        bars.append(
+          bar("named", "Named functions", data.named, data.functions,
+            data.named + " of " + data.functions),
+          bar("matched", "Matched bytes", data.matched_bytes, data.code_bytes,
+            data.matched_bytes.toLocaleString() + " of " + data.code_bytes.toLocaleString())
+        );
+
+        document.querySelector("#claim").href =
+          data.repo + "/issues/new?title=" + encodeURIComponent("Claim ") +
+          "&body=" + encodeURIComponent("Address:\n\nWhat it does:\n");
+
+        const open = document.querySelector("#open");
+        for (const item of data.open) {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = item.href;
+          link.textContent = item.title;
+          const detail = document.createElement("span");
+          detail.textContent = " — " + item.detail;
+          li.append(link, detail);
+          open.append(li);
+        }
+        draw(data, "");
+        filter.addEventListener("input", () => draw(data, filter.value));
+      })
+      .catch(() => {
+        document.querySelector("#meta").textContent = "Could not load progress.json.";
+      });
+  </script>
+</body>
+</html>
