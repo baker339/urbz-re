@@ -740,9 +740,9 @@ run_slots: ; 0x01ff89f0
     str r10, [r5, #0x0]
     cmp r10, #0x0
     bne .L_01ff8a3c
-    bl func_0203af6c
+    bl read_input
 .L_01ff8a3c:
-    bl func_020806a4
+    bl slot_pending
     cmp r0, #0x0
     beq .L_01ff8ab4
     bl func_0204dabc
@@ -758,7 +758,7 @@ run_slots: ; 0x01ff89f0
     mvn r0, r8, lsl r0
     and r0, r1, r0
     str r0, [r4, #0x0]
-    bl func_0204de58
+    bl record_changed
     cmp r0, #0x0
     beq .L_01ff8b40
     ldrb r0, [r9, #0x0]
@@ -774,7 +774,7 @@ run_slots: ; 0x01ff89f0
     str r7, [sp, #0x0]
     b .L_01ff8b40
 .L_01ff8ab4:
-    bl func_0204de58
+    bl record_changed
     cmp r0, #0x0
     beq .L_01ff8b0c
     cmp r10, #0x1
@@ -811,14 +811,14 @@ run_slots: ; 0x01ff89f0
     ldrne r0, [sp, #0x8]
     strneb r0, [r11, #0x0]
 .L_01ff8b3c:
-    bl func_0204dce0
+    bl call_entry
 .L_01ff8b40:
     add r10, r10, #0x1
     cmp r10, #0x2
     add r9, r9, #0x1
     blt .L_01ff8a2c
     ldr r0, [sp, #0x0]
-    bl func_02032de4
+    bl age_files
     mov r0, #0x20
     ldr r9, .L_01ff8c3c
     ldr r4, .L_01ff8c48
@@ -859,15 +859,15 @@ run_slots: ; 0x01ff89f0
     ldr r0, [sp, #0xc]
     orr r0, r1, r0, lsl r6
     str r0, [r4, #0x0]
-    bl func_0204dd3c
+    bl call_mode
     ldr r0, [r4, #0x0]
     bic r0, r0, #0x800
     str r0, [r4, #0x0]
-    bl func_02080814
+    bl flag_slot
 .L_01ff8c08:
     bl update_slot
-    bl func_02016cb0
-    bl func_020aee70
+    bl step_affine
+    bl step_motions
     bl func_0201fe44
     bl func_02066bb8
     add r8, r8, #0x1

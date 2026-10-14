@@ -4,9 +4,9 @@ Nintendo DS ROM, The Urbz. ARM9 is little-endian ARMv5. Addresses below are runt
 
 This file is the map. Add a line when a chat finds something. Do not re-walk startup from scratch.
 
-ARM9 functions read: 121 of about 2,800. About 4%. That 2,800 is only functions that start by saving registers, so smaller functions are extra.
+ARM9 functions read: 167 of about 2,800. About 5%. That 2,800 is only functions that start by saving registers, so smaller functions are extra.
 
-`[█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]` 4%
+`[██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]` 5%
 
 Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the game files. Reading ARM9 functions is the first slice of that, and none of those functions are rebuilt source yet. `rom.bin` has 13,385 files, unread beyond the eight boot headers.
 
@@ -39,43 +39,87 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `02012550` | `run_commands` | Runs the byte at object `+0x121` as a packed list. A word of `0` ends the list. Any other word picks a handler, then the walk steps forward by that handler's stride. |
 | `020125c0` | `spawn` | Creates objects for the byte at object `+0x120`. A `0` in an entry means that object has not been created yet. An empty `+0x5c` is filled with `sort_point`. |
 | `02012690` | `run_bytes` | Reads the bytes at object `+0x120` and `+0x121`. A byte that passes the check is used: the first goes to `spawn`, the second to `run_commands`. |
+| `02016cb0` | `step_affine` | Steps four records of `0x6c` bytes at `02122864 + 8 + slot * 0x1b8`. The slot is the word at `027c0004`. A record is skipped unless bits 0, 1, 2, 3, or 6 of the word at `+0x18` are set. Bit 0 moves the point, bit 2 bounces a scale, bit 1 advances an angle, and bit 3 writes a rotation from `cosine` and `sine`. |
+| `02017d60` | `file_field` | Looks up the second argument through `lookup_file`. Bits 0 and 1 of the first halfword pick an address 2, `0x22`, or `0x202` bytes in. That address is returned only when bits 4 and 5 are both set. |
 | `02018620` | `blank_display` | Writes 0 to both display registers, `0x04000000` and `0x04001000`. Writes `0x81` to VRAM bank A at `0x04000240`, turning that bank on as background memory. `set_display_a(1, 0, 0)` stays off because the show flag is still 0. |
+| `0201a3a8` | `cap_step` | If either axis moved by 9 or more pixels, shortens the step to 8 pixels along that direction. A smaller move is kept. The length uses the hardware square root at `0x040002b8`. |
+| `0201a47c` | `step_point` | Updates one point in the current slot. Records are `0x54` bytes inside a `0x150`-byte slot block. The halfword at `02122d6c` selects the motion. The file value for slot 1 index 0 is `0xa010`, so none of cases 0–5 run until that halfword is changed. |
+| `0201ab8c` | `clamp_point` | If the byte at record `+0x4e` is set, keeps the point 128 units inside the limits on the first word and 96 units inside the limits on the second. The record is `02122d24 + slot * 0x150 + index * 0x54`. |
+| `0201ac5c` | `load_point` | Copies the two words at `02122d28 + index * 0x54 + slot * 0x150` into the pair the caller passed. `scroll_view` passes index 0, left in `r1` from its own second argument. |
+| `0201d994` | `add_time` | Adds a 6-byte delta onto the clock at `0214112c`. The fields wrap at 30, 60, 60, and 24. A wrap sets bit 0, 1, 2, or 3 of the result. The short at the start has no wrap. |
+| `0201fe44` | `step_cycles` | Steps 12 records of 8 bytes at `0212301c + slot * 0x60`. Bit 0 enables one. Byte `+2` counts down, and at 0 byte `+4` moves between bytes `+3` and `+5`. A second loop of 12 records at `021231dc` stops when the count passes the word at `02122fdc`. That word is `0xe099900a`, so the second loop returns immediately. |
 | `02020214` | `init_palettes` | For slot 1, then slot 0, reserves two `0x800`-byte buffers. One is paired with that screen’s background palette and one with its object palette. |
 | `02021390` | `apply_flag` | Sets or clears one flag bit. The first byte picks the bit. `1` sets it through `set_flags`. Any other value clears it through `clear_flags`. |
 | `02022b00` | `cmd_set_flag` | Command handler 3. Looks up the object from entry bytes `+4` and `+5`. Byte `+6` picks a flag bit. Byte `+7` equal to `1` sets it, and any other value clears it. |
 | `02022b34` | `cmd_set_value` | Command handler 2. Looks up the object from entry bytes `+4` and `+5`, stores the short at entry `+6` into object `+0x14`, and sets bit `0x8` on the byte at `+0x106`. A negative short becomes 0. |
 | `02022b8c` | `cmd_set_mode` | Command handler 1. Looks up the object from entry bytes `+4` and `+5`, calls `set_mode(object, 1)`, and sets flags bit `0x8`. The entry is 8 bytes. |
 | `0202d984` | `set_callbacks` | Stores `01ff8c50` at `02123498` and `01ff82b4` at `0212349c`. Both addresses are functions in the ITCM copy. Other functions load those two words and call them. |
+| `0203266c` | `tick_delays` | Returns while the count at `021234a4` is 0. Otherwise counts down byte `+2` of each 8-byte record at `021234a8`. A byte that reaches 0 calls `0203241c` with that record, unless bit 0 of byte `+3` is set. |
 | `02032b08` | `load_file` | Loads one file from `rom.bin`. |
 | `02032ca8` | `lookup_file` | Returns the pointer already stored for a file. An id of `0x344A` or higher is already a pointer and is returned unchanged. |
+| `02032de4` | `age_files` | Walks `0x344a` file slots. A loaded file whose byte at `0213d77c` has bit 7 clear counts down the low 7 bits. At 0, the pointer at `02130654` is cleared. `run_slots` calls it with 0. |
 | `02033050` | `init_fs` | Sets up the filesystem for the device named `rom`. `main` calls it once, with interrupts on, before the boot files are loaded. |
 | `02033760` | `copy_blocks` | Copies blocks of words for the current slot. The block size is the word at slot-block `+0x24`. It does not read the 32-piece list. |
 | `02033a48` | `load_boot_file` | Loads one of the eight boot files and copies its header into the `0x14`-byte record at `02140d60`. |
 | `02034754` | `attach_file` | Attaches one loaded boot file to the current slot. The slot word is `027c0004`. The `0x3c`-byte block starts at `02140ce8`. |
 | `02034924` | `load_boot_files` | Calls `load_boot_file` for indexes 0 through 7, then clears the slot blocks at `02140ce8`. |
 | `02035e40` | `alloc_extra` | Calls five setup functions. One returns immediately. The others reserve a `0x400`-byte block, an `0x8c00`-byte block, and two `0xc80`-byte row lists. |
+| `02039ba4` | `record_active` | Returns 0 only when the word at `02141c70 + index * 0x40` is 0 and the short at `02141c80 + index * 0x40` is 0. Any other case returns 1. |
+| `02039bec` | `mark_record` | On the record selected by the halfword at `02141d74`, ORs 3 into the word at `+4`. If the short at `+0x12` differs from a 0-to-43 level, it refreshes that short first. |
+| `0203a15c` | `update_record` | Handles one `0x40`-byte record at `02141c70`. The flag word at `02141c74` gates the branches. A zero flag word skips them. `update_list` calls it with index 0. |
+| `0203af6c` | `read_input` | On slot 0, reads the buttons from `0x04000130` and the halfword at `027fffa8`. Stores held, previous, pressed, and released at `02141dc6`. A nonzero byte at `02141d70` skips that and clears the block instead. |
 | `0203b310` | `mark_block` | Clears the byte at `02141d70` and a run of halfwords in that block, then stores the halfword 1 at `02141d72`. |
 | `0203b37c` | `start_vblank` | Replaces the V-Blank handler with `01ff86fc`, sets IE bit 0 and DISPSTAT bit 3, turns the master interrupt switch on, and stores `0203b344` at `027c0028`. |
 | `0203b3dc` | `set_frame_counter` | Stores `027c0028` at `027c0020`. `frame` reads the counter through that pointer, so the new count is at `027c0044` and the accepted count is at `027c0048`. |
+| `0203e6fc` | `show_label` | Shows one label, picked by the argument. Cases 0–4 run when the word at `027c0084 + slot * 0x8c` is 0. Cases 5 and 10–18 run only when that word is 8. The two bytes at `020c77b4 + index * 2` are the position. `020a6d28` looks up the text in the `0x400`-byte block at `02148f74`. |
+| `02046af4` | `id_matches` | Returns 1 when the id byte equals one of three bytes in the 8-byte record at `020c812c`, or one of 11 bytes at `020c8110`. The record is selected by the first byte of the block passed in. |
+| `0204c014` | `update_list` | Entry 1 of the table `call_entry` uses. Walks the count at `02141d72`, which `mark_block` set to 1, and updates the `0x40`-byte records at `02141c70`. |
 | `0204d51c` | `clamp_positive` | Turns a negative short into 0 and keeps a positive short. `cmd_set_value` uses it on the short at entry `+6` before storing it at object `+0x14`. |
 | `0204da30` | `cosine` | Adds `0x40` to the angle index and jumps to `sine`. That is one quarter turn. |
 | `0204da44` | `sine` | Looks up one quarter of a 256-step circle. The peak value is `0x10000`, one pixel. |
+| `0204dce0` | `call_entry` | Calls the function at `020cd8b8 + index * 0xc`, where the index is the first word of the slot record at `027c0070`. A 0 pointer returns. The table has 43 entries. Entry 0 returns immediately. Entry 1 is `update_list`. |
+| `0204dd3c` | `call_mode` | Calls the function at `020cd8b4 + index * 0xc`. The index is the first word of the slot record at `027c0070`. A 0 pointer returns. Slot 0’s index is 0, and that entry is `bx lr`. |
+| `0204de58` | `record_changed` | Returns 1 when the word at `027c0070 + slot * 0x8c` differs from the word `0x2c` bytes later. `init_slots` copied those words, so they start equal and this returns 0. |
 | `0204e0e0` | `init_slots` | Clears the two `0x8c`-byte records at `027c0070` and `027c00fc`. Copies the first 11 words into the two groups at `+0x2c` and `+0x58`, then writes `0x83` at `+0x2c`. Slot 0 also reserves `0x800` bytes. |
 | `0204e3d8` | `zero_memory` | Writes zeros through a range of bytes. `load_boot_files` uses it to clear `0x3c` bytes at each slot block. |
 | `0204e570` | `take_main_memory` | Reads arena 0, the free main RAM from `0214de20` to `023c0000`. Rounds the ends to multiples of 32, which they already are, then saves that range and adds 1 to the count at `02142000`. |
 | `0205dafc` | `clear_state` | Stores 0 at `02142100`, `0214210c`, and `02142110`. A nearby function sets those same words to 1. |
 | `02064f3c` | `do_nothing_3` | Returns immediately. The bytes are `1e ff 2f e1`. `alloc_extra` calls it. |
+| `02066110` | `tick_events` | Returns while the byte at `02142234` is 0. Otherwise ticks ten 6-byte timers at `02142270` and counts down the word at `02142238`. The scan of ids `0x1f` through `0x50` runs only on the call where that word was already 0, then stores `0x96`. |
 | `02067134` | `init_slot_blocks` | Builds a `0x132c`-byte record per slot at `021422ac`. The first word points 8 bytes into the record. Slot 0’s next word points at `02142ab4`. The helpers run once with the slot at 1 and once at 0. |
+| `0206a0f0` | `clear_link` | Clears bit 0 of the object's flags, then stores 0 at `+0x120` and `+0x11c`. `find_target` calls it with the word at `02144938` when the mode byte is not `0x10`. |
+| `0206ed04` | `walk_links` | Returns while the halfword at `02144b80 + slot * 0x150` is 0. Otherwise walks the list at `+4` of that record. Bit 15 of the word at record `+0x30` skips `0206e440`, and that bit is then cleared. |
 | `0206f36c` | `alloc_slot_rows` | For each slot, at `02144a48 + slot * 0x150`, reserves `0x54` rows of `0x14` bytes and `0x48` rows of 5 bytes, plus four `0x60`-byte blocks. Clears the words at `+0` and `+4`. |
 | `020713e8` | `init_node` | Points `02144ce8` at `02144d44` and fills that record: `0`, `1`, `0`, `-1`, and the halfword `0xffff` at `+0x10`. Also points `02144cec` at `02144d30`. |
+| `0207a1d0` | `seed_block` | Asks channel 5 to fill stack values, packs them into one word at `02146f08`, adds 1 to `02146f0c`, and writes that word into the block at `02146ef8`. |
 | `0207a25c` | `alloc_block` | Asks the main-memory range for `0x9c4` bytes. The allocator rounds that up to `0x9e0` and stores the pointer at `02146ef8`. |
+| `0207dd2c` | `step_tasks` | If the byte at `02146f18` is 0, returns. Otherwise walks the three `0xa0`-byte records at `02146f1c`. State bytes 0 and 1 clear a record. State 2 or 3 calls the function at `020f7254 + index * 8`. |
 | `0207ee88` | `init_header` | Reserves `0xfe0` bytes and stores the pointer at `0214711c`. On a zeroed header, copies `URBZ0010` from `020f7328` to `021470fc`, clears the block, and passes `(0x20, 0x40)` and `(0x1000, 0x40)` with that pointer. |
+| `020806a4` | `slot_pending` | Returns 1 when the word at `02147194 + slot * 0x20` is not 0. `init_fade` stored 0 there, so `run_slots` skips the next block. The slot is the word at `027c0004`. |
+| `02080814` | `flag_slot` | ORs `0x4000` shifted by the slot into `027c0008`, and ORs 5 into the word at `02147194 + slot * 0x20`. That is the word `slot_pending` tests. |
 | `0208093c` | `set_fade` | Stores the second argument in the current slot’s record at `0214719c + slot * 0x20`, then calls `02080584`. Command `0x3f` writes the master brightness. `main` uses slot 1, then slot 0, both with `0x10`, writing `0x4010` to `0x0400106c` and `0x0400006c`. |
 | `02080964` | `init_fade` | Writes `1`, `0`, and `0x3f` at `02147190` and again at `021471b0`. Those are the two slot records. `set_fade` stored `0x10` just after each group, at `0214719c` and `021471bc`. |
+| `02080ed0` | `load_map_size` | Copies the two words at `021472a0 + slot * 0x114` into the pair the caller passes. That is `0xd0` bytes into the same slot record `scroll_view` uses. The first word is the width and the second is the height. |
+| `02081074` | `cache_tile` | Finds a tile in the layer cache, or copies its 32 bytes into background memory and returns the new index. A tile already cached has its count increased instead. |
+| `02081204` | `write_row` | Wraps an X into the map width, then writes 33 background-map entries across the strip through `cache_tile`. The step is 8 pixels. Slot 0 uses `0x06000000` and slot 1 uses `0x06200000`. |
+| `02081468` | `write_column` | Wraps an X into the map width, then writes 25 background-map entries down the strip. Slot 0 uses `0x06000000` and slot 1 uses `0x06200000`. |
+| `02081684` | `load_row` | Uses the same wrap as `load_column`, then releases 33 cached tiles across the strip for each enabled layer. The step between tiles is 8 pixels. |
+| `020817e0` | `load_column` | Wraps an X into the map width, then releases 25 cached tiles down the strip for each enabled layer. A width of 0 never leaves the wrap, because subtracting 0 leaves the position at 0. |
+| `02081904` | `release_tile` | Looks up a tile in the layer's chain at `021472b0`. A missing tile returns 1. A found tile loses one from its count, and a count of 0 unhooks that 6-byte record. |
+| `02081aac` | `flush_scroll` | For two pairs at record `+0x30` and `+0x38`, a value other than `-1` is passed to `load_column` or `load_row`, and then both words are set to `-1`. Then the view at `021471f0` is copied to `021471f8`. |
+| `02081b80` | `queue_scroll` | Stores the two arguments at `02147200 + slot * 0x114 + which * 8`. Those are the pairs `flush_scroll` later reads at record `+0x30` and `+0x38`. `which` is 0 or 1. |
+| `02081bc0` | `scroll_view` | Turns the current point into the top-left of a 256 by 192 view and keeps that view inside the map. A change of 8 pixels loads the new row or column. `update_list` calls it as `scroll_view(0, 0)`. |
 | `020823e8` | `do_nothing_4` | Returns immediately. The bytes are `1e ff 2f e1`, which is `bx lr`. |
+| `02083cb8` | `adjust_level` | Compares a new level with the top byte of the word at `02141220`. A higher new level calls `0205dc20` with `0x27`. A lower one calls it with `0x29`. An equal level returns. |
+| `02083db0` | `step_state` | Asks `add_time` about the 6-byte entry. If bits 1–3 of the result are clear, it returns. Otherwise it sets bits 0 and 1 on the current `0x40`-byte record and steps the block at `02141120`. |
+| `020840f4` | `set_delta` | Stores one byte at `021473f8`. That byte picks the 6-byte clock delta at `02113b5c`. `find_target` reads it, then calls this with 0. |
+| `02084104` | `find_target` | Clears `021473fc`, then looks at the object pointer in `02141c2c`. Mode `0x10` at object `+0x104` searches the list at `0214490c` and may store that object's `+0x24` into `021473fc`. A newly pressed B button calls through the pointer at object `+0x100`. |
+| `02098388` | `reset_buffer` | If bit 2 of `0214868c` is clear, returns. Otherwise clears `0x2000` bytes at the pointer in `0214867c`, divides the word at `02148680` by `0x3c0ded` on the hardware divider, stores a scaled halfword at `02148694`, copies the pointer to `02148678`, clears `02148690`, and sets bit 3 of `0214868c`. |
+| `02098420` | `mark_once` | If bit 2 of `0214868c` is clear, adds 1 to the byte at `0214cd88`, sets that bit, and sets bit 7 of the byte at `0214753c`. Later calls return immediately. |
 | `0209858c` | `clear_area` | Clears `0x260` bytes at `021486a0`, then stores the byte `0x20` at `021488fa`. `FUN_02098488` then clears `0x28` bytes at `02148678` and `0xc00` bytes at `02148c00`. |
 | `020a6e50` | `reserve_block` | Looks up file `0x37` from the table at `0211be40`, stores the byte `0x2e` at `02148f70`, then asks the main-memory range for `0x400` bytes and stores that pointer at `02148f74`. |
 | `020ae578` | `clear_slot_buffers` | Saves the slot, then for slot 0 and slot 1 clears `0x400` bytes at `02149864 + slot * 0x400` and fills `0x400` bytes at `02149064 + slot * 0x400` with `0xff`. Restores the slot afterward. |
+| `020aee70` | `step_motions` | Two records of `0x3c` bytes at `0214a064 + slot * 0x78`. Each holds two motions. Bit 1 of a motion moves its point: a countdown of 0 adds the step, 1 snaps to the target and clears the bit, and any other value steps toward the target. The base is past `arm9.bin` and starts cleared, so all four motions are skipped. |
 | `020abd18` | `clear_entry` | For one index, stores the pointer `02148fec` at `02148fe8 + index * 16`, stores 0 at `02148fec + index * 16` and `02148ff4 + index * 16`, and clears bit 0 of the byte at offset 8. |
 | `020abd58` | `init_four` | Calls `clear_entry` with 0, 1, 2, and 3. The early return Ghidra marked unreachable is the check before the first pass, and the counter starts at 0. |
 | `020b4f88` | `init_records` | Runs once. Clears three words at `0214a18c` and two words at `0214a9fc` and `0214aa14`. Builds 32 records of `0x1c` bytes at `0214a1b0`, then 16 records of `0x44` bytes at `0214a530`. The first of those 16 is linked from `0214a198`. |
@@ -120,6 +164,8 @@ Overall decomp: under 1%. This counts a matching rebuild of both CPUs and the ga
 | `020b842c` | `dma_fill` | Fills a range through DMA channel `param_1`. Boot uses channel 3 to fill display registers with 0. Waits while bit 31 of the channel control word is set. |
 | `020b84c8` | `fill_words` | Writes one value, as a word, from a start address through a byte count. `add_heap` uses it to store 0 between the two markers. |
 | `020b8924` | `init_channel_7` | Runs once. Registers channel 7 and waits for bit 7, fills 255 records of `0x18` bytes at `0214b580`, then clears eight 12-byte records at `0214cd80`. |
+| `020bc1d4` | `send_command` | Saves the interrupt mask, leaves only the IPC-receive bit set, and retries a send until it returns 0. `frame` calls it as `send_command(0xc, 0, 0)`. The `bxeq lr` at the end is a normal return. |
+| `020bc338` | `read_bits` | Asks channel 8 for a halfword. Writes bit 3 of that halfword to `027c000c` and bit 2 to `027c0010`. A nonzero result from the read writes nothing. |
 | `020bca74` | `on_channel_5` | Handler for channel 5. Returns when its third argument is greater than or equal to 0. |
 | `020bc754` | `on_channel_8` | Handler for channel 8. Returns when its third argument is 0. Otherwise, if a function is stored at `0214cf34`, it calls that function and clears the pointer. |
 | `020bc840` | `init_channel_8` | Runs once. Clears the two words at `0214cf30`, waits for channel 8, registers `on_channel_8`, clears the first halfword of four 8-byte records at `0214cf54`, and copies the word at `027ffc3c` to `0214cf2c`. |
@@ -207,11 +253,11 @@ It then writes the slot at `027c0004` to 0 and to 1. For each slot it zeroes `0x
 
 `frame` (`02000ce0`) is the frame function. The names given in Ghidra are in the table at the top.
 
-It saves the word at `027c0004`, which is the slot `update_slot` reads, and writes that word back at the end. If bit 15 of the word at `027fffa8` is set, it calls `FUN_02098420`, `FUN_020bc1d4(0xc, 0, 0)`, and `FUN_02098388` first. Those three are not read yet.
+It saves the word at `027c0004`, which is the slot `update_slot` reads, and writes that word back at the end. If bit 15 of the word at `027fffa8` is set, it calls `mark_once`, `send_command(0xc, 0, 0)`, and `reset_buffer` first.
 
 It then calls the ITCM function at `01ff89f0`. Those bytes are in the file at `021224b0`, where Ghidra names the function `run_slots`. The code runs `0x129ac0` bytes lower than that file address. Ghidra's `func_0x0212fce4` is that shift applied to `update_slot`: `0212fce4 - 0x129ac0 = 02006224`.
 
-`run_slots` runs its body twice, with the slot at `027c0004` set to 0 and then 1. Per slot it checks bytes at `027c006c` and `027c0064` and bits in the word at `027c0008`. On the second pass, when the byte at `027c006c` is 1, it sets that byte to 3 and copies 11 words inside the `0x8c`-byte record at `027c0070 + slot * 0x8c`. Then it calls `update_slot`. The other `func_0x021…` names in that listing are the same shift and are not read yet.
+`run_slots` runs its body twice, with the slot at `027c0004` set to 0 and then 1. On slot 0 it calls `read_input` first, then `slot_pending` for both slots. A 0 return skips ahead to `record_changed`. An equal pair skips ahead to `call_entry`. Per slot it checks bytes at `027c006c` and `027c0064` and bits in the word at `027c0008`. On the second pass, when the byte at `027c006c` is 1, it sets that byte to 3 and copies 11 words inside the `0x8c`-byte record at `027c0070 + slot * 0x8c`. Then it calls `update_slot`. The other `func_0x021…` names in that listing are the same shift and are not read yet.
 
 After that it calls `wait_vblank` until a counter has moved far enough. `wait_vblank` is Thumb `swi 5`, which waits for the next vertical blank. The counter struct is the pointer stored at `027c0020`. `set_frame_counter` stores `027c0028` there, so the new count is at `027c0044` (`+0x1c`) and the accepted count is at `027c0048` (`+0x20`). The loop continues while `+0x1c - +0x20` is less than the word at `027c0000`. Then `+0x20` is set equal to `+0x1c`. The word at `027c0000` is filled after boot, so its value is not in `arm9.bin`.
 

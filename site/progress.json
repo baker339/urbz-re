@@ -1,8 +1,8 @@
 {
-  "commit": "5bc9eb4",
+  "commit": "ce1e9f9",
   "repo": "https://github.com/baker339/urbz-re",
   "functions": 3665,
-  "named": 137,
+  "named": 184,
   "code_bytes": 799136,
   "matched_bytes": 0,
   "named_functions": [
@@ -308,11 +308,60 @@
       "notes_address": "02012690"
     },
     {
+      "address": "02016cb0",
+      "name": "step_affine",
+      "module": "main",
+      "description": "Steps four records of 0x6c bytes at 02122864 + 8 + slot * 0x1b8. The slot is the word at 027c0004. A record is skipped unless bits 0, 1, 2, 3, or 6 of the word at +0x18 are set. Bit 0 moves the point, bit 2 bounces a scale, bit 1 advances an angle, and bit 3 writes a rotation from cosine and sine.",
+      "notes_address": "02016cb0"
+    },
+    {
+      "address": "02017d60",
+      "name": "file_field",
+      "module": "main",
+      "description": "Looks up the second argument through lookup_file. Bits 0 and 1 of the first halfword pick an address 2, 0x22, or 0x202 bytes in. That address is returned only when bits 4 and 5 are both set.",
+      "notes_address": "02017d60"
+    },
+    {
       "address": "02018620",
       "name": "blank_display",
       "module": "main",
       "description": "Writes 0 to both display registers, 0x04000000 and 0x04001000. Writes 0x81 to VRAM bank A at 0x04000240, turning that bank on as background memory. set_display_a(1, 0, 0) stays off because the show flag is still 0.",
       "notes_address": "02018620"
+    },
+    {
+      "address": "0201a3a8",
+      "name": "cap_step",
+      "module": "main",
+      "description": "If either axis moved by 9 or more pixels, shortens the step to 8 pixels along that direction. A smaller move is kept. The length uses the hardware square root at 0x040002b8.",
+      "notes_address": "0201a3a8"
+    },
+    {
+      "address": "0201a47c",
+      "name": "step_point",
+      "module": "main",
+      "description": "Updates one point in the current slot. Records are 0x54 bytes inside a 0x150-byte slot block. The halfword at 02122d6c selects the motion. The file value for slot 1 index 0 is 0xa010, so none of cases 0\u20135 run until that halfword is changed.",
+      "notes_address": "0201a47c"
+    },
+    {
+      "address": "0201ab8c",
+      "name": "clamp_point",
+      "module": "main",
+      "description": "If the byte at record +0x4e is set, keeps the point 128 units inside the limits on the first word and 96 units inside the limits on the second. The record is 02122d24 + slot * 0x150 + index * 0x54.",
+      "notes_address": "0201ab8c"
+    },
+    {
+      "address": "0201ac5c",
+      "name": "load_point",
+      "module": "main",
+      "description": "Copies the two words at 02122d28 + index * 0x54 + slot * 0x150 into the pair the caller passed. scroll_view passes index 0, left in r1 from its own second argument.",
+      "notes_address": "0201ac5c"
+    },
+    {
+      "address": "0201d994",
+      "name": "add_time",
+      "module": "main",
+      "description": "Adds a 6-byte delta onto the clock at 0214112c. The fields wrap at 30, 60, 60, and 24. A wrap sets bit 0, 1, 2, or 3 of the result. The short at the start has no wrap.",
+      "notes_address": "0201d994"
     },
     {
       "address": "02020214",
@@ -357,6 +406,13 @@
       "notes_address": "0202d984"
     },
     {
+      "address": "0203266c",
+      "name": "tick_delays",
+      "module": "main",
+      "description": "Returns while the count at 021234a4 is 0. Otherwise counts down byte +2 of each 8-byte record at 021234a8. A byte that reaches 0 calls 0203241c with that record, unless bit 0 of byte +3 is set.",
+      "notes_address": "0203266c"
+    },
+    {
       "address": "02032b08",
       "name": "load_file",
       "module": "main",
@@ -369,6 +425,13 @@
       "module": "main",
       "description": "Returns the pointer already stored for a file. An id of 0x344A or higher is already a pointer and is returned unchanged.",
       "notes_address": "02032ca8"
+    },
+    {
+      "address": "02032de4",
+      "name": "age_files",
+      "module": "main",
+      "description": "Walks 0x344a file slots. A loaded file whose byte at 0213d77c has bit 7 clear counts down the low 7 bits. At 0, the pointer at 02130654 is cleared. run_slots calls it with 0.",
+      "notes_address": "02032de4"
     },
     {
       "address": "02033050",
@@ -413,6 +476,34 @@
       "notes_address": "02035e40"
     },
     {
+      "address": "02039ba4",
+      "name": "record_active",
+      "module": "main",
+      "description": "Returns 0 only when the word at 02141c70 + index * 0x40 is 0 and the short at 02141c80 + index * 0x40 is 0. Any other case returns 1.",
+      "notes_address": "02039ba4"
+    },
+    {
+      "address": "02039bec",
+      "name": "mark_record",
+      "module": "main",
+      "description": "On the record selected by the halfword at 02141d74, ORs 3 into the word at +4. If the short at +0x12 differs from a 0-to-43 level, it refreshes that short first.",
+      "notes_address": "02039bec"
+    },
+    {
+      "address": "0203a15c",
+      "name": "update_record",
+      "module": "main",
+      "description": "Handles one 0x40-byte record at 02141c70. The flag word at 02141c74 gates the branches. A zero flag word skips them. update_list calls it with index 0.",
+      "notes_address": "0203a15c"
+    },
+    {
+      "address": "0203af6c",
+      "name": "read_input",
+      "module": "main",
+      "description": "On slot 0, reads the buttons from 0x04000130 and the halfword at 027fffa8. Stores held, previous, pressed, and released at 02141dc6. A nonzero byte at 02141d70 skips that and clears the block instead.",
+      "notes_address": "0203af6c"
+    },
+    {
       "address": "0203b310",
       "name": "mark_block",
       "module": "main",
@@ -434,6 +525,27 @@
       "notes_address": "0203b3dc"
     },
     {
+      "address": "0203e6fc",
+      "name": "show_label",
+      "module": "main",
+      "description": "Shows one label, picked by the argument. Cases 0\u20134 run when the word at 027c0084 + slot * 0x8c is 0. Cases 5 and 10\u201318 run only when that word is 8. The two bytes at 020c77b4 + index * 2 are the position. 020a6d28 looks up the text in the 0x400-byte block at 02148f74.",
+      "notes_address": "0203e6fc"
+    },
+    {
+      "address": "02046af4",
+      "name": "id_matches",
+      "module": "main",
+      "description": "Returns 1 when the id byte equals one of three bytes in the 8-byte record at 020c812c, or one of 11 bytes at 020c8110. The record is selected by the first byte of the block passed in.",
+      "notes_address": "02046af4"
+    },
+    {
+      "address": "0204c014",
+      "name": "update_list",
+      "module": "main",
+      "description": "Entry 1 of the table call_entry uses. Walks the count at 02141d72, which mark_block set to 1, and updates the 0x40-byte records at 02141c70.",
+      "notes_address": "0204c014"
+    },
+    {
       "address": "0204d51c",
       "name": "clamp_positive",
       "module": "main",
@@ -453,6 +565,27 @@
       "module": "main",
       "description": "Looks up one quarter of a 256-step circle. The peak value is 0x10000, one pixel.",
       "notes_address": "0204da44"
+    },
+    {
+      "address": "0204dce0",
+      "name": "call_entry",
+      "module": "main",
+      "description": "Calls the function at 020cd8b8 + index * 0xc, where the index is the first word of the slot record at 027c0070. A 0 pointer returns. The table has 43 entries. Entry 0 returns immediately. Entry 1 is update_list.",
+      "notes_address": "0204dce0"
+    },
+    {
+      "address": "0204dd3c",
+      "name": "call_mode",
+      "module": "main",
+      "description": "Calls the function at 020cd8b4 + index * 0xc. The index is the first word of the slot record at 027c0070. A 0 pointer returns. Slot 0\u2019s index is 0, and that entry is bx lr.",
+      "notes_address": "0204dd3c"
+    },
+    {
+      "address": "0204de58",
+      "name": "record_changed",
+      "module": "main",
+      "description": "Returns 1 when the word at 027c0070 + slot * 0x8c differs from the word 0x2c bytes later. init_slots copied those words, so they start equal and this returns 0.",
+      "notes_address": "0204de58"
     },
     {
       "address": "0204e0e0",
@@ -490,11 +623,32 @@
       "notes_address": "02064f3c"
     },
     {
+      "address": "02066110",
+      "name": "tick_events",
+      "module": "main",
+      "description": "Returns while the byte at 02142234 is 0. Otherwise ticks ten 6-byte timers at 02142270 and counts down the word at 02142238. The scan of ids 0x1f through 0x50 runs only on the call where that word was already 0, then stores 0x96.",
+      "notes_address": "02066110"
+    },
+    {
       "address": "02067134",
       "name": "init_slot_blocks",
       "module": "main",
       "description": "Builds a 0x132c-byte record per slot at 021422ac. The first word points 8 bytes into the record. Slot 0\u2019s next word points at 02142ab4. The helpers run once with the slot at 1 and once at 0.",
       "notes_address": "02067134"
+    },
+    {
+      "address": "0206a0f0",
+      "name": "clear_link",
+      "module": "main",
+      "description": "Clears bit 0 of the object's flags, then stores 0 at +0x120 and +0x11c. find_target calls it with the word at 02144938 when the mode byte is not 0x10.",
+      "notes_address": "0206a0f0"
+    },
+    {
+      "address": "0206ed04",
+      "name": "walk_links",
+      "module": "main",
+      "description": "Returns while the halfword at 02144b80 + slot * 0x150 is 0. Otherwise walks the list at +4 of that record. Bit 15 of the word at record +0x30 skips 0206e440, and that bit is then cleared.",
+      "notes_address": "0206ed04"
     },
     {
       "address": "0206f36c",
@@ -511,6 +665,13 @@
       "notes_address": "020713e8"
     },
     {
+      "address": "0207a1d0",
+      "name": "seed_block",
+      "module": "main",
+      "description": "Asks channel 5 to fill stack values, packs them into one word at 02146f08, adds 1 to 02146f0c, and writes that word into the block at 02146ef8.",
+      "notes_address": "0207a1d0"
+    },
+    {
       "address": "0207a25c",
       "name": "alloc_block",
       "module": "main",
@@ -518,11 +679,32 @@
       "notes_address": "0207a25c"
     },
     {
+      "address": "0207dd2c",
+      "name": "step_tasks",
+      "module": "main",
+      "description": "If the byte at 02146f18 is 0, returns. Otherwise walks the three 0xa0-byte records at 02146f1c. State bytes 0 and 1 clear a record. State 2 or 3 calls the function at 020f7254 + index * 8.",
+      "notes_address": "0207dd2c"
+    },
+    {
       "address": "0207ee88",
       "name": "init_header",
       "module": "main",
       "description": "Reserves 0xfe0 bytes and stores the pointer at 0214711c. On a zeroed header, copies URBZ0010 from 020f7328 to 021470fc, clears the block, and passes (0x20, 0x40) and (0x1000, 0x40) with that pointer.",
       "notes_address": "0207ee88"
+    },
+    {
+      "address": "020806a4",
+      "name": "slot_pending",
+      "module": "main",
+      "description": "Returns 1 when the word at 02147194 + slot * 0x20 is not 0. init_fade stored 0 there, so run_slots skips the next block. The slot is the word at 027c0004.",
+      "notes_address": "020806a4"
+    },
+    {
+      "address": "02080814",
+      "name": "flag_slot",
+      "module": "main",
+      "description": "ORs 0x4000 shifted by the slot into 027c0008, and ORs 5 into the word at 02147194 + slot * 0x20. That is the word slot_pending tests.",
+      "notes_address": "02080814"
     },
     {
       "address": "0208093c",
@@ -539,11 +721,123 @@
       "notes_address": "02080964"
     },
     {
+      "address": "02080ed0",
+      "name": "load_map_size",
+      "module": "main",
+      "description": "Copies the two words at 021472a0 + slot * 0x114 into the pair the caller passes. That is 0xd0 bytes into the same slot record scroll_view uses. The first word is the width and the second is the height.",
+      "notes_address": "02080ed0"
+    },
+    {
+      "address": "02081074",
+      "name": "cache_tile",
+      "module": "main",
+      "description": "Finds a tile in the layer cache, or copies its 32 bytes into background memory and returns the new index. A tile already cached has its count increased instead.",
+      "notes_address": "02081074"
+    },
+    {
+      "address": "02081204",
+      "name": "write_row",
+      "module": "main",
+      "description": "Wraps an X into the map width, then writes 33 background-map entries across the strip through cache_tile. The step is 8 pixels. Slot 0 uses 0x06000000 and slot 1 uses 0x06200000.",
+      "notes_address": "02081204"
+    },
+    {
+      "address": "02081468",
+      "name": "write_column",
+      "module": "main",
+      "description": "Wraps an X into the map width, then writes 25 background-map entries down the strip. Slot 0 uses 0x06000000 and slot 1 uses 0x06200000.",
+      "notes_address": "02081468"
+    },
+    {
+      "address": "02081684",
+      "name": "load_row",
+      "module": "main",
+      "description": "Uses the same wrap as load_column, then releases 33 cached tiles across the strip for each enabled layer. The step between tiles is 8 pixels.",
+      "notes_address": "02081684"
+    },
+    {
+      "address": "020817e0",
+      "name": "load_column",
+      "module": "main",
+      "description": "Wraps an X into the map width, then releases 25 cached tiles down the strip for each enabled layer. A width of 0 never leaves the wrap, because subtracting 0 leaves the position at 0.",
+      "notes_address": "020817e0"
+    },
+    {
+      "address": "02081904",
+      "name": "release_tile",
+      "module": "main",
+      "description": "Looks up a tile in the layer's chain at 021472b0. A missing tile returns 1. A found tile loses one from its count, and a count of 0 unhooks that 6-byte record.",
+      "notes_address": "02081904"
+    },
+    {
+      "address": "02081aac",
+      "name": "flush_scroll",
+      "module": "main",
+      "description": "For two pairs at record +0x30 and +0x38, a value other than -1 is passed to load_column or load_row, and then both words are set to -1. Then the view at 021471f0 is copied to 021471f8.",
+      "notes_address": "02081aac"
+    },
+    {
+      "address": "02081b80",
+      "name": "queue_scroll",
+      "module": "main",
+      "description": "Stores the two arguments at 02147200 + slot * 0x114 + which * 8. Those are the pairs flush_scroll later reads at record +0x30 and +0x38. which is 0 or 1.",
+      "notes_address": "02081b80"
+    },
+    {
+      "address": "02081bc0",
+      "name": "scroll_view",
+      "module": "main",
+      "description": "Turns the current point into the top-left of a 256 by 192 view and keeps that view inside the map. A change of 8 pixels loads the new row or column. update_list calls it as scroll_view(0, 0).",
+      "notes_address": "02081bc0"
+    },
+    {
       "address": "020823e8",
       "name": "do_nothing_4",
       "module": "main",
       "description": "Returns immediately. The bytes are 1e ff 2f e1, which is bx lr.",
       "notes_address": "020823e8"
+    },
+    {
+      "address": "02083cb8",
+      "name": "adjust_level",
+      "module": "main",
+      "description": "Compares a new level with the top byte of the word at 02141220. A higher new level calls 0205dc20 with 0x27. A lower one calls it with 0x29. An equal level returns.",
+      "notes_address": "02083cb8"
+    },
+    {
+      "address": "02083db0",
+      "name": "step_state",
+      "module": "main",
+      "description": "Asks add_time about the 6-byte entry. If bits 1\u20133 of the result are clear, it returns. Otherwise it sets bits 0 and 1 on the current 0x40-byte record and steps the block at 02141120.",
+      "notes_address": "02083db0"
+    },
+    {
+      "address": "020840f4",
+      "name": "set_delta",
+      "module": "main",
+      "description": "Stores one byte at 021473f8. That byte picks the 6-byte clock delta at 02113b5c. find_target reads it, then calls this with 0.",
+      "notes_address": "020840f4"
+    },
+    {
+      "address": "02084104",
+      "name": "find_target",
+      "module": "main",
+      "description": "Clears 021473fc, then looks at the object pointer in 02141c2c. Mode 0x10 at object +0x104 searches the list at 0214490c and may store that object's +0x24 into 021473fc. A newly pressed B button calls through the pointer at object +0x100.",
+      "notes_address": "02084104"
+    },
+    {
+      "address": "02098388",
+      "name": "reset_buffer",
+      "module": "main",
+      "description": "If bit 2 of 0214868c is clear, returns. Otherwise clears 0x2000 bytes at the pointer in 0214867c, divides the word at 02148680 by 0x3c0ded on the hardware divider, stores a scaled halfword at 02148694, copies the pointer to 02148678, clears 02148690, and sets bit 3 of 0214868c.",
+      "notes_address": "02098388"
+    },
+    {
+      "address": "02098420",
+      "name": "mark_once",
+      "module": "main",
+      "description": "If bit 2 of 0214868c is clear, adds 1 to the byte at 0214cd88, sets that bit, and sets bit 7 of the byte at 0214753c. Later calls return immediately.",
+      "notes_address": "02098420"
     },
     {
       "address": "0209858c",
@@ -579,6 +873,13 @@
       "module": "main",
       "description": "Saves the slot, then for slot 0 and slot 1 clears 0x400 bytes at 02149864 + slot * 0x400 and fills 0x400 bytes at 02149064 + slot * 0x400 with 0xff. Restores the slot afterward.",
       "notes_address": "020ae578"
+    },
+    {
+      "address": "020aee70",
+      "name": "step_motions",
+      "module": "main",
+      "description": "Two records of 0x3c bytes at 0214a064 + slot * 0x78. Each holds two motions. Bit 1 of a motion moves its point: a countdown of 0 adds the step, 1 snaps to the target and clears the bit, and any other value steps toward the target. The base is past arm9.bin and starts cleared, so all four motions are skipped.",
+      "notes_address": "020aee70"
     },
     {
       "address": "020b4f88",
@@ -903,6 +1204,20 @@
       "notes_address": "020bbda4"
     },
     {
+      "address": "020bc1d4",
+      "name": "send_command",
+      "module": "main",
+      "description": "Saves the interrupt mask, leaves only the IPC-receive bit set, and retries a send until it returns 0. frame calls it as send_command(0xc, 0, 0). The bxeq lr at the end is a normal return.",
+      "notes_address": "020bc1d4"
+    },
+    {
+      "address": "020bc338",
+      "name": "read_bits",
+      "module": "main",
+      "description": "Asks channel 8 for a halfword. Writes bit 3 of that halfword to 027c000c and bit 2 to 027c0010. A nonzero result from the read writes nothing.",
+      "notes_address": "020bc338"
+    },
+    {
       "address": "020bc754",
       "name": "on_channel_8",
       "module": "main",
@@ -915,6 +1230,20 @@
       "module": "main",
       "description": "Runs once. Clears the two words at 0214cf30, waits for channel 8, registers on_channel_8, clears the first halfword of four 8-byte records at 0214cf54, and copies the word at 027ffc3c to 0214cf2c.",
       "notes_address": "020bc840"
+    },
+    {
+      "address": "020bca74",
+      "name": "on_channel_5",
+      "module": "main",
+      "description": "Handler for channel 5. Returns when its third argument is greater than or equal to 0.",
+      "notes_address": "020bca74"
+    },
+    {
+      "address": "020bd0e4",
+      "name": "init_channel_5",
+      "module": "main",
+      "description": "Runs once. Clears five words at 0214cf78, waits until bit 5 is set at 027fff8c, and registers on_channel_5 at 0214cdfc.",
+      "notes_address": "020bd0e4"
     },
     {
       "address": "020bd560",
@@ -966,6 +1295,12 @@
       "notes_address": "020be96c"
     }
   ],
+  "estimate": {
+    "finish": "December 3, 2026",
+    "days": 50,
+    "gained": 67,
+    "remaining": 3481
+  },
   "open": [
     {
       "title": "CodeWarrior version",

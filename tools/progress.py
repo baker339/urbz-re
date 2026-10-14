@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,83 @@ MODULE_SECTION = re.compile(
 FILE_SECTION = re.compile(
     r"^(?P<name>\S+)\s+start:0x(?P<start>[0-9a-fA-F]+)\s+end:0x(?P<end>[0-9a-fA-F]+)\s*$"
 )
+
+
+def git_text(rev: str, path: str) -> str:
+    result = subprocess.run(
+        ["git", "show", f"{rev}:{path}"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout
+
+
+def symbol_files(rev: str | None) -> list[str]:
+    if rev is None:
+        return [path.read_text() for path in sorted(CONFIG.rglob("symbols.txt"))]
+    listing = subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", rev, "config/arm9"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    paths = [line for line in listing.stdout.splitlines() if line.endswith("symbols.txt")]
+    return [git_text(rev, path) for path in paths]
+
+
+def count_named(rev: str | None) -> int:
+    total = 0
+    for text in symbol_files(rev):
+        for line in text.splitlines():
+            match = SYMBOL.match(line)
+            if not match or match.group("kind") != "function":
+                continue
+            name = match.group("name")
+            if name.startswith("func_") or name.endswith("_unk"):
+                continue
+            total += 1
+    return total
+
+
+def first_commit() -> tuple[str, datetime] | None:
+    result = subprocess.run(
+        ["git", "log", "--reverse", "--format=%H%x09%aI"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    line = result.stdout.splitlines()[0] if result.stdout else ""
+    if not line:
+        return None
+    rev, stamp = line.split("\t", 1)
+    return rev, datetime.fromisoformat(stamp)
+
+
+def estimate(named: int, functions: int) -> dict[str, object] | None:
+    """Date every function has a name, at the pace since the first commit."""
+    opened = first_commit()
+    if opened is None or functions <= named:
+        return None
+    rev, started = opened
+    baseline = count_named(rev)
+    gained = named - baseline
+    elapsed = datetime.now(timezone.utc) - started
+    if gained <= 0 or elapsed.total_seconds() <= 0:
+        return None
+    remaining = functions - named
+    seconds_left = remaining * elapsed.total_seconds() / gained
+    finish = datetime.now(timezone.utc) + timedelta(seconds=seconds_left)
+    days = max(1, round(seconds_left / 86400))
+    return {
+        "finish": f"{finish.strftime('%B')} {finish.day}, {finish.year}",
+        "days": days,
+        "gained": gained,
+        "remaining": remaining,
+    }
 
 
 def commit() -> str:
@@ -144,6 +222,7 @@ def main() -> None:
         "code_bytes": code,
         "matched_bytes": matched,
         "named_functions": named,
+        "estimate": estimate(len(named), total_functions),
         "open": [
             {
                 "title": "CodeWarrior version",
@@ -173,6 +252,9 @@ def main() -> None:
         f"{payload['named']} named / {payload['functions']} functions, "
         f"{payload['matched_bytes']} / {payload['code_bytes']} bytes matched"
     )
+    estimate_row = payload["estimate"]
+    if estimate_row:
+        print(f"naming finishes around {estimate_row['finish']} ({estimate_row['days']} days)")
 
 
 if __name__ == "__main__":

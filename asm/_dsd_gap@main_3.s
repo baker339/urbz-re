@@ -584,11 +584,11 @@ main: ; 0x02000b00
     bl clear_area
     bl start_vblank
     bl mark_block
-    bl func_020bd0e4
-    bl func_0207a1d0
+    bl init_channel_5
+    bl seed_block
     ldr r0, .L_02000c88
     ldr r1, .L_02000c8c
-    bl func_020bc338
+    bl read_bits
     cmp r0, #0x2
     ldreq r0, .L_02000c88
     moveq r1, #0x1
@@ -659,12 +659,12 @@ frame: ; 0x02000ce0
     and r0, r0, #0xff
     cmp r0, #0x1
     bne .L_02000d20
-    bl func_02098420
+    bl mark_once
     mov r1, #0x0
     mov r2, r1
     mov r0, #0xc
-    bl func_020bc1d4
-    bl func_02098388
+    bl send_command
+    bl reset_buffer
 .L_02000d20:
     bl run_slots
     ldr r6, .L_02000d68
@@ -12166,7 +12166,7 @@ func_0200a71c: ; 0x0200a71c
     ldr r0, .L_0200b1ec
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     addne sp, sp, #0x10
     ldmneia sp!, {r4, r5, r6, lr}
@@ -12361,7 +12361,7 @@ func_0200a71c: ; 0x0200a71c
     ldr r0, .L_0200b1ec
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_0200af8c
     mov r0, r4
@@ -12471,7 +12471,7 @@ func_0200a71c: ; 0x0200a71c
     mov r2, #0x1
     bl func_0205dc20
     mov r0, #0x1
-    bl func_020840f4
+    bl set_delta
 .L_0200b0b0:
     mov r0, #0x0
     str r0, [r6, #0x28]
@@ -17510,7 +17510,7 @@ func_0200f670: ; 0x0200f670
     beq .L_0200f7d0
     ldr r0, .L_0200f7f4
     and r1, r9, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     beq .L_0200f7d0
     ldr r0, [r4, #0x79c]
@@ -23346,7 +23346,7 @@ func_02014718: ; 0x02014718
     sub sp, sp, #0x1c
     ldr r0, .L_020147cc
     ldr r1, .L_020147d0
-    bl func_0201d994
+    bl add_time
     ldr r0, .L_020147cc
     ldrsb r1, [r0, #0x3]
     cmp r1, #0x0
@@ -26097,9 +26097,9 @@ func_020169e0: ; 0x020169e0
 .L_02016cac: .word data_02122868
     arm_func_end func_020169e0
 
-    .global func_02016cb0
-    arm_func_start func_02016cb0
-func_02016cb0: ; 0x02016cb0
+    .global step_affine
+    arm_func_start step_affine
+step_affine: ; 0x02016cb0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     mov r10, #0x0
@@ -26323,7 +26323,7 @@ func_02016cb0: ; 0x02016cb0
     bx lr
 .L_02016ff4: .word data_027c0004
 .L_02016ff8: .word data_02122864
-    arm_func_end func_02016cb0
+    arm_func_end step_affine
 
     .global func_02016ffc
     arm_func_start func_02016ffc
@@ -27308,9 +27308,9 @@ func_02017cf4: ; 0x02017cf4
     bx lr
     arm_func_end func_02017cf4
 
-    .global func_02017d60
-    arm_func_start func_02017d60
-func_02017d60: ; 0x02017d60
+    .global file_field
+    arm_func_start file_field
+file_field: ; 0x02017d60
     stmdb sp!, {r4, lr}
     mov r0, r1
     bl func_02032f60
@@ -27338,7 +27338,7 @@ func_02017d60: ; 0x02017d60
     mov r0, r4
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_02017d60
+    arm_func_end file_field
 
     .global func_02017dc4
     arm_func_start func_02017dc4
@@ -30180,9 +30180,9 @@ func_0201a0a8: ; 0x0201a0a8
 .L_0201a3a4: .word data_020c19d8
     arm_func_end func_0201a0a8
 
-    .global func_0201a3a8
-    arm_func_start func_0201a3a8
-func_0201a3a8: ; 0x0201a3a8
+    .global cap_step
+    arm_func_start cap_step
+cap_step: ; 0x0201a3a8
     stmdb sp!, {r0, r1, r2, r3}
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     sub sp, sp, #0x8
@@ -30239,11 +30239,11 @@ func_0201a3a8: ; 0x0201a3a8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     add sp, sp, #0x10
     bx lr
-    arm_func_end func_0201a3a8
+    arm_func_end cap_step
 
-    .global func_0201a47c
-    arm_func_start func_0201a47c
-func_0201a47c: ; 0x0201a47c
+    .global step_point
+    arm_func_start step_point
+step_point: ; 0x0201a47c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x3c
     ldr r3, .L_0201ab20
@@ -30641,7 +30641,7 @@ func_0201a47c: ; 0x0201a47c
     str r1, [r5, r3]
     add r1, r5, r3
     str r2, [r1, #0x4]
-    bl func_0201ab8c
+    bl clamp_point
     ldr r1, .L_0201ab20
     mov r0, #0x150
     ldr r2, [r1, #0x0]
@@ -30660,7 +30660,7 @@ func_0201a47c: ; 0x0201a47c
     add r0, sp, #0x2c
     ldmia r3, {r3}
     ldmia r1, {r1, r2}
-    bl func_0201a3a8
+    bl cap_step
     ldr r1, .L_0201ab24
     ldr r0, .L_0201ab84
     add r6, r1, r4
@@ -30715,11 +30715,11 @@ func_0201a47c: ; 0x0201a47c
 .L_0201ab80: .word data_0212341c
 .L_0201ab84: .word data_02122d74
 .L_0201ab88: .word data_02122d2c
-    arm_func_end func_0201a47c
+    arm_func_end step_point
 
-    .global func_0201ab8c
-    arm_func_start func_0201ab8c
-func_0201ab8c: ; 0x0201ab8c
+    .global clamp_point
+    arm_func_start clamp_point
+clamp_point: ; 0x0201ab8c
     ldr r1, .L_0201ac18
     ldr r3, .L_0201ac1c
     ldr r2, [r1, #0x0]
@@ -30757,7 +30757,7 @@ func_0201ab8c: ; 0x0201ab8c
     bx lr
 .L_0201ac18: .word data_027c0004
 .L_0201ac1c: .word data_02122d24
-    arm_func_end func_0201ab8c
+    arm_func_end clamp_point
 
     .global func_0201ac20
     arm_func_start func_0201ac20
@@ -30779,9 +30779,9 @@ func_0201ac20: ; 0x0201ac20
 .L_0201ac58: .word data_02122d73
     arm_func_end func_0201ac20
 
-    .global func_0201ac5c
-    arm_func_start func_0201ac5c
-func_0201ac5c: ; 0x0201ac5c
+    .global load_point
+    arm_func_start load_point
+load_point: ; 0x0201ac5c
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr ip, .L_0201aca8
@@ -30804,7 +30804,7 @@ func_0201ac5c: ; 0x0201ac5c
 .L_0201aca8: .word data_027c0004
 .L_0201acac: .word data_02122d28
 .L_0201acb0: .word data_02122d2c
-    arm_func_end func_0201ac5c
+    arm_func_end load_point
 
     .global func_0201acb4
     arm_func_start func_0201acb4
@@ -33783,7 +33783,7 @@ func_0201d564: ; 0x0201d564
     bl func_0201dc20
     mov r0, r4
     mov r1, r5
-    bl func_0201d994
+    bl add_time
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -34077,9 +34077,9 @@ func_0201d59c: ; 0x0201d59c
 .L_0201d990: .word 0x66666667
     arm_func_end func_0201d59c
 
-    .global func_0201d994
-    arm_func_start func_0201d994
-func_0201d994: ; 0x0201d994
+    .global add_time
+    arm_func_start add_time
+add_time: ; 0x0201d994
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     add r2, r0, #0x5
@@ -34259,7 +34259,7 @@ func_0201d994: ; 0x0201d994
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_0201d994
+    arm_func_end add_time
 
     .global func_0201dc20
     arm_func_start func_0201dc20
@@ -35579,7 +35579,7 @@ func_0201eda8: ; 0x0201eda8
     ldr r0, .L_0201ee58
     str r4, [r5, #0x54]
     ldr r0, [r0, #0x0]
-    bl func_0206a0f0
+    bl clear_link
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -35668,7 +35668,7 @@ func_0201eee0: ; 0x0201eee0
     bxeq lr
     ldr r0, .L_0201f018
     ldr r0, [r0, #0x0]
-    bl func_0206a0f0
+    bl clear_link
     ldr r0, .L_0201f020
     ldrb r3, [r5, #0x11e]
     ldr r1, .L_0201f024
@@ -37356,7 +37356,7 @@ func_02020478: ; 0x02020478
 .L_02020600:
     ldr r0, .L_0202063c
     add r1, sp, #0x0
-    bl func_0201d994
+    bl add_time
     ldr r0, .L_02020638
     ldr r0, [r0, #0x0]
     add r1, r0, #0xc
@@ -39416,7 +39416,7 @@ func_02021ffc: ; 0x02021ffc
     ldr r0, .L_0202216c
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020220f4
     mov r0, #0x3
@@ -40335,7 +40335,7 @@ func_02022bcc: ; 0x02022bcc
     strh r0, [r2, #0x0]
     cmp r3, #0x0
     bne .L_02022d2c
-    bl func_0207a1d0
+    bl seed_block
     bl func_0204e0ac
     cmp r0, #0x11
     beq .L_02022cd4
@@ -40421,7 +40421,7 @@ func_02022d48: ; 0x02022d48
     strh r0, [r2, #0x0]
     cmp r3, #0x0
     bne .L_02022e44
-    bl func_0207a1d0
+    bl seed_block
     mov r0, #0x29
     bl func_0204e038
     mov r1, #0x1
@@ -41136,7 +41136,7 @@ func_0202372c: ; 0x0202372c
     ldr r1, [r0, #0x0]
     ldr r0, .L_020237e8
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     beq .L_020237c8
     ldr r0, .L_020237e4
@@ -55353,7 +55353,7 @@ func_0202fb80: ; 0x0202fb80
     mov r4, r1
     ldr r1, [r2, r5, lsl #0x2]
     mov r0, #0x1
-    bl func_02017d60
+    bl file_field
     ldr r2, .L_0202fbe8
     mov r1, #0x39
     mla r1, r5, r1, r2
@@ -55893,7 +55893,7 @@ func_02030164: ; 0x02030164
     ldr r0, .L_02030478
     ldr r1, .L_0203048c
     ldr r0, [r0, #0x0]
-    bl func_0201d994
+    bl add_time
     ldr r0, .L_02030490
     ldrh r0, [r0, #0x4e]
     cmp r0, #0x0
@@ -56899,7 +56899,7 @@ func_02031068: ; 0x02031068
     ldr r0, .L_02031120
     and r1, r1, #0xff
     mov r5, r2, asr #0x8
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     beq .L_02031100
     cmp r5, #0x0
@@ -58581,9 +58581,9 @@ func_02032630: ; 0x02032630
 .L_02032668: .word data_021234a4
     arm_func_end func_02032630
 
-    .global func_0203266c
-    arm_func_start func_0203266c
-func_0203266c: ; 0x0203266c
+    .global tick_delays
+    arm_func_start tick_delays
+tick_delays: ; 0x0203266c
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     ldr r7, .L_02032704
@@ -58626,7 +58626,7 @@ func_0203266c: ; 0x0203266c
     bx lr
 .L_02032704: .word data_021234a4
 .L_02032708: .word data_021234a8
-    arm_func_end func_0203266c
+    arm_func_end tick_delays
 
     .global func_0203270c
     arm_func_start func_0203270c
@@ -59147,9 +59147,9 @@ lookup_file: ; 0x02032ca8
 .L_02032de0: .word data_02130654
     arm_func_end lookup_file
 
-    .global func_02032de4
-    arm_func_start func_02032de4
-func_02032de4: ; 0x02032de4
+    .global age_files
+    arm_func_start age_files
+age_files: ; 0x02032de4
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x4
     ldr r6, .L_02032e80
@@ -59195,7 +59195,7 @@ func_02032de4: ; 0x02032de4
 .L_02032e80: .word data_0213d77c
 .L_02032e84: .word data_02130654
 .L_02032e88: .word 0x344a
-    arm_func_end func_02032de4
+    arm_func_end age_files
 
     .global func_02032e8c
     arm_func_start func_02032e8c
@@ -62865,7 +62865,7 @@ func_02035e68: ; 0x02035e68
     ldr r0, .L_02036098
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_02035f3c
     mov r0, r8
@@ -67336,9 +67336,9 @@ func_02039b58: ; 0x02039b58
 .L_02039ba0: .word data_02141c74
     arm_func_end func_02039b58
 
-    .global func_02039ba4
-    arm_func_start func_02039ba4
-func_02039ba4: ; 0x02039ba4
+    .global record_active
+    arm_func_start record_active
+record_active: ; 0x02039ba4
     ldr r1, .L_02039be4
     mov r2, r0, lsl #0x6
     ldr r1, [r1, r0, lsl #0x6]
@@ -67359,11 +67359,11 @@ func_02039ba4: ; 0x02039ba4
     bx lr
 .L_02039be4: .word data_02141c70
 .L_02039be8: .word data_02141c80
-    arm_func_end func_02039ba4
+    arm_func_end record_active
 
-    .global func_02039bec
-    arm_func_start func_02039bec
-func_02039bec: ; 0x02039bec
+    .global mark_record
+    arm_func_start mark_record
+mark_record: ; 0x02039bec
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x14
     ldr r0, .L_02039ca0
@@ -67385,7 +67385,7 @@ func_02039bec: ; 0x02039bec
 .L_02039c34:
     ldr r1, .L_02039cac
     mov r0, #0x3
-    bl func_02017d60
+    bl file_field
     mov r3, #0x1
     rsb r2, r5, #0x2b
     mov r1, r0
@@ -67416,7 +67416,7 @@ func_02039bec: ; 0x02039bec
 .L_02039ca8: .word data_02141204
 .L_02039cac: .word 0x1c6f
 .L_02039cb0: .word 0x31f
-    arm_func_end func_02039bec
+    arm_func_end mark_record
 
     .global func_02039cb4
     arm_func_start func_02039cb4
@@ -67467,7 +67467,7 @@ func_02039cb4: ; 0x02039cb4
     mov r6, r0
     ldr r1, .L_02039e34
     mov r0, r5
-    bl func_02017d60
+    bl file_field
     mov r1, r0
     ldr r0, .L_02039e38
     rsb r3, r6, #0x10
@@ -67538,7 +67538,7 @@ func_02039e44: ; 0x02039e44
     mov r4, r0
     ldr r1, [r1, #0x0]
     mov r0, #0x3
-    bl func_02017d60
+    bl file_field
     mov r3, #0x0
     mov r1, r0
     str r3, [sp, #0x0]
@@ -67626,7 +67626,7 @@ func_02039f78: ; 0x02039f78
     ldr r1, [r2, #0x0]
     mov r4, r0
     mov r0, #0x3
-    bl func_02017d60
+    bl file_field
     cmp r5, #0x1
     mov r1, r0
     ldreq r0, .L_0203a070
@@ -67761,25 +67761,25 @@ func_0203a110: ; 0x0203a110
 .L_0203a158: .word data_02141c70
     arm_func_end func_0203a110
 
-    .global func_0203a15c
-    arm_func_start func_0203a15c
-func_0203a15c: ; 0x0203a15c
+    .global update_record
+    arm_func_start update_record
+update_record: ; 0x0203a15c
     stmdb sp!, {r4, r5, r6, lr}
     sub sp, sp, #0x28
     ldr r1, .L_0203aad8
     mov r5, r0
     ldr r1, [r1, #0x0]
     mov r0, #0x3
-    bl func_02017d60
+    bl file_field
     mov r4, r0
     mov r0, r5
-    bl func_02039ba4
+    bl record_active
     cmp r0, #0x0
     beq .L_0203a194
     bl func_02039cb4
     b .L_0203a198
 .L_0203a194:
-    bl func_02039bec
+    bl mark_record
 .L_0203a198:
     ldr r0, .L_0203aadc
     ldr r0, [r0, r5, lsl #0x6]
@@ -68305,7 +68305,7 @@ func_0203a15c: ; 0x0203a15c
     ldr r1, .L_0203aad8
     mov r0, #0x3
     ldr r1, [r1, #0x0]
-    bl func_02017d60
+    bl file_field
     mov r3, #0x0
     mov r1, r0
     ldr r2, .L_0203aae8
@@ -68439,7 +68439,7 @@ func_0203a15c: ; 0x0203a15c
 .L_0203ab3c: .word 0x2074
 .L_0203ab40: .word data_02146eb8
 .L_0203ab44: .word 0x3ff
-    arm_func_end func_0203a15c
+    arm_func_end update_record
 
     .global func_0203ab48
     arm_func_start func_0203ab48
@@ -68529,7 +68529,7 @@ func_0203ab48: ; 0x0203ab48
     ldr r1, .L_0203ad20
     mov r0, #0x3
     ldr r1, [r1, #0x0]
-    bl func_02017d60
+    bl file_field
     mov r3, #0x0
     mov r1, r0
     ldr r2, .L_0203ad18
@@ -68768,9 +68768,9 @@ func_0203af44: ; 0x0203af44
 .L_0203af68: .word data_020c6144
     arm_func_end func_0203af44
 
-    .global func_0203af6c
-    arm_func_start func_0203af6c
-func_0203af6c: ; 0x0203af6c
+    .global read_input
+    arm_func_start read_input
+read_input: ; 0x0203af6c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x24
     ldr r2, .L_0203b250
@@ -68982,7 +68982,7 @@ func_0203af6c: ; 0x0203af6c
 .L_0203b278: .word data_02141e12
 .L_0203b27c: .word data_02141e14
 .L_0203b280: .word data_02141d76
-    arm_func_end func_0203af6c
+    arm_func_end read_input
 
     .global func_0203b284
     arm_func_start func_0203b284
@@ -72068,7 +72068,7 @@ func_0203d9a4: ; 0x0203d9a4
     bgt .L_0203da78
 .L_0203da64:
     mov r0, r4
-    bl func_0203e6fc
+    bl show_label
     add r4, r4, #0x1
     cmp r4, #0x4
     ble .L_0203da64
@@ -72837,13 +72837,13 @@ func_0203e344: ; 0x0203e344
     mov r1, r1, lsr #0x3
     bl func_020180fc
     mov r0, #0x8
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x7
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x6
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x9
-    bl func_0203e6fc
+    bl show_label
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
@@ -72926,31 +72926,31 @@ func_0203e57c: ; 0x0203e57c
     mov r1, r1, lsr #0x3
     bl func_020180fc
     mov r0, #0x8
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x7
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x6
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x5
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xa
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xb
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xc
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xd
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xe
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0xf
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x10
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x11
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x12
-    bl func_0203e6fc
+    bl show_label
     add sp, sp, #0x8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
@@ -72961,9 +72961,9 @@ func_0203e57c: ; 0x0203e57c
 .L_0203e6f8: .word data_020c77b4
     arm_func_end func_0203e57c
 
-    .global func_0203e6fc
-    arm_func_start func_0203e6fc
-func_0203e6fc: ; 0x0203e6fc
+    .global show_label
+    arm_func_start show_label
+show_label: ; 0x0203e6fc
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x1c
     ldr r1, .L_0203eec0
@@ -73500,7 +73500,7 @@ func_0203e6fc: ; 0x0203e6fc
 .L_0203eef8: .word data_020c77a8
 .L_0203eefc: .word 0x11d
 .L_0203ef00: .word data_020c77b0
-    arm_func_end func_0203e6fc
+    arm_func_end show_label
 
     .global func_0203ef04
     arm_func_start func_0203ef04
@@ -73907,7 +73907,7 @@ func_0203f390: ; 0x0203f390
     str ip, [sp, #0x4]
     bl func_020180fc
     mov r0, #0x13
-    bl func_0203e6fc
+    bl show_label
     add sp, sp, #0x8
     ldmia sp!, {r4, lr}
     bx lr
@@ -74071,7 +74071,7 @@ func_0203f698: ; 0x0203f698
     ldr r0, .L_0203f91c
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     moveq r5, #0x1
     beq .L_0203f838
@@ -74106,7 +74106,7 @@ func_0203f698: ; 0x0203f698
     ldr r0, .L_0203f91c
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     moveq r4, #0x1
     moveq r5, #0x0
@@ -74421,11 +74421,11 @@ func_0203faf4: ; 0x0203faf4
     bl func_02033b48
 .L_0203fbf0:
     mov r0, #0x6
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x7
-    bl func_0203e6fc
+    bl show_label
     mov r0, #0x9
-    bl func_0203e6fc
+    bl show_label
     ldr r1, .L_0203fc70
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -74448,7 +74448,7 @@ func_0203faf4: ; 0x0203faf4
     ldmhiia sp!, {r4, r5, r6, lr}
     bxhi lr
     mov r0, #0x14
-    bl func_0203e6fc
+    bl show_label
     add sp, sp, #0x8
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
@@ -75059,7 +75059,7 @@ func_0204036c: ; 0x0204036c
     mov r4, #0x0
 .L_02040534:
     mov r0, r4
-    bl func_0203e6fc
+    bl show_label
     add r0, r4, #0x1
     and r4, r0, #0xff
     cmp r4, #0xa
@@ -76254,7 +76254,7 @@ func_02041318: ; 0x02041318
     bxne lr
     ldr r0, .L_0204144c
     ldr r0, [r0, #0x0]
-    bl func_0206a0f0
+    bl clear_link
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -81105,7 +81105,7 @@ func_02045640: ; 0x02045640
     mov r0, #0x3f
     mov r1, #0x0
     bl func_020807b0
-    bl func_02080814
+    bl flag_slot
     ldr r1, .L_02045b84
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -81285,7 +81285,7 @@ func_02045640: ; 0x02045640
     mov r3, r0
     str r1, [sp, #0x0]
     bl func_020351a8
-    bl func_02080814
+    bl flag_slot
     ldr r1, .L_02045b84
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -82511,9 +82511,9 @@ func_02046a90: ; 0x02046a90
 .L_02046af0: .word data_020c8110
     arm_func_end func_02046a90
 
-    .global func_02046af4
-    arm_func_start func_02046af4
-func_02046af4: ; 0x02046af4
+    .global id_matches
+    arm_func_start id_matches
+id_matches: ; 0x02046af4
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x4
     mov r5, r0
@@ -82564,7 +82564,7 @@ func_02046af4: ; 0x02046af4
 .L_02046ba0: .word data_020c812e
 .L_02046ba4: .word data_020c812f
 .L_02046ba8: .word data_020c8110
-    arm_func_end func_02046af4
+    arm_func_end id_matches
 
     .global func_02046bac
     arm_func_start func_02046bac
@@ -83469,11 +83469,11 @@ func_0204781c: ; 0x0204781c
     mov r2, #0x1
     strb r2, [r1, #0x0]
     str r3, [r0, #0x80]
-    bl func_02098420
+    bl mark_once
     ldr r0, .L_0204799c
     ldr r0, [r0, #0x80]
     bl func_0207e87c
-    bl func_02098388
+    bl reset_buffer
     ldr r0, .L_0204799c
     ldr r1, .L_020479a0
     mov r2, #0x0
@@ -83987,9 +83987,9 @@ func_02047b20: ; 0x02047b20
     str r2, [r1, r0]
     b .L_020480a4
 .L_02047ff4:
-    bl func_02098420
+    bl mark_once
     bl func_0207e794
-    bl func_02098388
+    bl reset_buffer
     ldr r1, .L_020480dc
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -87154,7 +87154,7 @@ func_0204ac34: ; 0x0204ac34
     ldr r0, .L_0204ad48
     and r1, r1, #0xff
     mov r4, #0x0
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, lr}
@@ -87380,7 +87380,7 @@ func_0204af20: ; 0x0204af20
     ldr r1, [r1, #0x0]
     ldr r0, .L_0204afe4
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     beq .L_0204afd4
     ldr r0, .L_0204afe8
@@ -88141,7 +88141,7 @@ func_0204b870: ; 0x0204b870
     ldr r1, [r1, r4]
     bl func_0205d9d4
     add r0, sp, #0x4
-    bl func_02080ed0
+    bl load_map_size
     ldr r0, .L_0204ba58
     ldr r1, [sp, #0x4]
     ldr r2, [sp, #0x8]
@@ -88229,11 +88229,11 @@ func_0204ba98: ; 0x0204ba98
     bl func_02035c48
     b .L_0204bb1c
 .L_0204baf8:
-    bl func_02098420
+    bl mark_once
     ldr r0, .L_0204bb70
     ldr r0, [r0, #0x80]
     bl func_0207ee00
-    bl func_02098388
+    bl reset_buffer
     b .L_0204bb1c
 .L_0204bb10:
     bl func_02035aac
@@ -88621,9 +88621,9 @@ func_0204be4c: ; 0x0204be4c
 .L_0204c010: .word func_0203b344
     arm_func_end func_0204be4c
 
-    .global func_0204c014
-    arm_func_start func_0204c014
-func_0204c014: ; 0x0204c014
+    .global update_list
+    arm_func_start update_list
+update_list: ; 0x0204c014
     stmdb sp!, {r4, r5, r6, lr}
     ldr r0, .L_0204c148
     ldr r1, .L_0204c14c
@@ -88647,7 +88647,7 @@ func_0204c014: ; 0x0204c014
     mov r0, r0, lsr #0x8
     ands r0, r0, #0x7
     bne .L_0204c070
-    bl func_02084104
+    bl find_target
 .L_0204c070:
     bl func_0204be44
     cmp r0, #0x1
@@ -88665,18 +88665,18 @@ func_0204c014: ; 0x0204c014
     mov r5, r6
 .L_0204c0a8:
     mov r0, r6
-    bl func_0201a47c
+    bl step_point
     mov r0, r5
     mov r1, r6
-    bl func_02081bc0
-    bl func_0203266c
+    bl scroll_view
+    bl tick_delays
     add r1, r6, #0x1
     ldrh r0, [r4, #0x2]
     and r6, r1, #0xff
     cmp r6, r0
     blt .L_0204c0a8
 .L_0204c0d4:
-    bl func_0206ed04
+    bl walk_links
     ldr r6, .L_0204c14c
     mov r5, #0x0
     ldrh r0, [r6, #0x2]
@@ -88695,11 +88695,11 @@ func_0204c014: ; 0x0204c014
     bl func_0204b234
     bl func_0204b33c
 .L_0204c118:
-    bl func_0204de58
+    bl record_changed
     cmp r0, #0x0
     bne .L_0204c12c
     mov r0, r5
-    bl func_0203a15c
+    bl update_record
 .L_0204c12c:
     ldrh r0, [r6, #0x2]
     add r1, r5, #0x1
@@ -88712,7 +88712,7 @@ func_0204c014: ; 0x0204c014
 .L_0204c14c: .word data_02141d70
 .L_0204c150: .word data_02141c70
 .L_0204c154: .word data_027c0008
-    arm_func_end func_0204c014
+    arm_func_end update_list
 
     .global func_0204c158
     arm_func_start func_0204c158
@@ -88968,7 +88968,7 @@ func_0204c158: ; 0x0204c158
     mov r1, r5
     bl func_0203ab48
     mov r0, r6
-    bl func_0203a15c
+    bl update_record
     ldrh r0, [r4, #0x2]
     add r6, r6, #0x1
     cmp r6, r0
@@ -88981,10 +88981,10 @@ func_0204c158: ; 0x0204c158
     mov r5, #0x1
 .L_0204c528:
     and r0, r6, #0xff
-    bl func_0201a47c
+    bl step_point
     mov r0, r5
     and r1, r6, #0xff
-    bl func_02081bc0
+    bl scroll_view
     ldrh r0, [r4, #0x2]
     add r6, r6, #0x1
     cmp r6, r0
@@ -88999,10 +88999,10 @@ func_0204c158: ; 0x0204c158
     bl func_0203ab48
     ldr r0, .L_0204c5f0
     ldrh r0, [r0, #0x4]
-    bl func_0203a15c
+    bl update_record
 .L_0204c570:
     bl func_020329ec
-    bl func_0203266c
+    bl tick_delays
     mov r0, #0x3f
     mov r1, #0x0
     bl func_02080630
@@ -90779,9 +90779,9 @@ func_0204dc48: ; 0x0204dc48
 .L_0204dcdc: .word data_020cd8bc
     arm_func_end func_0204dc48
 
-    .global func_0204dce0
-    arm_func_start func_0204dce0
-func_0204dce0: ; 0x0204dce0
+    .global call_entry
+    arm_func_start call_entry
+call_entry: ; 0x0204dce0
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r1, .L_0204dd30
@@ -90805,11 +90805,11 @@ func_0204dce0: ; 0x0204dce0
 .L_0204dd30: .word data_027c0004
 .L_0204dd34: .word data_027c0070
 .L_0204dd38: .word data_020cd8b8
-    arm_func_end func_0204dce0
+    arm_func_end call_entry
 
-    .global func_0204dd3c
-    arm_func_start func_0204dd3c
-func_0204dd3c: ; 0x0204dd3c
+    .global call_mode
+    arm_func_start call_mode
+call_mode: ; 0x0204dd3c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r1, .L_0204de40
@@ -90884,11 +90884,11 @@ func_0204dd3c: ; 0x0204dd3c
 .L_0204de4c: .word data_027c00c8
 .L_0204de50: .word data_02141d70
 .L_0204de54: .word data_027c0068
-    arm_func_end func_0204dd3c
+    arm_func_end call_mode
 
-    .global func_0204de58
-    arm_func_start func_0204de58
-func_0204de58: ; 0x0204de58
+    .global record_changed
+    arm_func_start record_changed
+record_changed: ; 0x0204de58
     ldr r1, .L_0204de8c
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -90905,7 +90905,7 @@ func_0204de58: ; 0x0204de58
 .L_0204de8c: .word data_027c0004
 .L_0204de90: .word data_027c0070
 .L_0204de94: .word data_027c009c
-    arm_func_end func_0204de58
+    arm_func_end record_changed
 
     .global func_0204de98
     arm_func_start func_0204de98
@@ -93896,7 +93896,7 @@ func_020505fc: ; 0x020505fc
     strh r0, [r1, #0x0]
     bl func_0205082c
     bl func_020506f0
-    bl func_02080814
+    bl flag_slot
     ldr r0, .L_020506e0
     ldr r1, .L_020506ec
     ldr r0, [r0, #0x0]
@@ -94069,7 +94069,7 @@ func_0205082c: ; 0x0205082c
 .L_02050918:
     ldr r0, .L_02050970
     ldr r1, .L_0205097c
-    bl func_0201d994
+    bl add_time
     cmp r0, #0x0
     addeq sp, sp, #0x1c
     ldmeqia sp!, {lr}
@@ -94790,7 +94790,7 @@ func_02050d38: ; 0x02050d38
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_02051374:
-    bl func_020806a4
+    bl slot_pending
     cmp r0, #0x0
     addne sp, sp, #0xc
     ldmneia sp!, {r4, r5, lr}
@@ -94847,7 +94847,7 @@ func_02050d38: ; 0x02050d38
 .L_02051448:
     bl func_0205034c
 .L_0205144c:
-    bl func_02080814
+    bl flag_slot
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -94890,7 +94890,7 @@ func_02050d38: ; 0x02050d38
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020514f0:
-    bl func_020806a4
+    bl slot_pending
     cmp r0, #0x0
     addne sp, sp, #0xc
     ldmneia sp!, {r4, r5, lr}
@@ -94947,7 +94947,7 @@ func_02050d38: ; 0x02050d38
 .L_020515c4:
     bl func_02050090
 .L_020515c8:
-    bl func_02080814
+    bl flag_slot
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -95015,7 +95015,7 @@ func_02050d38: ; 0x02050d38
     ldrb r1, [r1, #0x11]
     mla r0, r1, r0, r2
     add r0, r0, #0xc
-    bl func_02083db0
+    bl step_state
     bl func_0204fe90
     ldr r0, .L_020517d8
     ldr r0, [r0, #0x0]
@@ -96618,13 +96618,13 @@ func_02052db8: ; 0x02052db8
     ldr r0, .L_02052e7c
     ldrh r0, [r0, #0x4]
     and r0, r0, #0xff
-    bl func_0201a47c
+    bl step_point
     ldr r1, .L_02052e7c
     mov r0, #0x0
     ldrh r1, [r1, #0x4]
     and r1, r1, #0xff
-    bl func_02081bc0
-    bl func_0203266c
+    bl scroll_view
+    bl tick_delays
     ldr r0, .L_02052e80
     ldr r1, .L_02052e84
     ldr r0, [r0, #0x0]
@@ -96770,12 +96770,12 @@ func_02052e94: ; 0x02052e94
     mov r3, r4
     bl func_0201acec
     mov r0, r4
-    bl func_0201a47c
+    bl step_point
     bl func_02080994
     mov r1, r4
     mov r0, #0x1
-    bl func_02081bc0
-    bl func_0203266c
+    bl scroll_view
+    bl tick_delays
     bl func_02081ecc
     add sp, sp, #0x8
     ldmia sp!, {r4, lr}
@@ -108442,7 +108442,7 @@ func_0205d210: ; 0x0205d210
     add r0, sp, #0x0
     mov r5, r2
     ldr r4, [sp, #0x1c]
-    bl func_02080ed0
+    bl load_map_size
     ldr r3, [sp, #0x0]
     ldr r2, [sp, #0x18]
     cmp r2, r3
@@ -108645,7 +108645,7 @@ func_0205d4c4: ; 0x0205d4c4
     add r0, sp, #0x4
     mov r5, r2
     ldr r4, [sp, #0x24]
-    bl func_02080ed0
+    bl load_map_size
     ldr r3, [sp, #0x4]
     ldr r1, [sp, #0x20]
     cmp r1, r3
@@ -108731,7 +108731,7 @@ func_0205d604: ; 0x0205d604
     mov r5, r0
     add r0, sp, #0x0
     mov r4, r1
-    bl func_02080ed0
+    bl load_map_size
     ldr r0, [sp, #0x0]
     mov r1, r4, asr #0x5
     mov r0, r0, asr #0x5
@@ -108756,7 +108756,7 @@ func_0205d650: ; 0x0205d650
     add r0, sp, #0x0
     mov r6, r1
     mov r4, r2
-    bl func_02080ed0
+    bl load_map_size
     ldr r0, [sp, #0x0]
     mov r1, r6, asr #0x5
     mov r0, r0, asr #0x5
@@ -109448,7 +109448,7 @@ func_0205deb8: ; 0x0205deb8
     ldr r0, .L_0205e250
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_0205e064
 .L_0205df9c:
@@ -110126,7 +110126,7 @@ func_0205e87c: ; 0x0205e87c
     ldrh r1, [r1, #0x4]
     add r0, sp, #0x0
     and r1, r1, #0xff
-    bl func_0201ac5c
+    bl load_point
     add r0, sp, #0x14
     add r2, sp, #0x0
     ldmia r0, {r0, r1}
@@ -112812,7 +112812,7 @@ func_02060cc0: ; 0x02060cc0
     orr r2, r2, r0, lsl #0x4
     mov r0, #0x3
     strb r2, [ip, #0x0]
-    bl func_02017d60
+    bl file_field
     mov r2, #0x0
     mov r1, r0
     str r2, [sp, #0x0]
@@ -112867,7 +112867,7 @@ func_02060e2c: ; 0x02060e2c
     beq .L_02060efc
     ldr r1, .L_020610a0
     mov r0, #0x3
-    bl func_02017d60
+    bl file_field
     mov r2, #0xd
     mov r1, r0
     str r2, [sp, #0x0]
@@ -113635,7 +113635,7 @@ func_02061874: ; 0x02061874
 .L_02061980:
     ldr r1, .L_02061a6c
     add r0, r3, #0xa4
-    bl func_0201d994
+    bl add_time
     ldr r0, .L_02061a5c
     ldr r1, [r0, #0x0]
     ldrsb r0, [r1, #0xa7]
@@ -118858,7 +118858,7 @@ func_02065ad0: ; 0x02065ad0
     bne .L_020660a4
     ldr r0, .L_02066108
     and r1, r5, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     bne .L_02066098
     ldr r0, .L_02066104
@@ -118907,9 +118907,9 @@ func_02065ad0: ; 0x02065ad0
 .L_0206610c: .word data_020e4fd8
     arm_func_end func_02065ad0
 
-    .global func_02066110
-    arm_func_start func_02066110
-func_02066110: ; 0x02066110
+    .global tick_events
+    arm_func_start tick_events
+tick_events: ; 0x02066110
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x3c
     ldr r2, .L_020666ec
@@ -119320,7 +119320,7 @@ func_02066110: ; 0x02066110
 .L_020666fc: .word data_02141fec
 .L_02066700: .word data_020e4fd8
 .L_02066704: .word data_0214223c
-    arm_func_end func_02066110
+    arm_func_end tick_events
 
     .global func_02066708
     arm_func_start func_02066708
@@ -120329,7 +120329,7 @@ func_02067314: ; 0x02067314
     ldr r1, [r1, #0x0]
     ldr r0, .L_02067364
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_02067348
     ldr r0, [r4, #0x11c]
@@ -120735,7 +120735,7 @@ func_02067760: ; 0x02067760
     ldr r0, .L_02067a54
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     bne .L_020679a8
     cmp r5, #0x7
@@ -123773,15 +123773,15 @@ func_0206a0a0: ; 0x0206a0a0
     addne sp, sp, #0x4
     ldmneia sp!, {lr}
     bxne lr
-    bl func_0206a0f0
+    bl clear_link
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
     arm_func_end func_0206a0a0
 
-    .global func_0206a0f0
-    arm_func_start func_0206a0f0
-func_0206a0f0: ; 0x0206a0f0
+    .global clear_link
+    arm_func_start clear_link
+clear_link: ; 0x0206a0f0
     stmdb sp!, {r4, lr}
     mov r1, #0x1
     mov r4, r0
@@ -123791,7 +123791,7 @@ func_0206a0f0: ; 0x0206a0f0
     str r0, [r4, #0x11c]
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_0206a0f0
+    arm_func_end clear_link
 
     .global func_0206a114
     arm_func_start func_0206a114
@@ -123856,7 +123856,7 @@ func_0206a17c: ; 0x0206a17c
     str r0, [r2, #0x0]
     mov r0, r4
     str r1, [r4, #0x5c]
-    bl func_0206a0f0
+    bl clear_link
     mov r0, r4
     ldmia sp!, {r4, lr}
     bx lr
@@ -124017,7 +124017,7 @@ func_0206a3f4: ; 0x0206a3f4
     ldr r0, .L_0206a45c
     mov r4, r1
     and r1, r2, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     beq .L_0206a43c
     mov r0, r5
@@ -125490,7 +125490,7 @@ func_0206b6d0: ; 0x0206b6d0
     cmp r1, r0
     bne .L_0206b844
     mov r0, r5
-    bl func_020840f4
+    bl set_delta
 .L_0206b844:
     ldr r2, [r6, #0x0]
     mov r0, r6
@@ -125648,7 +125648,7 @@ func_0206b90c: ; 0x0206b90c
     cmp r1, r0
     bne .L_0206ba88
     mov r0, r4
-    bl func_020840f4
+    bl set_delta
 .L_0206ba88:
     ldr r0, .L_0206bb9c
     ldrsb r0, [r0, #0xe]
@@ -129268,9 +129268,9 @@ func_0206ec74: ; 0x0206ec74
 .L_0206ed00: .word data_02144a48
     arm_func_end func_0206ec74
 
-    .global func_0206ed04
-    arm_func_start func_0206ed04
-func_0206ed04: ; 0x0206ed04
+    .global walk_links
+    arm_func_start walk_links
+walk_links: ; 0x0206ed04
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr r1, .L_0206eda0
@@ -129317,7 +129317,7 @@ func_0206ed04: ; 0x0206ed04
 .L_0206eda4: .word data_02144b80
 .L_0206eda8: .word data_02144a4c
 .L_0206edac: .word data_02144b78
-    arm_func_end func_0206ed04
+    arm_func_end walk_links
 
     .global func_0206edb0
     arm_func_start func_0206edb0
@@ -138842,7 +138842,7 @@ func_020771b0: ; 0x020771b0
     ldr r0, .L_02077288
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     bne .L_02077238
     cmp r5, #0x0
@@ -142351,9 +142351,9 @@ func_0207a184: ; 0x0207a184
 .L_0207a1cc: .word 0x7fff
     arm_func_end func_0207a184
 
-    .global func_0207a1d0
-    arm_func_start func_0207a1d0
-func_0207a1d0: ; 0x0207a1d0
+    .global seed_block
+    arm_func_start seed_block
+seed_block: ; 0x0207a1d0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x1c
     add r0, sp, #0x0
@@ -142389,7 +142389,7 @@ func_0207a1d0: ; 0x0207a1d0
 .L_0207a250: .word data_02146efc
 .L_0207a254: .word data_02146f04
 .L_0207a258: .word data_02146f08
-    arm_func_end func_0207a1d0
+    arm_func_end seed_block
 
     .global alloc_block
     arm_func_start alloc_block
@@ -146833,9 +146833,9 @@ func_0207dc08: ; 0x0207dc08
 .L_0207dd28: .word data_02146f18
     arm_func_end func_0207dc08
 
-    .global func_0207dd2c
-    arm_func_start func_0207dd2c
-func_0207dd2c: ; 0x0207dd2c
+    .global step_tasks
+    arm_func_start step_tasks
+step_tasks: ; 0x0207dd2c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x4
     ldr r0, .L_0207de24
@@ -146910,7 +146910,7 @@ func_0207dd2c: ; 0x0207dd2c
 .L_0207de24: .word data_02146f18
 .L_0207de28: .word data_020f7254
 .L_0207de2c: .word data_02146f1c
-    arm_func_end func_0207dd2c
+    arm_func_end step_tasks
 
     .global func_0207de30
     arm_func_start func_0207de30
@@ -147976,12 +147976,12 @@ func_0207ebac: ; 0x0207ebac
     sub sp, sp, #0x4
     mov r5, r0
     bl func_0207eb28
-    bl func_02098420
+    bl mark_once
     mov r0, r5
     bl func_0207e850
     movs r4, r0
     bne .L_0207ebe4
-    bl func_02098388
+    bl reset_buffer
     add sp, sp, #0x4
     mov r0, r4
     ldmia sp!, {r4, r5, lr}
@@ -147991,13 +147991,13 @@ func_0207ebac: ; 0x0207ebac
     bl func_0207e87c
     movs r4, r0
     bne .L_0207ec08
-    bl func_02098388
+    bl reset_buffer
     add sp, sp, #0x4
     mov r0, r4
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_0207ec08:
-    bl func_02098388
+    bl reset_buffer
     mov r0, r5
     bl func_0207e8a8
     movs r4, r0
@@ -149936,7 +149936,7 @@ func_02080634: ; 0x02080634
 func_02080654: ; 0x02080654
     stmdb sp!, {lr}
     sub sp, sp, #0x4
-    bl func_020806a4
+    bl slot_pending
     cmp r0, #0x0
     addne sp, sp, #0x4
     ldmneia sp!, {lr}
@@ -149945,7 +149945,7 @@ func_02080654: ; 0x02080654
     ldr r1, [r0, #0x0]
     eor r1, r1, #0x1
     str r1, [r0, #0x0]
-    bl func_020806a4
+    bl slot_pending
     ldr r1, .L_020806a0
     ldr r2, [r1, #0x0]
     eor r2, r2, #0x1
@@ -149956,9 +149956,9 @@ func_02080654: ; 0x02080654
 .L_020806a0: .word data_027c0004
     arm_func_end func_02080654
 
-    .global func_020806a4
-    arm_func_start func_020806a4
-func_020806a4: ; 0x020806a4
+    .global slot_pending
+    arm_func_start slot_pending
+slot_pending: ; 0x020806a4
     ldr r0, .L_020806c8
     ldr r1, .L_020806cc
     ldr r0, [r0, #0x0]
@@ -149970,7 +149970,7 @@ func_020806a4: ; 0x020806a4
     bx lr
 .L_020806c8: .word data_027c0004
 .L_020806cc: .word data_02147194
-    arm_func_end func_020806a4
+    arm_func_end slot_pending
 
     .global func_020806d0
     arm_func_start func_020806d0
@@ -150071,9 +150071,9 @@ func_020807d8: ; 0x020807d8
 .L_02080810: .word data_02147194
     arm_func_end func_020807d8
 
-    .global func_02080814
-    arm_func_start func_02080814
-func_02080814: ; 0x02080814
+    .global flag_slot
+    arm_func_start flag_slot
+flag_slot: ; 0x02080814
     ldr r1, .L_02080844
     ldr r0, .L_02080848
     ldr r3, [r1, #0x0]
@@ -150089,7 +150089,7 @@ func_02080814: ; 0x02080814
 .L_02080844: .word data_027c0004
 .L_02080848: .word data_027c0008
 .L_0208084c: .word data_02147194
-    arm_func_end func_02080814
+    arm_func_end flag_slot
 
     .global func_02080850
     arm_func_start func_02080850
@@ -150339,7 +150339,7 @@ func_02080a50: ; 0x02080a50
     ldrh r0, [r6, #0x0]
     mov r1, r4
     mov r2, r7
-    bl func_02081904
+    bl release_tile
     str r9, [sp, #0x0]
     str r8, [sp, #0x4]
     ldrh r0, [r5, #0x0]
@@ -150445,7 +150445,7 @@ func_02080c48: ; 0x02080c48
     mov r2, #0x0
     add r5, ip, r5, lsl #0x6
     add r7, r7, r8
-    bl func_02081074
+    bl cache_tile
     ldr r1, [sp, #0x20]
     mov r3, r7, lsl #0x1
     and r2, r1, #0x3
@@ -150585,9 +150585,9 @@ func_02080e94: ; 0x02080e94
 .L_02080ecc: .word data_021471d4
     arm_func_end func_02080e94
 
-    .global func_02080ed0
-    arm_func_start func_02080ed0
-func_02080ed0: ; 0x02080ed0
+    .global load_map_size
+    arm_func_start load_map_size
+load_map_size: ; 0x02080ed0
     ldr r2, .L_02080efc
     mov r1, #0x114
     ldr r3, [r2, #0x0]
@@ -150601,7 +150601,7 @@ func_02080ed0: ; 0x02080ed0
     bx lr
 .L_02080efc: .word data_027c0004
 .L_02080f00: .word data_021472a0
-    arm_func_end func_02080ed0
+    arm_func_end load_map_size
 
     .global func_02080f04
     arm_func_start func_02080f04
@@ -150710,9 +150710,9 @@ func_02080fa4: ; 0x02080fa4
 .L_02081070: .word data_021471f4
     arm_func_end func_02080fa4
 
-    .global func_02081074
-    arm_func_start func_02081074
-func_02081074: ; 0x02081074
+    .global cache_tile
+    arm_func_start cache_tile
+cache_tile: ; 0x02081074
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     ldr r2, .L_020811e0
@@ -150815,11 +150815,11 @@ func_02081074: ; 0x02081074
 .L_020811f8: .word data_021472dc
 .L_020811fc: .word data_021472d8
 .L_02081200: .word data_021472c0
-    arm_func_end func_02081074
+    arm_func_end cache_tile
 
-    .global func_02081204
-    arm_func_start func_02081204
-func_02081204: ; 0x02081204
+    .global write_row
+    arm_func_start write_row
+write_row: ; 0x02081204
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x54
     mov r10, r0
@@ -150922,7 +150922,7 @@ func_02081204: ; 0x02081204
     ldr r1, [sp, #0x8]
     ldr r2, [sp, #0x48]
     ldr r3, [sp, #0x4]
-    bl func_02081074
+    bl cache_tile
     add r1, r7, r9
     mov r2, r1, lsl #0x1
     ldr r1, [sp, #0x14]
@@ -150979,11 +150979,11 @@ func_02081204: ; 0x02081204
 .L_0208145c: .word 0x1ff
 .L_02081460: .word data_027c0004
 .L_02081464: .word data_021471d0
-    arm_func_end func_02081204
+    arm_func_end write_row
 
-    .global func_02081468
-    arm_func_start func_02081468
-func_02081468: ; 0x02081468
+    .global write_column
+    arm_func_start write_column
+write_column: ; 0x02081468
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x3c
     cmp r0, r2
@@ -151077,7 +151077,7 @@ func_02081468: ; 0x02081468
     ldr r1, [sp, #0xc]
     ldr r2, [sp, #0x38]
     ldr r3, [sp, #0x4]
-    bl func_02081074
+    bl cache_tile
     ldr r2, [sp, #0x10]
     ldr r1, [sp, #0x0]
     mov r3, r10, lsl #0x1
@@ -151125,11 +151125,11 @@ func_02081468: ; 0x02081468
 .L_02081678: .word data_027c0004
 .L_0208167c: .word data_021471d0
 .L_02081680: .word 0x3ff
-    arm_func_end func_02081468
+    arm_func_end write_column
 
-    .global func_02081684
-    arm_func_start func_02081684
-func_02081684: ; 0x02081684
+    .global load_row
+    arm_func_start load_row
+load_row: ; 0x02081684
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x2c
     mov r10, r0
@@ -151193,7 +151193,7 @@ func_02081684: ; 0x02081684
     ldrh r0, [r1, r0]
     ldr r1, [sp, #0x4]
     mov r2, r11
-    bl func_02081904
+    bl release_tile
     add r7, r7, #0x1
     cmp r7, #0x4
     add r10, r10, #0x8
@@ -151223,11 +151223,11 @@ func_02081684: ; 0x02081684
     bx lr
 .L_020817d8: .word data_027c0004
 .L_020817dc: .word data_021471d0
-    arm_func_end func_02081684
+    arm_func_end load_row
 
-    .global func_020817e0
-    arm_func_start func_020817e0
-func_020817e0: ; 0x020817e0
+    .global load_column
+    arm_func_start load_column
+load_column: ; 0x020817e0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x14
     cmp r0, r2
@@ -151281,7 +151281,7 @@ func_020817e0: ; 0x020817e0
     ldrh r0, [r1, r0]
     mov r1, r8
     mov r2, r10
-    bl func_02081904
+    bl release_tile
     add r7, r7, #0x4
     cmp r7, #0x10
     blo .L_020818cc
@@ -151307,11 +151307,11 @@ func_020817e0: ; 0x020817e0
     bx lr
 .L_020818fc: .word data_027c0004
 .L_02081900: .word data_021471d0
-    arm_func_end func_020817e0
+    arm_func_end load_column
 
-    .global func_02081904
-    arm_func_start func_02081904
-func_02081904: ; 0x02081904
+    .global release_tile
+    arm_func_start release_tile
+release_tile: ; 0x02081904
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     ldr r4, .L_02081a8c
@@ -151424,15 +151424,15 @@ func_02081904: ; 0x02081904
 .L_02081aa0: .word data_021472dc
 .L_02081aa4: .word data_021472d8
 .L_02081aa8: .word data_021472c0
-    arm_func_end func_02081904
+    arm_func_end release_tile
 
-    .global func_02081aac
-    arm_func_start func_02081aac
-func_02081aac: ; 0x02081aac
+    .global flush_scroll
+    arm_func_start flush_scroll
+flush_scroll: ; 0x02081aac
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     sub sp, sp, #0x8
     add r0, sp, #0x0
-    bl func_02080ed0
+    bl load_map_size
     mov r5, #0x0
     cmp r5, #0x2
     bge .L_02081b34
@@ -151451,12 +151451,12 @@ func_02081aac: ; 0x02081aac
     bne .L_02081b08
     ldr r1, [r1, #0x34]
     ldr r2, [sp, #0x0]
-    bl func_020817e0
+    bl load_column
     b .L_02081b14
 .L_02081b08:
     ldr r1, [r1, #0x34]
     ldr r2, [sp, #0x0]
-    bl func_02081684
+    bl load_row
 .L_02081b14:
     ldr r0, [r7, #0x0]
     mla r1, r0, r6, r4
@@ -151487,11 +151487,11 @@ func_02081aac: ; 0x02081aac
 .L_02081b74: .word data_027c0004
 .L_02081b78: .word data_021471f0
 .L_02081b7c: .word data_021471f8
-    arm_func_end func_02081aac
+    arm_func_end flush_scroll
 
-    .global func_02081b80
-    arm_func_start func_02081b80
-func_02081b80: ; 0x02081b80
+    .global queue_scroll
+    arm_func_start queue_scroll
+queue_scroll: ; 0x02081b80
     stmdb sp!, {r4, lr}
     ldr ip, .L_02081bb4
     mov r3, #0x114
@@ -151508,17 +151508,17 @@ func_02081b80: ; 0x02081b80
 .L_02081bb4: .word data_027c0004
 .L_02081bb8: .word data_02147200
 .L_02081bbc: .word data_02147204
-    arm_func_end func_02081b80
+    arm_func_end queue_scroll
 
-    .global func_02081bc0
-    arm_func_start func_02081bc0
-func_02081bc0: ; 0x02081bc0
+    .global scroll_view
+    arm_func_start scroll_view
+scroll_view: ; 0x02081bc0
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     sub sp, sp, #0x10
     mov r5, r0
     add r0, sp, #0x8
     mov r4, r1
-    bl func_0201ac5c
+    bl load_point
     ldr r1, [sp, #0x8]
     ldr r0, [sp, #0xc]
     mov r2, r1, asr #0x10
@@ -151530,7 +151530,7 @@ func_02081bc0: ; 0x02081bc0
     add r0, sp, #0x0
     str r2, [sp, #0x8]
     str r1, [sp, #0xc]
-    bl func_02080ed0
+    bl load_map_size
     ldr r1, [sp, #0x8]
     cmp r1, #0x0
     movlt r0, #0x0
@@ -151581,7 +151581,7 @@ func_02081bc0: ; 0x02081bc0
     bne .L_02081e18
     cmp r5, #0x0
     bne .L_02081dec
-    bl func_02081aac
+    bl flush_scroll
     ldr r0, .L_02081e90
     mov r1, #0x114
     ldr r2, [r0, #0x0]
@@ -151597,7 +151597,7 @@ func_02081bc0: ; 0x02081bc0
     ldr r1, .L_02081ea4
     ldr r2, [sp, #0x0]
     ldr r1, [r1, r3]
-    bl func_02081468
+    bl write_column
     ldr r1, .L_02081e90
     mov r0, #0x114
     ldr r1, [r1, #0x0]
@@ -151607,14 +151607,14 @@ func_02081bc0: ; 0x02081bc0
     add r0, r3, #0x108
     ldr r1, [r1, r2]
     mov r2, #0x0
-    bl func_02081b80
+    bl queue_scroll
     b .L_02081d74
 .L_02081d38:
     ldr r1, .L_02081ea4
     ldr r2, [sp, #0x0]
     ldr r1, [r1, r3]
     add r0, r0, #0x100
-    bl func_02081468
+    bl write_column
     ldr r1, .L_02081e90
     mov r0, #0x114
     ldr r1, [r1, #0x0]
@@ -151624,7 +151624,7 @@ func_02081bc0: ; 0x02081bc0
     sub r0, r3, #0x8
     ldr r1, [r1, r2]
     mov r2, #0x0
-    bl func_02081b80
+    bl queue_scroll
 .L_02081d74:
     ldr r0, .L_02081e90
     ldr r1, [sp, #0xc]
@@ -151640,23 +151640,23 @@ func_02081bc0: ; 0x02081bc0
     ble .L_02081dc8
     ldr r0, [sp, #0x8]
     ldr r2, [sp, #0x0]
-    bl func_02081204
+    bl write_row
     ldr r1, [sp, #0xc]
     ldr r0, [sp, #0x8]
     add r1, r1, #0xc8
     mov r2, #0x1
-    bl func_02081b80
+    bl queue_scroll
     b .L_02081dec
 .L_02081dc8:
     ldr r0, [sp, #0x8]
     ldr r2, [sp, #0x0]
     add r1, r1, #0xc0
-    bl func_02081204
+    bl write_row
     ldr r1, [sp, #0xc]
     ldr r0, [sp, #0x8]
     sub r1, r1, #0x8
     mov r2, #0x1
-    bl func_02081b80
+    bl queue_scroll
 .L_02081dec:
     ldr r1, .L_02081e90
     mov r0, #0x114
@@ -151709,7 +151709,7 @@ func_02081bc0: ; 0x02081bc0
 .L_02081e9c: .word data_027c0008
 .L_02081ea0: .word data_021471f0
 .L_02081ea4: .word data_021471f4
-    arm_func_end func_02081bc0
+    arm_func_end scroll_view
 
     .global func_02081ea8
     arm_func_start func_02081ea8
@@ -151731,7 +151731,7 @@ func_02081ecc: ; 0x02081ecc
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     sub sp, sp, #0x8
     add r0, sp, #0x0
-    bl func_02080ed0
+    bl load_map_size
     ldr r1, .L_02082098
     mov r0, #0x114
     ldr r2, [r1, #0x0]
@@ -151817,7 +151817,7 @@ func_02081ecc: ; 0x02081ecc
     ldr r1, [r3, #0x24]
     ldr r0, [r3, #0x20]
     add r1, r1, r5
-    bl func_02081204
+    bl write_row
     add r4, r4, #0x1
     cmp r4, #0x19
     add r5, r5, #0x8
@@ -153963,9 +153963,9 @@ func_02083bc0: ; 0x02083bc0
 .L_02083cb4: .word data_02113a50
     arm_func_end func_02083bc0
 
-    .global func_02083cb8
-    arm_func_start func_02083cb8
-func_02083cb8: ; 0x02083cb8
+    .global adjust_level
+    arm_func_start adjust_level
+adjust_level: ; 0x02083cb8
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr r1, .L_02083da0
@@ -153973,7 +153973,7 @@ func_02083cb8: ; 0x02083cb8
     ldr r1, [r1, #0x0]
     ldr r5, .L_02083da8
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_02083cf8
     ldr r0, .L_02083da0
@@ -154031,17 +154031,17 @@ func_02083cb8: ; 0x02083cb8
 .L_02083da4: .word data_02141230
 .L_02083da8: .word data_02141204
 .L_02083dac: .word 0x7530
-    arm_func_end func_02083cb8
+    arm_func_end adjust_level
 
-    .global func_02083db0
-    arm_func_start func_02083db0
-func_02083db0: ; 0x02083db0
+    .global step_state
+    arm_func_start step_state
+step_state: ; 0x02083db0
     stmdb sp!, {r4, r5, r6, lr}
     ldr r2, .L_020840cc
     mov r1, r0
     ldr r0, .L_020840d0
     ldrsb r5, [r2, #0xe]
-    bl func_0201d994
+    bl add_time
     mov r6, r0
     ands r0, r6, #0xe
     ldmeqia sp!, {r4, r5, r6, lr}
@@ -154261,20 +154261,20 @@ func_02083db0: ; 0x02083db0
 .L_020840e8: .word data_02141b90
 .L_020840ec: .word data_02141b20
 .L_020840f0: .word data_02141234
-    arm_func_end func_02083db0
+    arm_func_end step_state
 
-    .global func_020840f4
-    arm_func_start func_020840f4
-func_020840f4: ; 0x020840f4
+    .global set_delta
+    arm_func_start set_delta
+set_delta: ; 0x020840f4
     ldr r1, .L_02084100
     strb r0, [r1, #0x0]
     bx lr
 .L_02084100: .word data_021473f8
-    arm_func_end func_020840f4
+    arm_func_end set_delta
 
-    .global func_02084104
-    arm_func_start func_02084104
-func_02084104: ; 0x02084104
+    .global find_target
+    arm_func_start find_target
+find_target: ; 0x02084104
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x34
     ldr r0, .L_020846f8
@@ -154289,19 +154289,19 @@ func_02084104: ; 0x02084104
     mov r4, #0x0
     str r4, [r1, #0x0]
     ldr r6, [r2, r3, lsl #0x4]
-    bl func_02083db0
+    bl step_state
     mov r0, r4
-    bl func_020840f4
-    bl func_0207dd2c
+    bl set_delta
+    bl step_tasks
     ldr r0, .L_0208470c
     ldr r1, .L_02084710
     ldr r0, [r0, #0x0]
-    bl func_02066110
+    bl tick_events
     ldr r1, .L_0208470c
     ldr r0, .L_02084714
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     bne .L_02084190
     mov r0, r4
@@ -154311,13 +154311,13 @@ func_02084104: ; 0x02084104
     bne .L_02084190
     bl func_02077b4c
 .L_02084190:
-    bl func_02083cb8
+    bl adjust_level
     ldr r1, .L_0208470c
     ldr r0, .L_02084714
     ldr r1, [r1, #0x0]
     mov r5, #0x0
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     ldrb r1, [r6, #0x104]
     str r0, [sp, #0x8]
     cmp r1, #0x10
@@ -154327,7 +154327,7 @@ func_02084104: ; 0x02084104
     ldr r0, [r0, #0x0]
     mov r2, r5
     str r2, [r1, #0x0]
-    bl func_0206a0f0
+    bl clear_link
     b .L_020845b8
 .L_020841d8:
     ldr r1, [r6, #0x18]
@@ -154639,7 +154639,7 @@ func_02084104: ; 0x02084104
     ldr r0, .L_02084714
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x1
     bne .L_020846b0
     ldr r0, .L_02084708
@@ -154692,7 +154692,7 @@ func_02084104: ; 0x02084104
 .L_02084734: .word data_02141c80
 .L_02084738: .word data_02141120
 .L_0208473c: .word data_02141dca
-    arm_func_end func_02084104
+    arm_func_end find_target
 
     .global func_02084740
     arm_func_start func_02084740
@@ -159814,7 +159814,7 @@ func_02088cac: ; 0x02088cac
     bl func_0201ffd0
     bl func_0204e648
     bl func_0209781c
-    bl func_0207a1d0
+    bl seed_block
     mov r0, #0x0
     mov r1, r0
     bl func_02080914
@@ -166146,7 +166146,7 @@ func_0208e2f4: ; 0x0208e2f4
     mov r2, #0x1
     bl func_0205dc20
     ldr r0, .L_0208e47c
-    bl func_02083db0
+    bl step_state
     ldr r0, .L_0208e480
     ldrb r1, [r0, #0x944]
     cmp r1, #0x0
@@ -168855,7 +168855,7 @@ func_0209092c: ; 0x0209092c
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     mov r4, #0x0
-    bl func_0206ed04
+    bl walk_links
     ldr r1, .L_020915d4
     mov r0, #0x8c
     ldr r2, [r1, #0x0]
@@ -174278,7 +174278,7 @@ func_02095664: ; 0x02095664
     ldrb r0, [r0, #0x1d]
     ands r0, r0, #0x2
     beq .L_0209583c
-    bl func_02098420
+    bl mark_once
     ldr r10, .L_02095860
     mov r9, #0x1
     ldrb r0, [r10, #0x25]
@@ -174387,7 +174387,7 @@ func_02095664: ; 0x02095664
     ldr r0, .L_02095864
     str r2, [r1, #0xc]
     str r2, [r0, #0x0]
-    bl func_02098388
+    bl reset_buffer
     b .L_02095848
 .L_0209583c:
     ldr r0, .L_02095868
@@ -174648,7 +174648,7 @@ func_02095a30: ; 0x02095a30
     ldr r1, [r0, #0x14]
     bic r1, r1, #0x30
     str r1, [r0, #0x14]
-    bl func_02098420
+    bl mark_once
     ldr r4, .L_020969dc
     mov r6, #0x0
     ldrb r0, [r4, #0x1a]
@@ -175662,7 +175662,7 @@ func_02095a30: ; 0x02095a30
     ldr r0, .L_020969dc
     mov r1, #0x1
     strb r1, [r0, #0x1c]
-    bl func_02098388
+    bl reset_buffer
     ldr ip, .L_020969d8
     add sp, sp, ip
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
@@ -177113,7 +177113,7 @@ func_02097dc0: ; 0x02097dc0
     movne r4, #0x1
     bne .L_02097dfc
     mov r4, #0x0
-    bl func_02098420
+    bl mark_once
 .L_02097dfc:
     ldr r2, .L_02097e60
     ldr r0, .L_02097e64
@@ -177136,7 +177136,7 @@ func_02097dc0: ; 0x02097dc0
     addne sp, sp, #0x4
     ldmneia sp!, {r4, r5, lr}
     bxne lr
-    bl func_02098388
+    bl reset_buffer
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -177505,9 +177505,9 @@ func_0209823c: ; 0x0209823c
 .L_02098384: .word data_021488a0
     arm_func_end func_0209823c
 
-    .global func_02098388
-    arm_func_start func_02098388
-func_02098388: ; 0x02098388
+    .global reset_buffer
+    arm_func_start reset_buffer
+reset_buffer: ; 0x02098388
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_02098418
@@ -177546,11 +177546,11 @@ func_02098388: ; 0x02098388
     bx lr
 .L_02098418: .word data_02148678
 .L_0209841c: .word 0x3c0ded
-    arm_func_end func_02098388
+    arm_func_end reset_buffer
 
-    .global func_02098420
-    arm_func_start func_02098420
-func_02098420: ; 0x02098420
+    .global mark_once
+    arm_func_start mark_once
+mark_once: ; 0x02098420
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_02098480
@@ -177577,7 +177577,7 @@ func_02098420: ; 0x02098420
     bx lr
 .L_02098480: .word data_02148678
 .L_02098484: .word data_02147520
-    arm_func_end func_02098420
+    arm_func_end mark_once
 
     .global func_02098488
     arm_func_start func_02098488
@@ -177623,7 +177623,7 @@ func_02098488: ; 0x02098488
     bl func_02097e6c
     mov r0, #0x8000
     bl func_02097dc0
-    bl func_02098388
+    bl reset_buffer
     ldr r0, .L_02098578
     ldrb r0, [r0, #0x22]
     bl func_02097be8
@@ -192225,7 +192225,7 @@ func_020a4d94: ; 0x020a4d94
     ldr r0, .L_020a4f4c
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     beq .L_020a4ee4
     ldr r0, .L_020a4f50
@@ -192517,7 +192517,7 @@ func_020a5168: ; 0x020a5168
     ldr r1, [r0, #0x0]
     ldr r0, .L_020a5800
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a57ec
     ldrh r0, [r6, #0x4]
@@ -192591,7 +192591,7 @@ func_020a5168: ; 0x020a5168
     ldr r0, .L_020a5800
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a53ec
     ldr r1, .L_020a5804
@@ -192663,7 +192663,7 @@ func_020a5168: ; 0x020a5168
     ldr r0, .L_020a5800
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a54c8
     mov r0, #0x2
@@ -192689,7 +192689,7 @@ func_020a5168: ; 0x020a5168
     ldr r0, .L_020a5800
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a5528
     mov r0, #0x2
@@ -192751,7 +192751,7 @@ func_020a5168: ; 0x020a5168
     ldr r0, .L_020a5800
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a55fc
     mov r0, #0x2
@@ -192800,7 +192800,7 @@ func_020a5168: ; 0x020a5168
     ldr r0, .L_020a5800
     ldr r1, [r1, #0x0]
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     bne .L_020a56ac
     mov r0, #0x2
@@ -194904,7 +194904,7 @@ func_020a7200: ; 0x020a7200
     bxle lr
     ldr r0, .L_020a72a8
     and r1, r1, #0xff
-    bl func_02046af4
+    bl id_matches
     cmp r0, #0x0
     addeq sp, sp, #0x4
     moveq r0, #0x0
@@ -199323,7 +199323,7 @@ func_020ab0ac: ; 0x020ab0ac
     mov r2, #0x0
     str r0, [r1, #0x10]
     strb r2, [r1, #0x18]
-    bl func_0207a1d0
+    bl seed_block
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -203941,9 +203941,9 @@ func_020aed8c: ; 0x020aed8c
 .L_020aee6c: .word 0x4000044
     arm_func_end func_020aed8c
 
-    .global func_020aee70
-    arm_func_start func_020aee70
-func_020aee70: ; 0x020aee70
+    .global step_motions
+    arm_func_start step_motions
+step_motions: ; 0x020aee70
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     mov r8, #0x0
@@ -204036,7 +204036,7 @@ func_020aee70: ; 0x020aee70
     bx lr
 .L_020aefb8: .word data_027c0004
 .L_020aefbc: .word data_0214a064
-    arm_func_end func_020aee70
+    arm_func_end step_motions
 
     .global func_020aefc0
     arm_func_start func_020aefc0
@@ -206555,7 +206555,7 @@ func_020b1270: ; 0x020b1270
     mov r4, r1
     add r0, sp, #0x8
     mov r1, #0x0
-    bl func_0201ac5c
+    bl load_point
     ldr r3, [sp, #0x8]
     ldr r2, [sp, #0xc]
     mov r0, r5
@@ -206582,12 +206582,12 @@ func_020b1270: ; 0x020b1270
     ldmia r0, {r0, r1}
     bl func_0201aed4
     mov r0, #0x0
-    bl func_0201a47c
+    bl step_point
     mov r0, #0x0
-    bl func_0201ab8c
+    bl clamp_point
     mov r0, #0x0
     mov r1, r0
-    bl func_02081bc0
+    bl scroll_view
     add sp, sp, #0x14
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -206636,7 +206636,7 @@ func_020b1384: ; 0x020b1384
     mov r4, r1
     add r0, sp, #0x8
     mov r1, #0x0
-    bl func_0201ac5c
+    bl load_point
     ldr r3, [sp, #0x8]
     ldr r2, [sp, #0xc]
     add r0, r5, r3, asr #0x10
@@ -207550,7 +207550,7 @@ func_020b1f7c: ; 0x020b1f7c
     bl func_02080994
     mov r0, #0x1
     mov r1, #0x0
-    bl func_02081bc0
+    bl scroll_view
     bl func_02081ecc
     add sp, sp, #0x4
     ldmia sp!, {lr}
@@ -207614,7 +207614,7 @@ func_020b2030: ; 0x020b2030
     mov r1, #0x0
     bl func_0201af2c
     add r0, sp, #0x8
-    bl func_02080ed0
+    bl load_map_size
     ldr r2, [sp, #0x8]
     mov r0, #0x0
     mov r2, r2, lsl #0x10
@@ -207644,9 +207644,9 @@ func_020b2030: ; 0x020b2030
     ldmia r0, {r0, r1}
     bl func_0201aed4
     mov r0, #0x0
-    bl func_0201a47c
+    bl step_point
     mov r0, #0x0
-    bl func_0201ab8c
+    bl clamp_point
     add sp, sp, #0x1c
     ldmia sp!, {lr}
     bx lr
@@ -207832,7 +207832,7 @@ func_020b2320: ; 0x020b2320
     mov r4, r1
     add r0, sp, #0x8
     mov r1, #0x0
-    bl func_0201ac5c
+    bl load_point
     ldr r1, [sp, #0x8]
     ldr r2, [sp, #0xc]
     str r1, [sp, #0x0]
@@ -220228,9 +220228,9 @@ func_020bc0f4: ; 0x020bc0f4
 .L_020bc1d0: .word 0x4000304
     arm_func_end func_020bc0f4
 
-    .global func_020bc1d4
-    arm_func_start func_020bc1d4
-func_020bc1d4: ; 0x020bc1d4
+    .global send_command
+    arm_func_start send_command
+send_command: ; 0x020bc1d4
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     ldr r3, .L_020bc2f4
     mov r7, #0x0
@@ -220313,7 +220313,7 @@ func_020bc1d4: ; 0x020bc1d4
 .L_020bc2fc: .word 0x27ffc40
 .L_020bc300: .word 0x332340
 .L_020bc304: .word 0x4000214
-    arm_func_end func_020bc1d4
+    arm_func_end send_command
 
     .global func_020bc308
     arm_func_start func_020bc308
@@ -220333,9 +220333,9 @@ func_020bc308: ; 0x020bc308
     bx lr
     arm_func_end func_020bc308
 
-    .global func_020bc338
-    arm_func_start func_020bc338
-func_020bc338: ; 0x020bc338
+    .global read_bits
+    arm_func_start read_bits
+read_bits: ; 0x020bc338
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r4, r1
@@ -220367,7 +220367,7 @@ func_020bc338: ; 0x020bc338
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020bc338
+    arm_func_end read_bits
 
     .global func_020bc3b0
     arm_func_start func_020bc3b0
@@ -220916,9 +220916,9 @@ func_020bc9f0: ; 0x020bc9f0
     bx lr
     arm_func_end func_020bc9f0
 
-    .global func_020bca74
-    arm_func_start func_020bca74
-func_020bca74: ; 0x020bca74
+    .global on_channel_5
+    arm_func_start on_channel_5
+on_channel_5: ; 0x020bca74
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     cmp r2, #0x0
@@ -221302,7 +221302,7 @@ func_020bca74: ; 0x020bca74
 .L_020bd004: .word 0x27ffde8
 .L_020bd008: .word 0x27ffdec
 .L_020bd00c: .word 0x27ffdea
-    arm_func_end func_020bca74
+    arm_func_end on_channel_5
 
     .global func_020bd010
     arm_func_start func_020bd010
@@ -221369,9 +221369,9 @@ func_020bd054: ; 0x020bd054
 .L_020bd0e0: .word data_0214cf78
     arm_func_end func_020bd054
 
-    .global func_020bd0e4
-    arm_func_start func_020bd0e4
-func_020bd0e4: ; 0x020bd0e4
+    .global init_channel_5
+    arm_func_start init_channel_5
+init_channel_5: ; 0x020bd0e4
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr r1, .L_020bd160
@@ -221406,8 +221406,8 @@ func_020bd0e4: ; 0x020bd0e4
     bx lr
 .L_020bd160: .word data_0214cf74
 .L_020bd164: .word data_0214cf78
-.L_020bd168: .word func_020bca74
-    arm_func_end func_020bd0e4
+.L_020bd168: .word on_channel_5
+    arm_func_end init_channel_5
 
     .global func_020bd16c
     arm_func_start func_020bd16c
@@ -231568,7 +231568,7 @@ data_020cd8b8:
 data_020cd8bc:
     .word func_0204ed2c
     .word func_0204c158
-    .word func_0204c014
+    .word update_list
     .word func_0204be4c
     .word func_02078ba4
     .word func_02078750
