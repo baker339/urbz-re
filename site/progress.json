@@ -1,8 +1,8 @@
 {
-  "commit": "ce1e9f9",
+  "commit": "0aa0aa9",
   "repo": "https://github.com/baker339/urbz-re",
-  "functions": 3665,
-  "named": 184,
+  "functions": 3666,
+  "named": 211,
   "code_bytes": 799136,
   "matched_bytes": 0,
   "named_functions": [
@@ -12,6 +12,62 @@
       "module": "itcm",
       "description": "Runs once for slot 0 and once for slot 1, then calls update_slot. The copy that frame calls is at 01ff89f0.",
       "notes_address": "021224b0"
+    },
+    {
+      "address": "01ff8f80",
+      "name": "mix_samples",
+      "module": "itcm",
+      "description": "Runs at 01ff8f80. The byte at 0214869a is the channel count. A count of 0 returns. Otherwise each live 0x18-byte record at 02148c00 advances by its step times the sample count. Crossing the end pointer stops the channel or wraps it. 02122b0c then jumps through the list just built, ending at write_samples.",
+      "notes_address": "02122a40"
+    },
+    {
+      "address": "01ff90fc",
+      "name": "write_samples",
+      "module": "itcm",
+      "description": "Runs at 01ff90fc. Shifts eight values right by 8, clamps each to the range -0x7f01 through 0x7f00, and stores them as shorts. The first four go to the buffer in r8. The next four go 0x1000 bytes later. If r8 is still below the end in r9, it jumps to the next handler.",
+      "notes_address": "02122bbc"
+    },
+    {
+      "address": "01ff91fc",
+      "name": "lerp_channel",
+      "module": "itcm",
+      "description": "Runs at 01ff91fc. Blends four pairs of signed bytes. The fraction in the low half of the position picks a point between a byte and the next one. The low half of the volume scales one side, and the high half scales the other. The results are added into r0 through r7, then 02122d84 jumps to the next handler.",
+      "notes_address": "02122cbc"
+    },
+    {
+      "address": "01ff92c8",
+      "name": "blend_bytes",
+      "module": "itcm",
+      "description": "Runs at 01ff92c8. Blends four signed bytes. The low half of the position is the step, and each sample adds that half into the high half. A carry moves the byte pointer an extra byte. The volume is in r10. 02122e34 jumps to the next handler.",
+      "notes_address": "02122d88"
+    },
+    {
+      "address": "01ff9378",
+      "name": "blend_wrap",
+      "module": "itcm",
+      "description": "Runs at 01ff9378. Blends four signed bytes the same way as lerp_channel. After each one, the step is added to the position. If that result is zero or positive, the loop length is subtracted, shifted up by 16, until the position is negative again. 02122f44 jumps to the next handler.",
+      "notes_address": "02122e38"
+    },
+    {
+      "address": "01ff948c",
+      "name": "blend_rest",
+      "module": "itcm",
+      "description": "Runs at 01ff948c. Blends signed bytes the same way as lerp_channel, but only while the position stays negative. Adding the step in r10 moves it toward zero. Once it reaches zero, the handler pointer is replaced with 02123030, and the channel is skipped from then on.",
+      "notes_address": "02122f4c"
+    },
+    {
+      "address": "01ff9578",
+      "name": "blend_shorts",
+      "module": "itcm",
+      "description": "Runs at 01ff9578. Same blend as lerp_channel, but each sample is a signed short. The top of the position picks the short, and the low 16 bits blend it with the next one. Four steps are added to the position, and 021230dc jumps to the next handler.",
+      "notes_address": "02123038"
+    },
+    {
+      "address": "01ff9784",
+      "name": "plain_bytes",
+      "module": "itcm",
+      "description": "Runs at 01ff9784. No blend. The signed byte at the position is the whole sample, scaled by the two volume halves. The position advances by the step four times. The third loaded byte is replaced by the next address before it is scaled.",
+      "notes_address": "02123244"
     },
     {
       "address": "01ff9998",
@@ -364,6 +420,13 @@
       "notes_address": "0201d994"
     },
     {
+      "address": "0201fe44",
+      "name": "step_cycles",
+      "module": "main",
+      "description": "Steps 12 records of 8 bytes at 0212301c + slot * 0x60. Bit 0 enables one. Byte +2 counts down, and at 0 byte +4 moves between bytes +3 and +5. A second loop of 12 records at 021231dc stops when the count passes the word at 02122fdc. That word is 0xe099900a, so the second loop returns immediately.",
+      "notes_address": "0201fe44"
+    },
+    {
       "address": "02020214",
       "name": "init_palettes",
       "module": "main",
@@ -630,6 +693,13 @@
       "notes_address": "02066110"
     },
     {
+      "address": "02066bb8",
+      "name": "hide_sprites",
+      "module": "main",
+      "description": "From the byte at 021435d5 + slot * 0x132c through index 127, sets bits 8 and 9 of each 8-byte entry to the hidden value 0x200. It does that in both banks, 0x400 bytes apart, inside the slot block at 021422ac. Then stores 1 at 027c0060 + slot.",
+      "notes_address": "02066bb8"
+    },
+    {
       "address": "02067134",
       "name": "init_slot_blocks",
       "module": "main",
@@ -826,6 +896,90 @@
       "notes_address": "02084104"
     },
     {
+      "address": "020923ac",
+      "name": "scan_channels",
+      "module": "main",
+      "description": "Reads the count byte at 0214869a. From count minus 1 down to 0, an index whose bit is clear in the word at 021488f4 is passed to update_channel with 0. A count of 0 returns immediately.",
+      "notes_address": "020923ac"
+    },
+    {
+      "address": "020929f8",
+      "name": "update_channel",
+      "module": "main",
+      "description": "One channel. The 0x18-byte record is at 02148c00 + index * 0x18, and the link byte is at 021479cc + index * 0x20 + 10. A second argument of 0 calls mix_channel with the index and stores 0xff in that link byte. 0xff as the index returns immediately.",
+      "notes_address": "020929f8"
+    },
+    {
+      "address": "02095450",
+      "name": "set_scale",
+      "module": "main",
+      "description": "Clamps the argument to 0x20 through 0xff and stores it at 02147520 + 0x21. Two fifths of that value, rounded down, divides the word at 02148680 shifted left 8. The hardware divider is 0204d964. The quotient, shifted left 8, is stored at 02148684 and 02148688.",
+      "notes_address": "02095450"
+    },
+    {
+      "address": "02095664",
+      "name": "free_copy",
+      "module": "main",
+      "description": "Frees the block flush_block copies to 02147520. Byte +0x1c being 1 or 2 calls scan_channels and clears it. Bit 7 of byte +0x23 is the release. Bit 1 of byte +0x1d chooses a full free, ending in reset_buffer, or just storing 0 at 0214751c. The block starts cleared, and flush_block does not call this on the first frame.",
+      "notes_address": "02095664"
+    },
+    {
+      "address": "0209586c",
+      "name": "apply_copy",
+      "module": "main",
+      "description": "Runs when byte +0x1c of the block at 02147520 is 2. Copies 0x18-byte records from 02148900 into 02148c00 for each index whose bit is clear in the word at 021488f4. A set bit stores 0xff into the link byte instead. Then stores 1 at byte +0x1c.",
+      "notes_address": "0209586c"
+    },
+    {
+      "address": "02096adc",
+      "name": "flush_block",
+      "module": "main",
+      "description": "Tests the word at 0214868c. Bit 5 copies 0x8ac bytes from 02147dcc to 02147520, clears three source bytes, and then clears the bit. Bit 4 only calls free_copy and clears itself. Both bits are clear on the first frame, so it returns.",
+      "notes_address": "02096adc"
+    },
+    {
+      "address": "020973ec",
+      "name": "apply_mix",
+      "module": "main",
+      "description": "Adds the shorts at 02148690 and 02148692 into the two buffer halves, clamped to -0x8000 through 0x7fff. Each sample then shrinks those shorts by (count - 1) / count. The empty loop waits on divider bit 15 at 0x04000280. The shorts are cleared at the end.",
+      "notes_address": "020973ec"
+    },
+    {
+      "address": "02097d18",
+      "name": "mix_channel",
+      "module": "main",
+      "description": "If the channel's first word is set, multiplies one sample by the halfwords at +0xc and +0xe, shifts each product right 9, and adds them to the shorts at 02148690 and 02148692. Then stores 0 in the channel word. A zero word returns.",
+      "notes_address": "02097d18"
+    },
+    {
+      "address": "02097dc0",
+      "name": "set_rate",
+      "module": "main",
+      "description": "If the argument differs from the halfword at 02148698, stores it there. Divides 0xffb0ff by that value, rounds the quotient to a multiple of 32 at 02148696, and divides 0xffb0ff by the rounded value into 02148680. Then calls set_scale. A new value while bit 2 of 0214868c is clear also calls mark_once and reset_buffer.",
+      "notes_address": "02097dc0"
+    },
+    {
+      "address": "02097e6c",
+      "name": "pick_table",
+      "module": "main",
+      "description": "Bit 0 of the argument picks a 0x30-byte table. Clear copies 020b42a4 onto 020b4274. Set copies 020b42d4, which already matches those bytes. The whole argument is then stored at 0214868c.",
+      "notes_address": "02097e6c"
+    },
+    {
+      "address": "02097ec0",
+      "name": "pump_audio",
+      "module": "main",
+      "description": "Reads the flag word at 0214868c. Bit 2 set and bit 3 clear returns. Bit 3 set clears the halfword at 02148694 and bit 7 of byte +0x1c at 02147520, then starts eight channels through 020b8a50 and clears bits 2 and 3. Both bits clear consumes that halfword as a sample count.",
+      "notes_address": "02097ec0"
+    },
+    {
+      "address": "0209823c",
+      "name": "free_channels",
+      "module": "main",
+      "description": "Walks 16 records of 0x20 bytes from 02148880 down to 021486a0. A record whose first word is set is freed through 0204e4b4 when its countdown hits 0, or when bit 7 of byte +0xe is clear and the 0x18-byte record at 02148c00 is empty. clear_area zeroed this block, so the first call frees nothing.",
+      "notes_address": "0209823c"
+    },
+    {
       "address": "02098388",
       "name": "reset_buffer",
       "module": "main",
@@ -880,6 +1034,20 @@
       "module": "main",
       "description": "Two records of 0x3c bytes at 0214a064 + slot * 0x78. Each holds two motions. Bit 1 of a motion moves its point: a countdown of 0 adds the step, 1 snaps to the target and clears the bit, and any other value steps toward the target. The base is past arm9.bin and starts cleared, so all four motions are skipped.",
       "notes_address": "020aee70"
+    },
+    {
+      "address": "020b4304",
+      "name": "blend_up",
+      "module": "main",
+      "description": "Same four byte blends as blend_wrap. After each step, a negative position subtracts the loop length shifted up by 16 until the position is zero or positive. blend_wrap does that subtract while the position is zero or positive.",
+      "notes_address": "020b4304"
+    },
+    {
+      "address": "020b4418",
+      "name": "rest_bytes",
+      "module": "main",
+      "description": "A byte-for-byte copy of blend_rest. The scratch word is the one at 020b4414, and the skip stub is at 020b44fc. Same blend, and the handler is replaced once the position reaches zero.",
+      "notes_address": "020b4418"
     },
     {
       "address": "020b4f88",
@@ -1176,6 +1344,27 @@
       "notes_address": "020b8924"
     },
     {
+      "address": "020b8964",
+      "name": "queue_command",
+      "module": "main",
+      "description": "Asks take_record for a record. A 0 return leaves. Otherwise the five arguments are stored at +4 through +0x14. 020b9064 then links that record: 0214b2b0 stays at the first one, and 0214b2b4 moves to the newest.",
+      "notes_address": "020b8964"
+    },
+    {
+      "address": "020b8a50",
+      "name": "send_channel",
+      "module": "main",
+      "description": "Packs a command numbered 11 and passes it to 020b8964. For pump_audio, the channel is in the low half of the next word and the halfword at 02148696 is in the high half. The pointer is the word after that. The other two packed words are 0x7f000400 and 0x01000000.",
+      "notes_address": "020b8a50"
+    },
+    {
+      "address": "020b9098",
+      "name": "take_record",
+      "module": "main",
+      "description": "Returns a free record. The first pop uses the list at 0214b2a8. A record there is returned at 020b90c0. An argument of 0 returns 0 when that list is empty. An argument of 1 keeps going until a record is available.",
+      "notes_address": "020b9098"
+    },
+    {
       "address": "020bb330",
       "name": "register_rom",
       "module": "main",
@@ -1296,10 +1485,10 @@
     }
   ],
   "estimate": {
-    "finish": "December 3, 2026",
-    "days": 50,
-    "gained": 67,
-    "remaining": 3481
+    "finish": "November 22, 2026",
+    "days": 39,
+    "gained": 94,
+    "remaining": 3455
   },
   "open": [
     {

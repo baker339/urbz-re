@@ -702,7 +702,7 @@ func_01ff86fc: ; 0x01ff86fc
     ldrb r1, [r0, #0x25c]
     bic r1, r1, #0x40
     strb r1, [r0, #0x25c]
-    bl func_02097ec0
+    bl pump_audio
     add sp, sp, #0x1c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
@@ -868,13 +868,13 @@ run_slots: ; 0x01ff89f0
     bl update_slot
     bl step_affine
     bl step_motions
-    bl func_0201fe44
-    bl func_02066bb8
+    bl step_cycles
+    bl hide_sprites
     add r8, r8, #0x1
     cmp r8, #0x2
     add r9, r9, #0x1
     blt .L_01ff8b70
-    bl func_0209823c
+    bl free_channels
     add sp, sp, #0x14
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
@@ -1123,9 +1123,9 @@ func_01ff8d64: ; 0x01ff8d64
 
     .byte 0x00, 0x00, 0x00, 0x00
 
-    .global func_01ff8f80
-    arm_func_start func_01ff8f80
-func_01ff8f80: ; 0x01ff8f80
+    .global mix_samples
+    arm_func_start mix_samples
+mix_samples: ; 0x01ff8f80
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     mov r10, r0
     ldr ip, .L_01ff90e4
@@ -1225,11 +1225,16 @@ func_01ff8f80: ; 0x01ff8f80
     stmnedb sp!, {r0, r1, r2, r3, r4}
     b .L_01ff9020
 .L_01ff90e4: .word data_02148678
-.L_01ff90e8: .word 0x1ff90fc
+.L_01ff90e8: .word write_samples
 .L_01ff90ec: .word data_02148c00
 .L_01ff90f0: .word 0x20b4274
 .L_01ff90f4: .word 0x20b4294
 .L_01ff90f8: .word 0x20b4284
+    arm_func_end mix_samples
+
+    .global write_samples
+    arm_func_start write_samples
+write_samples: ; 0x01ff90fc
     add r10, r8, #0x1000
     mov r0, r0, asr #0x8
     cmp r0, #0x7f00
@@ -1295,11 +1300,11 @@ func_01ff8f80: ; 0x01ff8f80
 .L_01ff91f4:
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    arm_func_end func_01ff8f80
+    arm_func_end write_samples
 
-    .global func_01ff91fc
-    arm_func_start func_01ff91fc
-func_01ff91fc: ; 0x01ff91fc
+    .global lerp_channel
+    arm_func_start lerp_channel
+lerp_channel: ; 0x01ff91fc
     add r8, r8, r9, asr #0x10
     ldrsb r11, [r8, #0x0]
     ldrsb ip, [r8, #0x1]
@@ -1351,11 +1356,11 @@ func_01ff91fc: ; 0x01ff91fc
     str r8, [lr, #-0x14]
     str r10, [lr, #-0x10]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff91fc
+    arm_func_end lerp_channel
 
-    .global func_01ff92c8
-    arm_func_start func_01ff92c8
-func_01ff92c8: ; 0x01ff92c8
+    .global blend_bytes
+    arm_func_start blend_bytes
+blend_bytes: ; 0x01ff92c8
     ldrsb r11, [r8, #0x0]
     ldrsb ip, [r8, #0x1]!
     str lr, [sp, #-0x4]!
@@ -1400,11 +1405,11 @@ func_01ff92c8: ; 0x01ff92c8
     sublo r8, r8, #0x1
     strd r8, [lr, #-0x10]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff92c8
+    arm_func_end blend_bytes
 
-    .global func_01ff9378
-    arm_func_start func_01ff9378
-func_01ff9378: ; 0x01ff9378
+    .global blend_wrap
+    arm_func_start blend_wrap
+blend_wrap: ; 0x01ff9378
     add ip, r8, r9, asr #0x10
     ldrsb r11, [ip, #0x0]
     ldrsb ip, [ip, #0x1]
@@ -1477,12 +1482,12 @@ func_01ff9378: ; 0x01ff9378
     bpl .L_01ff9478
     str r9, [lr, #-0x14]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff9378
+    arm_func_end blend_wrap
 
 .word #0x0
-    .global func_01ff948c
-    arm_func_start func_01ff948c
-func_01ff948c: ; 0x01ff948c
+    .global blend_rest
+    arm_func_start blend_rest
+blend_rest: ; 0x01ff948c
     add ip, r8, r9, asr #0x10
     ldrsb r11, [ip, #0x0]
     ldrsb ip, [ip, #0x1]
@@ -1543,11 +1548,11 @@ func_01ff948c: ; 0x01ff948c
     strpl r10, [lr, #-0x4]
     add lr, lr, #0x4
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff948c
+    arm_func_end blend_rest
 
-    .global func_01ff9578
-    arm_func_start func_01ff9578
-func_01ff9578: ; 0x01ff9578
+    .global blend_shorts
+    arm_func_start blend_shorts
+blend_shorts: ; 0x01ff9578
     add ip, r8, r9, asr #0x11
     ldrsh r11, [ip, ip]!
     ldrsh ip, [ip, #0x2]
@@ -1590,7 +1595,7 @@ func_01ff9578: ; 0x01ff9578
     add lr, r8, #0x4
     str r9, [lr, #-0x10]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff9578
+    arm_func_end blend_shorts
 
     .global func_01ff9620
     arm_func_start func_01ff9620
@@ -1692,9 +1697,9 @@ func_01ff96c8: ; 0x01ff96c8
     ldmia lr!, {r8, r9, r10, pc}
     arm_func_end func_01ff96c8
 
-    .global func_01ff9784
-    arm_func_start func_01ff9784
-func_01ff9784: ; 0x01ff9784
+    .global plain_bytes
+    arm_func_start plain_bytes
+plain_bytes: ; 0x01ff9784
     add r11, r8, r9, asr #0x10
     ldrsb r11, [r11, #0x0]
     str lr, [sp, #-0x4]!
@@ -1721,7 +1726,7 @@ func_01ff9784: ; 0x01ff9784
     add lr, r8, #0x4
     str r9, [lr, #-0x10]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_01ff9784
+    arm_func_end plain_bytes
 
     .global func_01ff97ec
     arm_func_start func_01ff97ec

@@ -36766,9 +36766,9 @@ func_0201fc64: ; 0x0201fc64
 .L_0201fe40: .word data_021231dc
     arm_func_end func_0201fc64
 
-    .global func_0201fe44
-    arm_func_start func_0201fe44
-func_0201fe44: ; 0x0201fe44
+    .global step_cycles
+    arm_func_start step_cycles
+step_cycles: ; 0x0201fe44
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     mov r2, #0x0
     cmp r2, #0xc
@@ -36878,7 +36878,7 @@ func_0201fe44: ; 0x0201fe44
 .L_0201ffc4: .word data_027c0004
 .L_0201ffc8: .word data_021231dc
 .L_0201ffcc: .word data_02122fdc
-    arm_func_end func_0201fe44
+    arm_func_end step_cycles
 
     .global func_0201ffd0
     arm_func_start func_0201ffd0
@@ -72135,7 +72135,7 @@ func_0203da94: ; 0x0203da94
     bne .L_0203dc38
     bl func_0204e5e0
     bl update_slot
-    bl func_02066bb8
+    bl hide_sprites
     mov r1, r4
     mov r2, r1
     mov r0, #0x1d
@@ -119766,9 +119766,9 @@ func_02066b9c: ; 0x02066b9c
     bx lr
     arm_func_end func_02066b9c
 
-    .global func_02066bb8
-    arm_func_start func_02066bb8
-func_02066bb8: ; 0x02066bb8
+    .global hide_sprites
+    arm_func_start hide_sprites
+hide_sprites: ; 0x02066bb8
     stmdb sp!, {r4, lr}
     ldr ip, .L_02066c54
     ldr r3, .L_02066c58
@@ -119815,7 +119815,7 @@ func_02066bb8: ; 0x02066bb8
 .L_02066c5c: .word data_021435d5
 .L_02066c60: .word data_021422ac
 .L_02066c64: .word data_027c0020
-    arm_func_end func_02066bb8
+    arm_func_end hide_sprites
 
     .global func_02066c68
     arm_func_start func_02066c68
@@ -170549,7 +170549,7 @@ func_02091ff8: ; 0x02091ff8
     ldmneia sp!, {r4, r5, r6, r7, lr}
     bxne lr
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr
@@ -170701,9 +170701,9 @@ func_02092320: ; 0x02092320
     bx lr
     arm_func_end func_02092320
 
-    .global func_020923ac
-    arm_func_start func_020923ac
-func_020923ac: ; 0x020923ac
+    .global scan_channels
+    arm_func_start scan_channels
+scan_channels: ; 0x020923ac
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     ldr r0, .L_02092408
@@ -170722,7 +170722,7 @@ func_020923ac: ; 0x020923ac
     bne .L_020923f4
     mov r1, r5
     and r0, r7, #0xff
-    bl func_020929f8
+    bl update_channel
 .L_020923f4:
     subs r7, r7, #0x1
     bpl .L_020923d8
@@ -170731,7 +170731,7 @@ func_020923ac: ; 0x020923ac
     bx lr
 .L_02092408: .word data_02148678
 .L_0209240c: .word data_021486a0
-    arm_func_end func_020923ac
+    arm_func_end scan_channels
 
     .global func_02092410
     arm_func_start func_02092410
@@ -171144,9 +171144,9 @@ func_020927bc: ; 0x020927bc
 .L_020929f4: .word data_02148c08
     arm_func_end func_020927bc
 
-    .global func_020929f8
-    arm_func_start func_020929f8
-func_020929f8: ; 0x020929f8
+    .global update_channel
+    arm_func_start update_channel
+update_channel: ; 0x020929f8
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     ands r2, r1, #0x10
@@ -171206,7 +171206,7 @@ func_020929f8: ; 0x020929f8
     ldr r2, [r2, #0x0]
     cmp r3, r2
     blo .L_02092b10
-    bl func_02097d18
+    bl mix_channel
     ldrb r2, [r4, #0xa]
     add sp, sp, #0x4
     cmp r2, #0xff
@@ -171245,7 +171245,7 @@ func_020929f8: ; 0x020929f8
     b .L_02092b9c ; case 2
     b .L_02092c04 ; case 3
 .L_02092b68:
-    bl func_02097d18
+    bl mix_channel
     mov r0, #0xff
     add sp, sp, #0x4
     strb r0, [r4, #0xa]
@@ -171302,7 +171302,7 @@ func_020929f8: ; 0x020929f8
 .L_02092c2c: .word data_02148c10
 .L_02092c30: .word data_02148c14
 .L_02092c34: .word data_02147554
-    arm_func_end func_020929f8
+    arm_func_end update_channel
 
     .global func_02092c38
     arm_func_start func_02092c38
@@ -171378,7 +171378,7 @@ func_02092c38: ; 0x02092c38
     bhs .L_02092d4c
     ldrb r0, [r7, #0x8]
     mov r1, r6
-    bl func_020929f8
+    bl update_channel
 .L_02092d4c:
     add r1, r9, #0x11
     ldrb r2, [r1, #0x0]
@@ -171403,7 +171403,7 @@ func_02092c38: ; 0x02092c38
     bls .L_02092da8
     ldrb r0, [r7, #0x8]
     mov r1, r6
-    bl func_020929f8
+    bl update_channel
 .L_02092da8:
     add r1, r9, #0x11
     ldrb r2, [r1, #0x0]
@@ -171647,7 +171647,7 @@ func_02092c38: ; 0x02092c38
     bic r0, r0, #0x10
     strb r0, [r2, #0x0]
     ldrb r0, [r7, #0x8]
-    bl func_020929f8
+    bl update_channel
     b .L_020931cc
 .L_02093138:
     ldrb r1, [r7, #0x4]
@@ -171657,7 +171657,7 @@ func_02092c38: ; 0x02092c38
     add r0, r0, r1
     mov r0, r0, lsl #0x10
     mov r0, r0, lsr #0x10
-    bl func_02095450
+    bl set_scale
     b .L_020931cc
 .L_0209315c:
     sub r0, r1, #0x10
@@ -171665,7 +171665,7 @@ func_02092c38: ; 0x02092c38
     sub r0, r1, r0
     mov r0, r0, lsl #0x10
     mov r0, r0, lsr #0x10
-    bl func_02095450
+    bl set_scale
     b .L_020931cc
 .L_02093178:
     ldrb r1, [r7, #0x4]
@@ -171922,7 +171922,7 @@ func_02092c38: ; 0x02092c38
     bhs .L_020935cc
     ldrb r0, [r7, #0x8]
     mov r1, r6
-    bl func_020929f8
+    bl update_channel
     b .L_020935cc
 .L_02093534:
     cmp r0, #0x7c
@@ -171948,7 +171948,7 @@ func_02092c38: ; 0x02092c38
     bls .L_020935cc
     ldrb r0, [r7, #0x8]
     mov r1, r6
-    bl func_020929f8
+    bl update_channel
     b .L_020935cc
 .L_02093598:
     cmp r0, #0xca
@@ -172124,7 +172124,7 @@ func_02093600: ; 0x02093600
     bhs .L_02093818
     ldrb r0, [r7, #0x8]
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
 .L_02093818:
     add r2, r4, #0x11
     ldrb r1, [r2, #0x0]
@@ -172156,7 +172156,7 @@ func_02093600: ; 0x02093600
     bhs .L_02093890
     ldrb r0, [r7, #0x8]
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
 .L_02093890:
     add r2, r4, #0x11
     ldrb r1, [r2, #0x0]
@@ -172204,7 +172204,7 @@ func_02093600: ; 0x02093600
     bls .L_02093944
     ldrb r0, [r7, #0x8]
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
 .L_02093944:
     add r2, r4, #0x11
     ldrb r1, [r2, #0x0]
@@ -172236,7 +172236,7 @@ func_02093600: ; 0x02093600
     bls .L_020939bc
     ldrb r0, [r7, #0x8]
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
 .L_020939bc:
     add r2, r4, #0x11
     ldrb r1, [r2, #0x0]
@@ -172651,7 +172651,7 @@ func_02093600: ; 0x02093600
     ldrb r1, [r7, #0x4]
     and r0, r6, #0xff
     ldrb r1, [r5, r1]
-    bl func_020929f8
+    bl update_channel
 .L_02093fd8:
     subs r6, r6, #0x1
     bpl .L_02093fb8
@@ -172825,7 +172825,7 @@ func_02093600: ; 0x02093600
     strlob r0, [r1, #0x0]
     ldmloia sp!, {r4, r5, r6, r7, r8, lr}
     bxlo lr
-    bl func_02095450
+    bl set_scale
     add sp, sp, #0x8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
@@ -173274,7 +173274,7 @@ func_02094894: ; 0x02094894
     cmp r1, #0x7e
     bne .L_02094900
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
     mov r0, #0xff
     strb r0, [r5, #0x8]
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
@@ -173283,7 +173283,7 @@ func_02094894: ; 0x02094894
     cmp r1, #0x7f
     bne .L_02094918
     mov r1, #0x12
-    bl func_020929f8
+    bl update_channel
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     bx lr
 .L_02094918:
@@ -173296,7 +173296,7 @@ func_02094894: ; 0x02094894
     ldrb r1, [r8, #0x11]
     mov r1, r1, lsl #0x1c
     mov r1, r1, lsr #0x1e
-    bl func_020929f8
+    bl update_channel
 .L_02094940:
     ldrb r0, [r4, #0x1]
     cmp r0, #0x3
@@ -173326,7 +173326,7 @@ func_02094894: ; 0x02094894
     bne .L_020949a8
     ldrb r1, [r4, #0x2]
     and r0, r10, #0xff
-    bl func_020929f8
+    bl update_channel
 .L_020949a8:
     subs r10, r10, #0x1
     bpl .L_02094980
@@ -173350,7 +173350,7 @@ func_02094894: ; 0x02094894
     bne .L_020949fc
     ldrb r1, [r4, #0x2]
     and r0, r9, #0xff
-    bl func_020929f8
+    bl update_channel
 .L_020949fc:
     subs r9, r9, #0x1
     bpl .L_020949d4
@@ -173372,7 +173372,7 @@ func_02094894: ; 0x02094894
     bne .L_02094a48
     ldrb r1, [r4, #0x2]
     and r0, r9, #0xff
-    bl func_020929f8
+    bl update_channel
 .L_02094a48:
     subs r9, r9, #0x1
     bpl .L_02094a1c
@@ -173509,7 +173509,7 @@ func_02094b80: ; 0x02094b80
     beq .L_02094c2c
     and r0, r4, #0xff
     mov r1, #0x0
-    bl func_020929f8
+    bl update_channel
 .L_02094c2c:
     and r0, r4, #0xff
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
@@ -173675,7 +173675,7 @@ func_02094cac: ; 0x02094cac
     blx r3
     b .L_02094ee4
 .L_02094e60:
-    bl func_020923ac
+    bl scan_channels
     ldr r2, .L_020953bc
     ldr r0, .L_020953b8
     ldr r1, [r2, #0x14]
@@ -173973,7 +173973,7 @@ func_02094cac: ; 0x02094cac
     mov r1, r6
     and r0, r8, #0xff
     strh r6, [r9, #0x12]
-    bl func_020929f8
+    bl update_channel
 .L_020952a4:
     ldrb r0, [r9, #0xb]
     ands r0, r0, #0x8
@@ -174096,9 +174096,9 @@ func_020953d4: ; 0x020953d4
 .L_0209544c: .word data_021486a0
     arm_func_end func_020953d4
 
-    .global func_02095450
-    arm_func_start func_02095450
-func_02095450: ; 0x02095450
+    .global set_scale
+    arm_func_start set_scale
+set_scale: ; 0x02095450
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov lr, r0
@@ -174130,7 +174130,7 @@ func_02095450: ; 0x02095450
 .L_020954bc: .word 0x66666667
 .L_020954c0: .word data_02148678
 .L_020954c4: .word data_02147520
-    arm_func_end func_02095450
+    arm_func_end set_scale
 
     .global func_020954c8
     arm_func_start func_020954c8
@@ -174232,7 +174232,7 @@ func_020954c8: ; 0x020954c8
     arm_func_start func_02095610
 func_02095610: ; 0x02095610
     stmdb sp!, {r4, lr}
-    bl func_02095664
+    bl free_copy
     ldr r4, .L_0209565c
     ldr lr, .L_02095660
     mov ip, #0x8a
@@ -174248,16 +174248,16 @@ func_02095610: ; 0x02095610
     strb ip, [r3, #0x1c]
     strb ip, [r3, #0x1d]
     strb ip, [r3, #0x23]
-    bl func_0209586c
+    bl apply_copy
     ldmia sp!, {r4, lr}
     bx lr
 .L_0209565c: .word data_02147dcc
 .L_02095660: .word data_02147520
     arm_func_end func_02095610
 
-    .global func_02095664
-    arm_func_start func_02095664
-func_02095664: ; 0x02095664
+    .global free_copy
+    arm_func_start free_copy
+free_copy: ; 0x02095664
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     ldr r0, .L_02095860
     ldrb r0, [r0, #0x1c]
@@ -174265,7 +174265,7 @@ func_02095664: ; 0x02095664
     and r0, r0, #0xff
     cmp r0, #0x1
     bhi .L_02095690
-    bl func_020923ac
+    bl scan_channels
     ldr r0, .L_02095860
     mov r1, #0x0
     strb r1, [r0, #0x1c]
@@ -174403,11 +174403,11 @@ func_02095664: ; 0x02095664
 .L_02095860: .word data_02147520
 .L_02095864: .word data_02147510
 .L_02095868: .word data_02147514
-    arm_func_end func_02095664
+    arm_func_end free_copy
 
-    .global func_0209586c
-    arm_func_start func_0209586c
-func_0209586c: ; 0x0209586c
+    .global apply_copy
+    arm_func_start apply_copy
+apply_copy: ; 0x0209586c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     ldr ip, .L_0209594c
     ldrb r0, [ip, #0x1c]
@@ -174462,7 +174462,7 @@ func_0209586c: ; 0x0209586c
 .L_0209592c:
     ldr r0, .L_0209594c
     ldrb r0, [r0, #0x21]
-    bl func_02095450
+    bl set_scale
     ldr r0, .L_0209594c
     mov r1, #0x1
     strb r1, [r0, #0x1c]
@@ -174473,7 +174473,7 @@ func_0209586c: ; 0x0209586c
 .L_02095954: .word data_021486a0
 .L_02095958: .word data_02148900
 .L_0209595c: .word data_02148c00
-    arm_func_end func_0209586c
+    arm_func_end apply_copy
 
     .global func_02095960
     arm_func_start func_02095960
@@ -174558,12 +174558,12 @@ func_02095a30: ; 0x02095a30
     beq .L_02095a84
     cmp r1, #0x0
     beq .L_02095b84
-    bl func_02095664
+    bl free_copy
     b .L_02095b84
 .L_02095a84:
     cmp r1, #0x0
     beq .L_02095a90
-    bl func_02095664
+    bl free_copy
 .L_02095a90:
     ldr r8, .L_020969e0
     ldrb r0, [r8, #0x23]
@@ -174583,7 +174583,7 @@ func_02095a30: ; 0x02095a30
     strb r6, [r3, #0x1c]
     strb r6, [r3, #0x1d]
     strb r6, [r3, #0x23]
-    bl func_02095664
+    bl free_copy
     b .L_02095b84
 .L_02095adc:
     ldr r0, [sp, #0x0]
@@ -174608,7 +174608,7 @@ func_02095a30: ; 0x02095a30
 .L_02095b24:
     cmp r1, #0x0
     beq .L_02095b84
-    bl func_02095664
+    bl free_copy
     b .L_02095b84
 .L_02095b34:
     ldr r0, [sp, #0x0]
@@ -174631,7 +174631,7 @@ func_02095a30: ; 0x02095a30
     strb r6, [r3, #0x1c]
     strb r6, [r3, #0x1d]
     strb r6, [r3, #0x23]
-    bl func_02095664
+    bl free_copy
 .L_02095b84:
     cmp r4, #0x0
     ldreq r0, .L_020969e4
@@ -175647,15 +175647,15 @@ func_02095a30: ; 0x02095a30
     ldrh r0, [r0, #0x18]
     cmp r0, #0x0
     beq .L_02096a9c
-    bl func_02097dc0
+    bl set_rate
     b .L_02096aa4
 .L_02096a9c:
     mov r0, #0x8000
-    bl func_02097dc0
+    bl set_rate
 .L_02096aa4:
     ldr r0, .L_020969dc
     ldrb r0, [r0, #0x21]
-    bl func_02095450
+    bl set_scale
     mov r0, #0x0
     mov r1, r0
     bl func_020954c8
@@ -175669,15 +175669,15 @@ func_02095a30: ; 0x02095a30
     bx lr
     arm_func_end func_02095a30
 
-    .global func_02096adc
-    arm_func_start func_02096adc
-func_02096adc: ; 0x02096adc
+    .global flush_block
+    arm_func_start flush_block
+flush_block: ; 0x02096adc
     stmdb sp!, {r4, lr}
     ldr r0, .L_02096b70
     ldr r0, [r0, #0x14]
     ands r0, r0, #0x20
     beq .L_02096b40
-    bl func_02095664
+    bl free_copy
     ldr r4, .L_02096b74
     ldr lr, .L_02096b78
     mov ip, #0x8a
@@ -175693,7 +175693,7 @@ func_02096adc: ; 0x02096adc
     strb ip, [r3, #0x1c]
     strb ip, [r3, #0x1d]
     strb ip, [r3, #0x23]
-    bl func_0209586c
+    bl apply_copy
     ldr r0, .L_02096b70
     ldr r1, [r0, #0x14]
     bic r1, r1, #0x20
@@ -175704,7 +175704,7 @@ func_02096adc: ; 0x02096adc
     ands r0, r0, #0x10
     ldmeqia sp!, {r4, lr}
     bxeq lr
-    bl func_02095664
+    bl free_copy
     ldr r0, .L_02096b70
     ldr r1, [r0, #0x14]
     bic r1, r1, #0x10
@@ -175714,7 +175714,7 @@ func_02096adc: ; 0x02096adc
 .L_02096b70: .word data_02148678
 .L_02096b74: .word data_02147dcc
 .L_02096b78: .word data_02147520
-    arm_func_end func_02096adc
+    arm_func_end flush_block
 
     .global func_02096b7c
     arm_func_start func_02096b7c
@@ -176185,7 +176185,7 @@ func_02096da8: ; 0x02096da8
     str r0, [sp, #0x14]
     ldrb r0, [r4, #0xe]
     bic r0, r0, #0x80
-    bl func_020b8a50
+    bl send_channel
     ldrb r0, [r4, #0xe]
     mov r1, #0x0
     mov r2, r7
@@ -176249,7 +176249,7 @@ func_020972e4: ; 0x020972e4
     ldrb r0, [r0, #0x25c]
     ands r0, r0, #0x40
     beq .L_02097300
-    bl func_02097ec0
+    bl pump_audio
 .L_02097300:
     ldr r0, .L_0209731c
     ldrb r1, [r0, #0x25c]
@@ -176327,9 +176327,9 @@ func_020973cc: ; 0x020973cc
 .L_020973e8: .word data_02148678
     arm_func_end func_020973cc
 
-    .global func_020973ec
-    arm_func_start func_020973ec
-func_020973ec: ; 0x020973ec
+    .global apply_mix
+    arm_func_start apply_mix
+apply_mix: ; 0x020973ec
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
     cmp r1, #0x0
@@ -176408,7 +176408,7 @@ func_020973ec: ; 0x020973ec
 .L_02097504: .word 0x4000290
 .L_02097508: .word 0x4000298
 .L_0209750c: .word 0x40002a0
-    arm_func_end func_020973ec
+    arm_func_end apply_mix
 
     .global func_02097510
     arm_func_start func_02097510
@@ -176576,7 +176576,7 @@ func_02097720: ; 0x02097720
     addne sp, sp, #0x4
     ldmneia sp!, {lr}
     bxne lr
-    bl func_02095664
+    bl free_copy
     ldr r0, .L_02097760
     ldrb r1, [r0, #0x25c]
     bic r1, r1, #0x1
@@ -176603,7 +176603,7 @@ func_02097764: ; 0x02097764
     addeq sp, sp, #0x4
     ldmeqia sp!, {lr}
     bxeq lr
-    bl func_0209586c
+    bl apply_copy
     ldr r0, .L_020977b8
     ldrb r1, [r0, #0x25c]
     bic r1, r1, #0x1
@@ -176783,7 +176783,7 @@ func_02097920: ; 0x02097920
     bpl .L_020979a8
     b .L_02097a0c
 .L_020979ec:
-    bl func_02097d18
+    bl mix_channel
     ldr r0, .L_02097a4c
     ldrb r1, [r5, #0xe]
     mov r2, r4
@@ -176976,7 +176976,7 @@ func_02097be8: ; 0x02097be8
     bne .L_02097c60
     cmp r0, r10
     blo .L_02097c60
-    bl func_02097d18
+    bl mix_channel
     ldr r0, [r5, #0x0]
     ands r1, r0, #0x80000000
     beq .L_02097c48
@@ -177017,7 +177017,7 @@ func_02097be8: ; 0x02097be8
 .L_02097cb4:
     strb r5, [r8, #0xa]
     ldrb r0, [r9, #0xe]
-    bl func_02097d18
+    bl mix_channel
     ldrb r0, [r11, #0x22]
     add r7, r7, #0x1
     add r8, r8, #0x20
@@ -177048,9 +177048,9 @@ func_02097d00: ; 0x02097d00
 .L_02097d14: .word func_02096b7c
     arm_func_end func_02097d00
 
-    .global func_02097d18
-    arm_func_start func_02097d18
-func_02097d18: ; 0x02097d18
+    .global mix_channel
+    arm_func_start mix_channel
+mix_channel: ; 0x02097d18
     stmdb sp!, {r4, lr}
     mov r1, #0x18
     mul r1, r0, r1
@@ -177094,11 +177094,11 @@ func_02097d18: ; 0x02097d18
     bx lr
 .L_02097db8: .word data_02148c00
 .L_02097dbc: .word data_02148678
-    arm_func_end func_02097d18
+    arm_func_end mix_channel
 
-    .global func_02097dc0
-    arm_func_start func_02097dc0
-func_02097dc0: ; 0x02097dc0
+    .global set_rate
+    arm_func_start set_rate
+set_rate: ; 0x02097dc0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr r1, .L_02097e60
@@ -177131,7 +177131,7 @@ func_02097dc0: ; 0x02097dc0
     ldr r1, .L_02097e68
     str r0, [r2, #0x8]
     ldrb r0, [r1, #0x21]
-    bl func_02095450
+    bl set_scale
     cmp r4, #0x0
     addne sp, sp, #0x4
     ldmneia sp!, {r4, r5, lr}
@@ -177143,11 +177143,11 @@ func_02097dc0: ; 0x02097dc0
 .L_02097e60: .word data_02148678
 .L_02097e64: .word 0xffb0ff
 .L_02097e68: .word data_02147520
-    arm_func_end func_02097dc0
+    arm_func_end set_rate
 
-    .global func_02097e6c
-    arm_func_start func_02097e6c
-func_02097e6c: ; 0x02097e6c
+    .global pick_table
+    arm_func_start pick_table
+pick_table: ; 0x02097e6c
     stmdb sp!, {r4, lr}
     mov r4, r0
     ands r0, r4, #0x1
@@ -177171,11 +177171,11 @@ func_02097e6c: ; 0x02097e6c
 .L_02097eb4: .word 0x20b42d4
 .L_02097eb8: .word 0x20b42a4
 .L_02097ebc: .word data_02148678
-    arm_func_end func_02097e6c
+    arm_func_end pick_table
 
-    .global func_02097ec0
-    arm_func_start func_02097ec0
-func_02097ec0: ; 0x02097ec0
+    .global pump_audio
+    arm_func_start pump_audio
+pump_audio: ; 0x02097ec0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x1c
     ldr r1, .L_02098230
@@ -177227,7 +177227,7 @@ func_02097ec0: ; 0x02097ec0
     cmp r6, #0x0
     ble .L_02097fa0
     mov r0, r6
-    bl func_01ff8f80
+    bl mix_samples
     ldr r0, [r9, #0x18]
     cmp r0, #0x0
     beq .L_02097f9c
@@ -177235,7 +177235,7 @@ func_02097ec0: ; 0x02097ec0
     movge r1, r4
     ldr r0, [r9, #0x0]
     movlt r1, r6
-    bl func_020973ec
+    bl apply_mix
 .L_02097f9c:
     sub r7, r7, r6
 .L_02097fa0:
@@ -177277,7 +177277,7 @@ func_02097ec0: ; 0x02097ec0
     str r4, [sp, #0x10]
     str r0, [sp, #0x14]
     ldr r2, [r2, #0x4]
-    bl func_020b8a50
+    bl send_channel
     mov r5, #0x0
     str r5, [sp, #0x0]
     mov r0, #0x400
@@ -177293,7 +177293,7 @@ func_02097ec0: ; 0x02097ec0
     str r4, [sp, #0x10]
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
-    bl func_020b8a50
+    bl send_channel
     mov r1, #0x1
     str r5, [sp, #0x0]
     mov r0, #0x400
@@ -177308,7 +177308,7 @@ func_02097ec0: ; 0x02097ec0
     str r4, [sp, #0x10]
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
-    bl func_020b8a50
+    bl send_channel
     mov r1, #0x1
     str r5, [sp, #0x0]
     mov r0, #0x400
@@ -177323,7 +177323,7 @@ func_02097ec0: ; 0x02097ec0
     str r4, [sp, #0x10]
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
-    bl func_020b8a50
+    bl send_channel
     mov r1, r5
     str r1, [sp, #0x0]
     mov r0, #0x400
@@ -177340,7 +177340,7 @@ func_02097ec0: ; 0x02097ec0
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
     add r2, r2, #0x1000
-    bl func_020b8a50
+    bl send_channel
     mov r1, #0x0
     str r1, [sp, #0x0]
     mov r0, #0x400
@@ -177356,7 +177356,7 @@ func_02097ec0: ; 0x02097ec0
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
     add r2, r2, #0x1000
-    bl func_020b8a50
+    bl send_channel
     mov r1, #0x0
     str r1, [sp, #0x0]
     mov r0, #0x400
@@ -177372,7 +177372,7 @@ func_02097ec0: ; 0x02097ec0
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
     add r2, r2, #0x1000
-    bl func_020b8a50
+    bl send_channel
     mov r1, #0x0
     str r1, [sp, #0x0]
     mov r0, #0x400
@@ -177388,7 +177388,7 @@ func_02097ec0: ; 0x02097ec0
     str r5, [sp, #0x14]
     ldr r2, [r2, #0x4]
     add r2, r2, #0x1000
-    bl func_020b8a50
+    bl send_channel
     mov r0, #0x0
     ldr r2, .L_02098230
     str r0, [sp, #0x0]
@@ -177408,14 +177408,14 @@ func_02097ec0: ; 0x02097ec0
 .L_02098230: .word data_02148678
 .L_02098234: .word data_02147520
 .L_02098238: .word func_020973cc
-    arm_func_end func_02097ec0
+    arm_func_end pump_audio
 
-    .global func_0209823c
-    arm_func_start func_0209823c
-func_0209823c: ; 0x0209823c
+    .global free_channels
+    arm_func_start free_channels
+free_channels: ; 0x0209823c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
-    bl func_02096adc
+    bl flush_block
     ldr r8, .L_02098374
     ldr r7, .L_02098378
     mov r10, #0xf
@@ -177503,7 +177503,7 @@ func_0209823c: ; 0x0209823c
 .L_0209837c: .word data_021486a0
 .L_02098380: .word data_02148c00
 .L_02098384: .word data_021488a0
-    arm_func_end func_0209823c
+    arm_func_end free_channels
 
     .global reset_buffer
     arm_func_start reset_buffer
@@ -177620,9 +177620,9 @@ func_02098488: ; 0x02098488
     mov r1, #0x0
     bl func_020b8b60
     mov r0, #0x7
-    bl func_02097e6c
+    bl pick_table
     mov r0, #0x8000
-    bl func_02097dc0
+    bl set_rate
     bl reset_buffer
     ldr r0, .L_02098578
     ldrb r0, [r0, #0x22]
@@ -210116,9 +210116,9 @@ func_020b4074: ; 0x020b4074
     .byte 0x8c, 0x94, 0xff, 0x01, 0x00, 0x00, 0x00, 0x00, 0x18, 0x44, 0x0b, 0x02, 0x00, 0x00, 0x00, 0x00
     .byte 0x78, 0x93, 0xff, 0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x43, 0x0b, 0x02, 0x00, 0x00, 0x00, 0x00
 
-    .global func_020b4304
-    arm_func_start func_020b4304
-func_020b4304: ; 0x020b4304
+    .global blend_up
+    arm_func_start blend_up
+blend_up: ; 0x020b4304
     add ip, r8, r9, asr #0x10
     ldrsb r11, [ip, #0x0]
     ldrsb ip, [ip, #0x1]
@@ -210191,12 +210191,12 @@ func_020b4304: ; 0x020b4304
     blt .L_020b4404
     str r9, [lr, #-0x14]
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_020b4304
+    arm_func_end blend_up
 
 .word #0x0
-    .global func_020b4418
-    arm_func_start func_020b4418
-func_020b4418: ; 0x020b4418
+    .global rest_bytes
+    arm_func_start rest_bytes
+rest_bytes: ; 0x020b4418
     add ip, r8, r9, asr #0x10
     ldrsb r11, [ip, #0x0]
     ldrsb ip, [ip, #0x1]
@@ -210257,7 +210257,7 @@ func_020b4418: ; 0x020b4418
     strpl r10, [lr, #-0x4]
     add lr, lr, #0x4
     ldmia lr!, {r8, r9, r10, pc}
-    arm_func_end func_020b4418
+    arm_func_end rest_bytes
 
     .global func_020b4504
     arm_func_start func_020b4504
@@ -215876,9 +215876,9 @@ init_channel_7: ; 0x020b8924
 .L_020b8960: .word data_0214b2a4
     arm_func_end init_channel_7
 
-    .global func_020b8964
-    arm_func_start func_020b8964
-func_020b8964: ; 0x020b8964
+    .global queue_command
+    arm_func_start queue_command
+queue_command: ; 0x020b8964
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     mov r7, r0
@@ -215886,7 +215886,7 @@ func_020b8964: ; 0x020b8964
     mov r6, r1
     mov r5, r2
     mov r4, r3
-    bl func_020b9098
+    bl take_record
     cmp r0, #0x0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, lr}
@@ -215901,7 +215901,7 @@ func_020b8964: ; 0x020b8964
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr
-    arm_func_end func_020b8964
+    arm_func_end queue_command
 
     .global func_020b89bc
     arm_func_start func_020b89bc
@@ -215915,7 +215915,7 @@ func_020b89bc: ; 0x020b89bc
     mov r2, lr
     mov r3, ip
     mov r0, #0x3
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -215933,7 +215933,7 @@ func_020b89f0: ; 0x020b89f0
     mov r2, lr
     mov r3, ip
     mov r0, #0x15
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -215949,15 +215949,15 @@ func_020b8a24: ; 0x020b8a24
     mov r3, r2
     mov r0, #0x14
     str r2, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
     arm_func_end func_020b8a24
 
-    .global func_020b8a50
-    arm_func_start func_020b8a50
-func_020b8a50: ; 0x020b8a50
+    .global send_channel
+    arm_func_start send_channel
+send_channel: ; 0x020b8a50
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr ip, [sp, #0x18]
@@ -215976,11 +215976,11 @@ func_020b8a50: ; 0x020b8a50
     orr r3, ip, r3
     mov r0, #0xb
     str r4, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020b8a50
+    arm_func_end send_channel
 
     .global func_020b8aa8
     arm_func_start func_020b8aa8
@@ -215992,7 +215992,7 @@ func_020b8aa8: ; 0x020b8aa8
     mov r1, r0
     mov r0, #0x12
     str r3, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216010,7 +216010,7 @@ func_020b8ad4: ; 0x020b8ad4
     mov r2, lr
     mov r0, #0x11
     str ip, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216026,7 +216026,7 @@ func_020b8b08: ; 0x020b8b08
     mov r1, r0
     mov r0, #0x10
     str r3, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216042,7 +216042,7 @@ func_020b8b34: ; 0x020b8b34
     mov r1, r0
     mov r0, #0x17
     str r3, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216058,7 +216058,7 @@ func_020b8b60: ; 0x020b8b60
     mov r1, r0
     mov r0, #0x16
     str r3, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216080,7 +216080,7 @@ func_020b8b8c: ; 0x020b8b8c
     mov r2, r5
     mov r3, r4
     mov r0, #0xf
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x8
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
@@ -216117,7 +216117,7 @@ func_020b8bd0: ; 0x020b8bd0
     mov r3, r7
     mov r0, #0xa
     str r6, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
@@ -216135,7 +216135,7 @@ func_020b8c40: ; 0x020b8c40
     mov r2, lr
     mov r3, ip
     mov r0, #0x9
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216162,7 +216162,7 @@ func_020b8c8c: ; 0x020b8c8c
     mov r3, r2
     mov r0, #0x1
     str r2, [sp, #0x0]
-    bl func_020b8964
+    bl queue_command
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -216487,9 +216487,9 @@ func_020b9064: ; 0x020b9064
 .L_020b9094: .word data_0214b2b0
     arm_func_end func_020b9064
 
-    .global func_020b9098
-    arm_func_start func_020b9098
-func_020b9098: ; 0x020b9098
+    .global take_record
+    arm_func_start take_record
+take_record: ; 0x020b9098
     stmdb sp!, {r4, lr}
     mov r4, r0
     bl return_zero
@@ -216533,7 +216533,7 @@ func_020b9098: ; 0x020b9098
     beq .L_020b9118
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b9098
+    arm_func_end take_record
 
     .global func_020b9134
     arm_func_start func_020b9134
@@ -216645,7 +216645,7 @@ func_020b9218: ; 0x020b9218
     str r0, [r11, #0x0]
     bl func_020b9414
     mov r0, r8
-    bl func_020b9098
+    bl take_record
     cmp r0, #0x0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
