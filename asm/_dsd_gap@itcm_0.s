@@ -676,7 +676,7 @@ func_01ff86fc: ; 0x01ff86fc
     ldr r0, [r1, #0x30]
     str r0, [r1, #0x2c]
 .L_01ff8950:
-    bl func_020b4f54
+    bl flush_pending
     ldr r3, .L_01ff89e0
     ldr r1, .L_01ff89e4
     ldr r2, .L_01ff89cc

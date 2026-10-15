@@ -7230,12 +7230,12 @@ func_020066b4: ; 0x020066b4
 .L_02006714:
     mov r1, r8
     mov r0, #0x1000000
-    bl func_020c0870
+    bl divide_signed
     mov r2, r0, lsl #0x10
     mov r1, r6
     mov r0, #0x1000000
     mov r6, r2, asr #0x10
-    bl func_020c0870
+    bl divide_signed
     ldr r2, .L_020067a4
     mov r0, r0, lsl #0x10
     ldr r3, [r2, #0x0]
@@ -26145,7 +26145,7 @@ step_affine: ; 0x02016cb0
     ldr r0, [r9, #0x24]
     add r6, r9, #0x24
     sub r0, r2, r0
-    bl func_020c0870
+    bl divide_signed
     ldr r1, [r6, #0x0]
     add r7, r9, #0x28
     add r0, r1, r0
@@ -26154,7 +26154,7 @@ step_affine: ; 0x02016cb0
     ldr r0, [r9, #0x28]
     ldrh r1, [r9, #0x3c]
     sub r0, r2, r0
-    bl func_020c0870
+    bl divide_signed
     ldr r1, [r7, #0x0]
     add r0, r1, r0
     str r0, [r7, #0x0]
@@ -29624,7 +29624,7 @@ func_02019b74: ; 0x02019b74
     mov r0, #0xfa
     mul r0, r4, r0
     add r1, r4, r1
-    bl func_020c0870
+    bl divide_signed
     ldmia sp!, {r4, lr}
     bx lr
 .L_02019be0: .word data_020c25bc
@@ -36038,7 +36038,7 @@ func_0201f374: ; 0x0201f374
     and r0, r6, #0x1f
     mov r1, r5
     sub r0, r0, r4, lsr #0x10
-    bl func_020c0870
+    bl divide_signed
     and r3, r7, #0x3e0
     and r1, r6, #0x3e0
     add r0, r0, r4, lsr #0x10
@@ -36048,7 +36048,7 @@ func_0201f374: ; 0x0201f374
     mov r1, r5
     sub r0, r0, r4, lsr #0x10
     mov r11, r2, lsr #0x10
-    bl func_020c0870
+    bl divide_signed
     and r2, r7, #0x7c00
     and r1, r6, #0x7c00
     add r3, r0, r4, lsr #0x10
@@ -36057,7 +36057,7 @@ func_0201f374: ; 0x0201f374
     mov r1, r5
     sub r0, r0, r6, lsr #0x10
     mov r4, r3, lsl #0x10
-    bl func_020c0870
+    bl divide_signed
     add r0, r0, r6, lsr #0x10
     mov r0, r0, lsl #0x10
     mov r1, r4, lsr #0xb
@@ -59311,9 +59311,9 @@ func_02032fc0: ; 0x02032fc0
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_0203303c
-    bl func_020bb238
+    bl blank_block
     ldr r0, .L_02033040
-    bl func_020bb238
+    bl blank_block
     ldr r0, .L_0203303c
     ldr r1, .L_02033044
     bl func_020bad50
@@ -59757,10 +59757,10 @@ func_02033514: ; 0x02033514
     ldrh r1, [r0, #0x6]
     mov r0, #0x64
     sub r1, r1, #0x1
-    bl func_020c0870
+    bl divide_signed
     and r1, r0, #0xff
     mov r0, r4
-    bl func_020c0870
+    bl divide_signed
     ldrb r2, [r5, #0x96]
     and r1, r0, #0xff
     cmp r1, r2
@@ -102110,7 +102110,7 @@ func_0205770c: ; 0x0205770c
     cmp r10, r1
     blt .L_020578f4
 .L_0205793c:
-    bl func_020c0870
+    bl divide_signed
     add r1, sp, #0x10
     str r0, [r1, r8, lsl #0x2]
     add r8, r8, #0x1
@@ -110579,7 +110579,7 @@ func_0205edc8: ; 0x0205edc8
     ldr r1, [r1, #0x0]
     ldrb r1, [r1, #0x12]
     add r1, r1, #0x1
-    bl func_020c0870
+    bl divide_signed
     ands r1, r5, #0x2
     and r0, r0, #0xff
     addne r0, r0, #0x4
@@ -112923,7 +112923,7 @@ func_02060e2c: ; 0x02060e2c
     ldrh r0, [r1, #0x2e]
     ldrh r1, [r1, #0x2c]
     mov r0, r0, lsl #0x10
-    bl func_020c0870
+    bl divide_signed
     mov r1, #0x64
     mul r1, r0, r1
     mov r0, r1, asr #0x10
@@ -112934,10 +112934,10 @@ func_02060e2c: ; 0x02060e2c
     ldrh r1, [r0, #0x6]
     mov r0, #0x64
     sub r1, r1, #0x1
-    bl func_020c0870
+    bl divide_signed
     and r1, r0, #0xff
     mov r0, r4
-    bl func_020c0870
+    bl divide_signed
     ldr r2, .L_0206109c
     and r1, r0, #0xff
     ldr r0, [r2, #0x0]
@@ -128400,7 +128400,7 @@ func_0206dce4: ; 0x0206dce4
     movlt r0, #0x1
     strltb r0, [r6, #0x48]
     blt .L_0206e0ec
-    bl func_020c0870
+    bl divide_signed
     strb r0, [r6, #0x48]
 .L_0206e0ec:
     mvn r0, #0x0
@@ -174665,9 +174665,9 @@ func_02095a30: ; 0x02095a30
     blt .L_02095bd4
 .L_02095bf4:
     add r0, sp, #0x170
-    bl func_020bb238
+    bl blank_block
     add r0, sp, #0x12c
-    bl func_020bb238
+    bl blank_block
     ldr r1, .L_020969f0
     add r0, sp, #0x170
     bl func_020bad50
@@ -175627,7 +175627,7 @@ func_02095a30: ; 0x02095a30
     blt .L_02096950
 .L_02096a48:
     add r0, sp, #0x12c
-    bl func_020baf24
+    bl reset_block
     ldr r2, .L_020969dc
     ldr r1, [sp, #0x0]
     ldrb r0, [r2, #0x1b]
@@ -175847,7 +175847,7 @@ func_02096cc8: ; 0x02096cc8
     mov r5, r3, asr #0x6
     mov r1, r1, asr #0xc
     mov r2, #0x0
-    bl func_020b8ad4
+    bl queue_17
     mov r0, r4
     mov r1, r5
     bl func_020b8aa8
@@ -175915,9 +175915,9 @@ func_02096da8: ; 0x02096da8
     str r0, [r4, #0x0]
 .L_02096e1c:
     add r0, sp, #0xac
-    bl func_020bb238
+    bl blank_block
     add r0, sp, #0x68
-    bl func_020bb238
+    bl blank_block
     ldr r1, .L_020972cc
     add r0, sp, #0xac
     bl func_020bad50
@@ -176099,7 +176099,7 @@ func_02096da8: ; 0x02096da8
     bx lr
 .L_020970d0:
     add r0, sp, #0x68
-    bl func_020baf24
+    bl reset_block
     ldrb r8, [r4, #0xe]
     orr r5, r7, r9, lsl #0x8
     ands r0, r8, #0x80
@@ -176193,7 +176193,7 @@ func_02096da8: ; 0x02096da8
     mov r0, r2, lsl r0
     mov r2, r1
     mov r3, r1
-    bl func_020b8c40
+    bl queue_nine
     b .L_020972b8
 .L_02097244:
     ldr r0, .L_020972c8
@@ -176314,9 +176314,9 @@ func_02097320: ; 0x02097320
 .L_020973c8: .word data_021470fc
     arm_func_end func_02097320
 
-    .global func_020973cc
-    arm_func_start func_020973cc
-func_020973cc: ; 0x020973cc
+    .global add_count
+    arm_func_start add_count
+add_count: ; 0x020973cc
     ldr r0, .L_020973e8
     ldr r1, [r0, #0x14]
     ands r1, r1, #0x4
@@ -176325,7 +176325,7 @@ func_020973cc: ; 0x020973cc
     streqh r1, [r0, #0x1c]
     bx lr
 .L_020973e8: .word data_02148678
-    arm_func_end func_020973cc
+    arm_func_end add_count
 
     .global apply_mix
     arm_func_start apply_mix
@@ -176753,7 +176753,7 @@ func_02097920: ; 0x02097920
     mov r0, r4, lsl r0
     mov r2, r1
     mov r3, r1
-    bl func_020b8bd0
+    bl queue_ten
     ldr r0, .L_02097a50
     ldrb r1, [r5, #0xe]
     ldrh r3, [r0, #0x58]
@@ -177396,18 +177396,18 @@ pump_audio: ; 0x02097ec0
     ldr r3, .L_02098238
     mov r1, r0
     mov r2, r2, lsl #0x3
-    bl func_020b8b8c
+    bl queue_reply
     mov r1, #0x0
     mov r0, #0xff
     mov r2, #0x1
     mov r3, r1
-    bl func_020b8c40
+    bl queue_nine
     add sp, sp, #0x1c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
 .L_02098230: .word data_02148678
 .L_02098234: .word data_02147520
-.L_02098238: .word func_020973cc
+.L_02098238: .word add_count
     arm_func_end pump_audio
 
     .global free_channels
@@ -177563,7 +177563,7 @@ mark_once: ; 0x02098420
     mov r3, r1
     mov r0, #0xff
     mov r2, #0x1
-    bl func_020b8bd0
+    bl queue_ten
     ldr r0, .L_02098484
     ldr r1, .L_02098480
     ldrb r2, [r0, #0x1c]
@@ -177615,7 +177615,7 @@ func_02098488: ; 0x02098488
     mov r1, r0
     mov r2, r0
     mov r3, r0
-    bl func_020b89f0
+    bl queue_21
     ldr r0, .L_02098588
     mov r1, #0x0
     bl func_020b8b60
@@ -200555,11 +200555,11 @@ func_020ac1fc: ; 0x020ac1fc
     mov r7, r0, asr #0x10
     mov r5, r2
     mov r0, r7
-    bl func_020c0870
+    bl divide_signed
     strh r0, [r5, #0x0]
     ldrsh r1, [r6, #0x8]
     mov r0, r7
-    bl func_020c0870
+    bl divide_signed
     mov r0, r1, lsl #0x10
     movs r1, r0, asr #0x10
     bmi .L_020ac26c
@@ -200580,11 +200580,11 @@ func_020ac1fc: ; 0x020ac1fc
     mov r0, r0, lsl #0x10
     mov r4, r0, asr #0x10
     mov r0, r4
-    bl func_020c0870
+    bl divide_signed
     strh r0, [r5, #0x2]
     ldrsh r1, [r6, #0xa]
     mov r0, r4
-    bl func_020c0870
+    bl divide_signed
     mov r0, r1, lsl #0x10
     movs r1, r0, asr #0x10
     bmi .L_020ac2c8
@@ -203980,7 +203980,7 @@ step_motions: ; 0x020aee70
     ldr r0, [r5, #0x4]
     add r9, r5, #0x4
     sub r0, r2, r0
-    bl func_020c0870
+    bl divide_signed
     ldr r1, [r9, #0x0]
     add r10, r5, #0x8
     add r0, r1, r0
@@ -203989,7 +203989,7 @@ step_motions: ; 0x020aee70
     ldr r0, [r5, #0x8]
     ldrh r1, [r5, #0x2]
     sub r0, r2, r0
-    bl func_020c0870
+    bl divide_signed
     ldr r1, [r10, #0x0]
     add r0, r1, r0
     str r0, [r10, #0x0]
@@ -205932,11 +205932,11 @@ func_020b09b4: ; 0x020b09b4
     bxeq lr
     ldrsh r0, [sp, #0x0]
     ldrb r1, [r5, #0xe]
-    bl func_020c0870
+    bl divide_signed
     strb r0, [r4, #0x0]
     ldrsh r0, [sp, #0x2]
     ldrb r1, [r5, #0xe]
-    bl func_020c0870
+    bl divide_signed
     strb r0, [r4, #0x1]
     mov r0, #0x1
     add sp, sp, #0x4
@@ -205997,11 +205997,11 @@ func_020b0aa4: ; 0x020b0aa4
     mov r0, r1
     mov r5, r2
     mov r1, r4
-    bl func_020c0870
+    bl divide_signed
     mov r7, r0
     mov r0, r5
     mov r1, r4
-    bl func_020c0870
+    bl divide_signed
     mov r1, r7, lsl #0x10
     mov r3, #0x0
     str r3, [r6, #0x0]
@@ -210259,20 +210259,20 @@ rest_bytes: ; 0x020b4418
     ldmia lr!, {r8, r9, r10, pc}
     arm_func_end rest_bytes
 
-    .global func_020b4504
-    arm_func_start func_020b4504
-func_020b4504: ; 0x020b4504
+    .global next_node
+    arm_func_start next_node
+next_node: ; 0x020b4504
     cmp r1, #0x0
     ldreq r0, [r0, #0x0]
     ldrneh r0, [r0, #0xa]
     addne r0, r1, r0
     ldrne r0, [r0, #0x4]
     bx lr
-    arm_func_end func_020b4504
+    arm_func_end next_node
 
-    .global func_020b451c
-    arm_func_start func_020b451c
-func_020b451c: ; 0x020b451c
+    .global unlink_record
+    arm_func_start unlink_record
+unlink_record: ; 0x020b451c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldrh ip, [r0, #0xa]
@@ -210301,17 +210301,17 @@ func_020b451c: ; 0x020b451c
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b451c
+    arm_func_end unlink_record
 
-    .global func_020b458c
-    arm_func_start func_020b458c
-func_020b458c: ; 0x020b458c
+    .global link_node
+    arm_func_start link_node
+link_node: ; 0x020b458c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r2, [r0, #0x0]
     cmp r2, #0x0
     bne .L_020b45b0
-    bl func_020b45f8
+    bl first_node
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
@@ -210334,11 +210334,11 @@ func_020b458c: ; 0x020b458c
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b458c
+    arm_func_end link_node
 
-    .global func_020b45f8
-    arm_func_start func_020b45f8
-func_020b45f8: ; 0x020b45f8
+    .global first_node
+    arm_func_start first_node
+first_node: ; 0x020b45f8
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldrh ip, [r0, #0xa]
@@ -210355,7 +210355,7 @@ func_020b45f8: ; 0x020b45f8
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b45f8
+    arm_func_end first_node
 
     .global func_020b4638
     arm_func_start func_020b4638
@@ -210404,7 +210404,7 @@ func_020b4650: ; 0x020b4650
     mov r0, r4
     bl func_020b46e4
     mov r1, r4
-    bl func_020b458c
+    bl link_node
     ldmia sp!, {r4, lr}
     bx lr
 .L_020b46dc: .word data_0214a178
@@ -210434,7 +210434,7 @@ func_020b4710: ; 0x020b4710
     mov r5, r1
     mov r1, #0x0
     mov r6, r0
-    bl func_020b4504
+    bl next_node
     movs r4, r0
     beq .L_020b4774
 .L_020b472c:
@@ -210454,7 +210454,7 @@ func_020b4710: ; 0x020b4710
 .L_020b4760:
     mov r0, r6
     mov r1, r4
-    bl func_020b4504
+    bl next_node
     movs r4, r0
     bne .L_020b472c
 .L_020b4774:
@@ -211062,24 +211062,24 @@ func_020b4f28: ; 0x020b4f28
     bx lr
     arm_func_end func_020b4f28
 
-    .global func_020b4f54
-    arm_func_start func_020b4f54
-func_020b4f54: ; 0x020b4f54
+    .global flush_pending
+    arm_func_start flush_pending
+flush_pending: ; 0x020b4f54
     stmdb sp!, {r4, lr}
     mov r4, #0x0
 .L_020b4f5c:
     mov r0, r4
-    bl func_020b9134
+    bl reclaim_list
     cmp r0, #0x0
     bne .L_020b4f5c
-    bl func_020b5120
-    bl func_020b55c0
-    bl func_020b5820
+    bl step_nodes
+    bl step_span
+    bl step_four
     mov r0, #0x0
-    bl func_020b8f30
+    bl file_queue
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b4f54
+    arm_func_end flush_pending
 
     .global init_records
     arm_func_start init_records
@@ -211104,9 +211104,9 @@ init_records: ; 0x020b4f88
 .L_020b4fcc: .word data_0214a188
     arm_func_end init_records
 
-    .global func_020b4fd0
-    arm_func_start func_020b4fd0
-func_020b4fd0: ; 0x020b4fd0
+    .global clear_mask
+    arm_func_start clear_mask
+clear_mask: ; 0x020b4fd0
     ldr r1, .L_020b4fec
     mov r2, #0x1
     mvn r0, r2, lsl r0
@@ -211115,11 +211115,11 @@ func_020b4fd0: ; 0x020b4fd0
     str r0, [r1, #0x0]
     bx lr
 .L_020b4fec: .word data_0214a190
-    arm_func_end func_020b4fd0
+    arm_func_end clear_mask
 
-    .global func_020b4ff0
-    arm_func_start func_020b4ff0
-func_020b4ff0: ; 0x020b4ff0
+    .global clear_held
+    arm_func_start clear_held
+clear_held: ; 0x020b4ff0
     ldr r1, .L_020b5008
     mvn r0, r0
     ldr r2, [r1, #0x0]
@@ -211127,17 +211127,17 @@ func_020b4ff0: ; 0x020b4ff0
     str r0, [r1, #0x0]
     bx lr
 .L_020b5008: .word data_0214a18c
-    arm_func_end func_020b4ff0
+    arm_func_end clear_held
 
-    .global func_020b500c
-    arm_func_start func_020b500c
-func_020b500c: ; 0x020b500c
+    .global clear_bits
+    arm_func_start clear_bits
+clear_bits: ; 0x020b500c
     stmdb sp!, {r4, lr}
     movs r4, r0
     ldmeqia sp!, {r4, lr}
     bxeq lr
     mov r1, #0x0
-    bl func_020b8b34
+    bl queue_23
     ldr r0, .L_020b5040
     mvn r1, r4
     ldr r2, [r0, #0x0]
@@ -211146,7 +211146,7 @@ func_020b500c: ; 0x020b500c
     ldmia sp!, {r4, lr}
     bx lr
 .L_020b5040: .word data_0214a194
-    arm_func_end func_020b500c
+    arm_func_end clear_bits
 
     .global func_020b5044
     arm_func_start func_020b5044
@@ -211164,9 +211164,9 @@ func_020b5044: ; 0x020b5044
 .L_020b506c: .word data_0214a190
     arm_func_end func_020b5044
 
-    .global func_020b5070
-    arm_func_start func_020b5070
-func_020b5070: ; 0x020b5070
+    .global retire_node
+    arm_func_start retire_node
+retire_node: ; 0x020b5070
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r4, r0
@@ -211178,14 +211178,14 @@ func_020b5070: ; 0x020b5070
     ldr r5, [r4, #0x4]
     mov r1, r4
     mov r0, r5
-    bl func_020b451c
+    bl unlink_record
     mov r0, #0x0
     str r0, [r4, #0x4]
     ldr r1, [r4, #0x8]
     cmp r1, #0x0
     beq .L_020b50cc
     add r0, r5, #0xc
-    bl func_020b458c
+    bl link_node
     ldr r0, [r4, #0x8]
     mov r1, #0x0
     str r1, [r0, #0xc]
@@ -211193,10 +211193,10 @@ func_020b5070: ; 0x020b5070
 .L_020b50cc:
     ldr r0, .L_020b50f8
     mov r1, r4
-    bl func_020b451c
+    bl unlink_record
     ldr r0, .L_020b50fc
     mov r1, r4
-    bl func_020b458c
+    bl link_node
     mov r0, #0x0
     strb r0, [r4, #0x2c]
     add sp, sp, #0x4
@@ -211204,31 +211204,31 @@ func_020b5070: ; 0x020b5070
     bx lr
 .L_020b50f8: .word data_0214a1a4
 .L_020b50fc: .word data_0214a198
-    arm_func_end func_020b5070
+    arm_func_end retire_node
 
-    .global func_020b5100
-    arm_func_start func_020b5100
-func_020b5100: ; 0x020b5100
+    .global finish_node
+    arm_func_start finish_node
+finish_node: ; 0x020b5100
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldrb r0, [r4, #0x3c]
-    bl func_020b8c8c
+    bl queue_one
     mov r0, r4
-    bl func_020b5070
+    bl retire_node
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b5100
+    arm_func_end finish_node
 
-    .global func_020b5120
-    arm_func_start func_020b5120
-func_020b5120: ; 0x020b5120
+    .global step_nodes
+    arm_func_start step_nodes
+step_nodes: ; 0x020b5120
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
-    bl func_020b94c8
+    bl second_word
     mov r8, r0
     ldr r0, .L_020b5258
     mov r1, #0x0
-    bl func_020b4504
+    bl next_node
     movs r10, r0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
@@ -211239,13 +211239,13 @@ func_020b5120: ; 0x020b5120
 .L_020b5158:
     ldr r0, .L_020b5258
     mov r1, r10
-    bl func_020b4504
+    bl next_node
     ldrb r1, [r10, #0x2d]
     mov r9, r0
     cmp r1, #0x0
     bne .L_020b5184
     ldr r0, [r10, #0x30]
-    bl func_020b8e38
+    bl count_reached
     cmp r0, #0x0
     strneb r5, [r10, #0x2d]
 .L_020b5184:
@@ -211257,11 +211257,11 @@ func_020b5120: ; 0x020b5120
     ands r0, r8, r0
     bne .L_020b51ac
     mov r0, r10
-    bl func_020b5070
+    bl retire_node
     b .L_020b5240
 .L_020b51ac:
     add r0, r10, #0x1c
-    bl func_020b5954
+    bl raise_count
     ldrb r2, [r10, #0x41]
     ldrb r1, [r10, #0x40]
     add r0, r10, #0x1c
@@ -211269,7 +211269,7 @@ func_020b5120: ; 0x020b5120
     mov r1, r1, lsl #0x1
     ldrsh r7, [r4, r2]
     ldrsh r6, [r4, r1]
-    bl func_020b5974
+    bl slide_value
     mov r0, r0, asr #0x8
     mov r0, r0, lsl #0x1
     ldrsh r1, [r4, r0]
@@ -211287,18 +211287,18 @@ func_020b5120: ; 0x020b5120
     beq .L_020b521c
     ldrb r0, [r10, #0x3c]
     mov r1, r6
-    bl func_020b8c74
+    bl report_sum
     strh r6, [r10, #0x3e]
 .L_020b521c:
     ldrb r0, [r10, #0x2c]
     cmp r0, #0x2
     bne .L_020b5240
     add r0, r10, #0x1c
-    bl func_020b593c
+    bl count_done
     cmp r0, #0x0
     beq .L_020b5240
     mov r0, r10
-    bl func_020b5100
+    bl finish_node
 .L_020b5240:
     mov r10, r9
     cmp r9, #0x0
@@ -211309,7 +211309,7 @@ func_020b5120: ; 0x020b5120
 .L_020b5258: .word data_0214a1a4
 .L_020b525c: .word data_0211c850
 .L_020b5260: .word 0xfffffd2d
-    arm_func_end func_020b5120
+    arm_func_end step_nodes
 
     .global func_020b5264
     arm_func_start func_020b5264
@@ -211330,7 +211330,7 @@ func_020b5264: ; 0x020b5264
     mov r0, r4
     mov r1, r6
     strb r7, [r6, #0x3c]
-    bl func_020b458c
+    bl link_node
     add r7, r7, #0x1
     cmp r7, #0x10
     add r6, r6, #0x44
@@ -211360,16 +211360,16 @@ func_020b5264: ; 0x020b5264
 .L_020b5308: .word data_0214a1b0
     arm_func_end func_020b5264
 
-    .global func_020b530c
-    arm_func_start func_020b530c
-func_020b530c: ; 0x020b530c
+    .global release_record
+    arm_func_start release_record
+release_record: ; 0x020b530c
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldr r0, [r4, #0x28]
-    bl func_020b4fd0
+    bl clear_mask
     ldr r0, .L_020b534c
     mov r1, r4
-    bl func_020b451c
+    bl unlink_record
     add r1, r4, #0xc
     ldr r0, [r1, #0x0]
     bic r0, r0, #0x1
@@ -211380,11 +211380,11 @@ func_020b530c: ; 0x020b530c
     ldmia sp!, {r4, lr}
     bx lr
 .L_020b534c: .word data_0214a970
-    arm_func_end func_020b530c
+    arm_func_end release_record
 
-    .global func_020b5350
-    arm_func_start func_020b5350
-func_020b5350: ; 0x020b5350
+    .global clear_bit
+    arm_func_start clear_bit
+clear_bit: ; 0x020b5350
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r4, r0
@@ -211398,28 +211398,28 @@ func_020b5350: ; 0x020b5350
     mov r2, r2, lsl r0
     ldr r0, [r4, #0x2c]
     mov r3, r1
-    bl func_020b8bd0
+    bl queue_ten
     add r1, r4, #0xc
     ldr r0, [r1, #0x0]
     bic r0, r0, #0x2
     str r0, [r1, #0x0]
-    bl func_020b8e74
+    bl read_count
     mov r5, r0
     mov r0, #0x1
-    bl func_020b8f30
+    bl file_queue
     mov r0, r5
-    bl func_020b8ea0
+    bl wait_count
 .L_020b53b0:
     mov r0, r4
-    bl func_020b530c
+    bl release_record
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020b5350
+    arm_func_end clear_bit
 
-    .global func_020b53c4
-    arm_func_start func_020b53c4
-func_020b53c4: ; 0x020b53c4
+    .global spread_sum
+    arm_func_start spread_sum
+spread_sum: ; 0x020b53c4
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     mov r7, r0
     str r1, [r7, #0x24]
@@ -211437,12 +211437,12 @@ func_020b53c4: ; 0x020b53c4
     add r0, r4, r6, lsl #0x3
     ldr r0, [r0, #0x4]
     add r0, r1, r0
-    bl func_020b94fc
+    bl pack_level
     mov r2, r0
     mov r0, r8, lsl r6
     and r1, r2, #0xff
     mov r2, r2, asr #0x8
-    bl func_020b8ad4
+    bl queue_17
     ldr r0, [r7, #0x30]
     add r5, r5, #0x1
     cmp r5, r0
@@ -211450,11 +211450,11 @@ func_020b53c4: ; 0x020b53c4
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
 .L_020b5434: .word data_0214a97c
-    arm_func_end func_020b53c4
+    arm_func_end spread_sum
 
-    .global func_020b5438
-    arm_func_start func_020b5438
-func_020b5438: ; 0x020b5438
+    .global pass_record
+    arm_func_start pass_record
+pass_record: ; 0x020b5438
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r1, [r0, #0xc]
@@ -211463,15 +211463,15 @@ func_020b5438: ; 0x020b5438
     addeq sp, sp, #0x4
     ldmeqia sp!, {lr}
     bxeq lr
-    bl func_020b5350
+    bl clear_bit
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b5438
+    arm_func_end pass_record
 
-    .global func_020b5468
-    arm_func_start func_020b5468
-func_020b5468: ; 0x020b5468
+    .global queue_bit
+    arm_func_start queue_bit
+queue_bit: ; 0x020b5468
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldr r0, [r4, #0x28]
@@ -211480,35 +211480,35 @@ func_020b5468: ; 0x020b5468
     mov r2, r2, lsl r0
     ldr r0, [r4, #0x2c]
     mov r3, r1
-    bl func_020b8c40
+    bl queue_nine
     add r1, r4, #0xc
     ldr r0, [r1, #0x0]
     orr r0, r0, #0x2
     str r0, [r1, #0x0]
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b5468
+    arm_func_end queue_bit
 
-    .global func_020b54a4
-    arm_func_start func_020b54a4
-func_020b54a4: ; 0x020b54a4
+    .global clear_source
+    arm_func_start clear_source
+clear_source: ; 0x020b54a4
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldr r0, [r4, #0x2c]
     cmp r0, #0x0
     ldmeqia sp!, {r4, lr}
     bxeq lr
-    bl func_020b500c
+    bl clear_bits
     mov r0, #0x0
     str r0, [r4, #0x2c]
     str r0, [r4, #0x30]
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b54a4
+    arm_func_end clear_source
 
-    .global func_020b54d4
-    arm_func_start func_020b54d4
-func_020b54d4: ; 0x020b54d4
+    .global close_span
+    arm_func_start close_span
+close_span: ; 0x020b54d4
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     ldr r4, .L_020b55b8
@@ -211524,39 +211524,39 @@ func_020b54d4: ; 0x020b54d4
     ldr r0, [r4, #0x20]
     ldr r1, [r4, #0x24]
     moveq r2, #0x0
-    bl func_020b8bd0
+    bl queue_ten
     cmp r7, #0x0
     beq .L_020b5554
-    bl func_020b8e74
+    bl read_count
     mov r5, r0
     mov r0, #0x1
-    bl func_020b8f30
+    bl file_queue
     mov r0, r5
-    bl func_020b8ea0
+    bl wait_count
     ldr r6, .L_020b55bc
     mov r5, #0x0
 .L_020b553c:
     mov r0, r6
     mov r1, r5
     mov r2, r5
-    bl func_020b7928
+    bl take_one
     cmp r0, #0x0
     bne .L_020b553c
 .L_020b5554:
     ldr r0, [r4, #0x24]
     cmp r0, #0x0
     beq .L_020b5564
-    bl func_020b4ff0
+    bl clear_held
 .L_020b5564:
     ldr r0, [r4, #0x1c]
     cmp r0, #0x0
     beq .L_020b5574
-    bl func_020b500c
+    bl clear_bits
 .L_020b5574:
     cmp r7, #0x0
     beq .L_020b5584
     ldr r0, [r4, #0x28]
-    bl func_020b4fd0
+    bl clear_mask
 .L_020b5584:
     ldr r0, [r4, #0x4]
     cmp r0, #0x1
@@ -211565,7 +211565,7 @@ func_020b54d4: ; 0x020b54d4
     mov r1, r0
     mov r2, r0
     mov r3, r0
-    bl func_020b89f0
+    bl queue_21
 .L_020b55a4:
     mov r0, #0x0
     str r0, [r4, #0x0]
@@ -211574,11 +211574,11 @@ func_020b54d4: ; 0x020b54d4
     bx lr
 .L_020b55b8: .word data_0214aa14
 .L_020b55bc: .word data_0214aa00
-    arm_func_end func_020b54d4
+    arm_func_end close_span
 
-    .global func_020b55c0
-    arm_func_start func_020b55c0
-func_020b55c0: ; 0x020b55c0
+    .global step_span
+    arm_func_start step_span
+step_span: ; 0x020b55c0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     ldr r5, .L_020b566c
@@ -211594,21 +211594,21 @@ func_020b55c0: ; 0x020b55c0
     bxne lr
     add r4, r5, #0x38
     mov r0, r4
-    bl func_020b5954
+    bl raise_count
     ldr r0, [r5, #0x48]
     cmp r0, #0x0
     beq .L_020b562c
     mov r0, r4
-    bl func_020b593c
+    bl count_done
     cmp r0, #0x0
     beq .L_020b562c
-    bl func_020b54d4
+    bl close_span
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020b562c:
     mov r0, r4
-    bl func_020b5974
+    bl slide_value
     ldr r1, [r5, #0x4c]
     mov r4, r0, asr #0x8
     cmp r4, r1
@@ -211618,13 +211618,13 @@ func_020b55c0: ; 0x020b55c0
     ldr r0, [r5, #0x20]
     mov r1, r4
     mov r2, #0x0
-    bl func_020b8ad4
+    bl queue_17
     str r4, [r5, #0x4c]
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020b566c: .word data_0214aa14
-    arm_func_end func_020b55c0
+    arm_func_end step_span
 
     .global func_020b5670
     arm_func_start func_020b5670
@@ -211639,9 +211639,9 @@ func_020b5670: ; 0x020b5670
 .L_020b568c: .word data_0214aa14
     arm_func_end func_020b5670
 
-    .global func_020b5690
-    arm_func_start func_020b5690
-func_020b5690: ; 0x020b5690
+    .global pass_node
+    arm_func_start pass_node
+pass_node: ; 0x020b5690
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, r0
@@ -211649,18 +211649,18 @@ func_020b5690: ; 0x020b5690
     mov r4, r0
     ldr r0, .L_020b56c4
     mov r1, r5
-    bl func_020b458c
+    bl link_node
     mov r0, r4
     bl restore_irq
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020b56c4: .word data_0214aa64
-    arm_func_end func_020b5690
+    arm_func_end pass_node
 
-    .global func_020b56c8
-    arm_func_start func_020b56c8
-func_020b56c8: ; 0x020b56c8
+    .global lower_count
+    arm_func_start lower_count
+lower_count: ; 0x020b56c8
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r1, [r0, #0x100]
@@ -211677,15 +211677,15 @@ func_020b56c8: ; 0x020b56c8
     addne sp, sp, #0x4
     ldmneia sp!, {lr}
     bxne lr
-    bl func_020b54a4
+    bl clear_source
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b56c8
+    arm_func_end lower_count
 
-    .global func_020b5718
-    arm_func_start func_020b5718
-func_020b5718: ; 0x020b5718
+    .global finish_record
+    arm_func_start finish_record
+finish_record: ; 0x020b5718
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     mov r4, r0
     ldr r1, [r4, #0x114]
@@ -211694,7 +211694,7 @@ func_020b5718: ; 0x020b5718
     strne r0, [r1, #0x0]
     strne r0, [r4, #0x114]
     mov r0, r4
-    bl func_020b56c8
+    bl lower_count
     ldr r0, [r4, #0x50]
     ands r0, r0, #0x10
     movne r0, #0x1
@@ -211702,29 +211702,29 @@ func_020b5718: ; 0x020b5718
     cmp r0, #0x0
     beq .L_020b575c
     add r0, r4, #0x44
-    bl func_020baf24
+    bl reset_block
 .L_020b575c:
     bl disable_irq
     mov r8, r0
     ldr r0, .L_020b57f0
     mov r1, #0x0
-    bl func_020b4504
+    bl next_node
     movs r7, r0
     beq .L_020b57b8
     ldr r5, .L_020b57f0
 .L_020b577c:
     mov r0, r5
     mov r1, r7
-    bl func_020b4504
+    bl next_node
     ldr r1, [r7, #0x8]
     mov r6, r0
     cmp r1, r4
     bne .L_020b57ac
     mov r0, r5
     mov r1, r7
-    bl func_020b451c
+    bl unlink_record
     mov r0, r7
-    bl func_020b5690
+    bl pass_node
 .L_020b57ac:
     mov r7, r6
     cmp r6, #0x0
@@ -211745,28 +211745,28 @@ func_020b5718: ; 0x020b5718
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
 .L_020b57f0: .word data_0214aa70
-    arm_func_end func_020b5718
+    arm_func_end finish_record
 
-    .global func_020b57f4
-    arm_func_start func_020b57f4
-func_020b57f4: ; 0x020b57f4
+    .global close_record
+    arm_func_start close_record
+close_record: ; 0x020b57f4
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldr r1, [r4, #0xf0]
     mov r1, r1, lsl #0x1e
     movs r1, r1, asr #0x1f
     beq .L_020b5810
-    bl func_020b5438
+    bl pass_record
 .L_020b5810:
     mov r0, r4
-    bl func_020b5718
+    bl finish_record
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b57f4
+    arm_func_end close_record
 
-    .global func_020b5820
-    arm_func_start func_020b5820
-func_020b5820: ; 0x020b5820
+    .global step_four
+    arm_func_start step_four
+step_four: ; 0x020b5820
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     ldr r5, .L_020b5934
@@ -211781,7 +211781,7 @@ func_020b5820: ; 0x020b5820
     cmp r0, #0x0
     beq .L_020b585c
     mov r0, r5
-    bl func_020b57f4
+    bl close_record
     b .L_020b5918
 .L_020b585c:
     mov r0, r1, lsl #0x1d
@@ -211791,7 +211791,7 @@ func_020b5820: ; 0x020b5820
     cmp r0, #0x0
     beq .L_020b5898
     mov r0, r5
-    bl func_020b5468
+    bl queue_bit
     add r1, r5, #0xf0
     ldr r0, [r1, #0x0]
     orr r0, r0, #0x2
@@ -211805,12 +211805,12 @@ func_020b5820: ; 0x020b5820
     movs r0, r0, asr #0x1f
     beq .L_020b5918
     add r0, r5, #0xc8
-    bl func_020b5954
+    bl raise_count
     ldr r1, [r5, #0x11c]
     add r0, r5, #0xc8
     mov r1, r1, lsl #0x1
     ldrsh r6, [r4, r1]
-    bl func_020b5974
+    bl slide_value
     mov r0, r0, asr #0x8
     mov r0, r0, lsl #0x1
     ldrsh r1, [r4, r0]
@@ -211820,7 +211820,7 @@ func_020b5820: ; 0x020b5820
     beq .L_020b58f0
     mov r0, r5
     mov r1, r6
-    bl func_020b53c4
+    bl spread_sum
     str r6, [r5, #0x120]
 .L_020b58f0:
     ldr r0, [r5, #0xf0]
@@ -211828,11 +211828,11 @@ func_020b5820: ; 0x020b5820
     movs r0, r0, asr #0x1f
     beq .L_020b5918
     add r0, r5, #0xc8
-    bl func_020b593c
+    bl count_done
     cmp r0, #0x0
     beq .L_020b5918
     mov r0, r5
-    bl func_020b57f4
+    bl close_record
 .L_020b5918:
     add r7, r7, #0x1
     cmp r7, #0x4
@@ -211843,22 +211843,22 @@ func_020b5820: ; 0x020b5820
     bx lr
 .L_020b5934: .word data_0214aa7c
 .L_020b5938: .word data_0211c850
-    arm_func_end func_020b5820
+    arm_func_end step_four
 
-    .global func_020b593c
-    arm_func_start func_020b593c
-func_020b593c: ; 0x020b593c
+    .global count_done
+    arm_func_start count_done
+count_done: ; 0x020b593c
     ldr r1, [r0, #0x8]
     ldr r0, [r0, #0xc]
     cmp r1, r0
     movge r0, #0x1
     movlt r0, #0x0
     bx lr
-    arm_func_end func_020b593c
+    arm_func_end count_done
 
-    .global func_020b5954
-    arm_func_start func_020b5954
-func_020b5954: ; 0x020b5954
+    .global raise_count
+    arm_func_start raise_count
+raise_count: ; 0x020b5954
     ldr r2, [r0, #0x8]
     ldr r1, [r0, #0xc]
     cmp r2, r1
@@ -211867,11 +211867,11 @@ func_020b5954: ; 0x020b5954
     addlt r0, r0, #0x1
     strlt r0, [r1, #0x0]
     bx lr
-    arm_func_end func_020b5954
+    arm_func_end raise_count
 
-    .global func_020b5974
-    arm_func_start func_020b5974
-func_020b5974: ; 0x020b5974
+    .global slide_value
+    arm_func_start slide_value
+slide_value: ; 0x020b5974
     stmdb sp!, {r4, lr}
     ldr r1, [r0, #0xc]
     ldr r2, [r0, #0x8]
@@ -211883,11 +211883,11 @@ func_020b5974: ; 0x020b5974
     ldr r0, [r0, #0x4]
     sub r0, r0, r4
     mul r0, r2, r0
-    bl func_020c0870
+    bl divide_signed
     add r0, r4, r0
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b5974
+    arm_func_end slide_value
 
     .global func_020b59b0
     arm_func_start func_020b59b0
@@ -213395,7 +213395,7 @@ func_020b6c84: ; 0x020b6c84
     ldr ip, .L_020b6c90
     mov r0, #0x1000
     bx ip
-.L_020b6c90: .word func_020b82ac
+.L_020b6c90: .word busy_wait
     arm_func_end func_020b6c84
 
     .global func_020b6c94
@@ -213924,9 +213924,9 @@ mark_heaps: ; 0x020b7218
 .L_020b7288: .word data_0214afbc
     arm_func_end mark_heaps
 
-    .global func_020b728c
-    arm_func_start func_020b728c
-func_020b728c: ; 0x020b728c
+    .global yield_heap
+    arm_func_start yield_heap
+yield_heap: ; 0x020b728c
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, r0
@@ -213954,7 +213954,7 @@ func_020b728c: ; 0x020b728c
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020b72f0: .word data_0214afb4
-    arm_func_end func_020b728c
+    arm_func_end yield_heap
 
     .global release_heap
     arm_func_start release_heap
@@ -214434,9 +214434,9 @@ return_zero: ; 0x020b7920
     bx lr
     arm_func_end return_zero
 
-    .global func_020b7928
-    arm_func_start func_020b7928
-func_020b7928: ; 0x020b7928
+    .global take_one
+    arm_func_start take_one
+take_one: ; 0x020b7928
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     mov r6, r0
     mov r5, r1
@@ -214458,7 +214458,7 @@ func_020b7928: ; 0x020b7928
     bx lr
 .L_020b7970:
     mov r0, r7
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x10]
     cmp r0, #0x0
     beq .L_020b7954
@@ -214471,7 +214471,7 @@ func_020b7928: ; 0x020b7928
     ldr r0, [r6, #0xc]
     ldr r1, [r6, #0x8]
     add r0, r0, #0x1
-    bl func_020c0870
+    bl divide_signed
     add r2, r6, #0x10
     str r1, [r6, #0xc]
     ldr r1, [r2, #0x0]
@@ -214484,7 +214484,7 @@ func_020b7928: ; 0x020b7928
     mov r0, #0x1
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
-    arm_func_end func_020b7928
+    arm_func_end take_one
 
     .global pop_heap_node
     arm_func_start pop_heap_node
@@ -214659,7 +214659,7 @@ func_020b7b80: ; 0x020b7b80
     beq .L_020b7bfc
     mov r0, r5
     str r5, [r7, #0x78]
-    bl func_020b728c
+    bl yield_heap
     str r6, [r7, #0x78]
     b .L_020b7ba0
 .L_020b7bfc:
@@ -214699,9 +214699,9 @@ func_020b7c28: ; 0x020b7c28
     bx lr
     arm_func_end func_020b7c28
 
-    .global func_020b7c54
-    arm_func_start func_020b7c54
-func_020b7c54: ; 0x020b7c54
+    .global invalidate_lines
+    arm_func_start invalidate_lines
+invalidate_lines: ; 0x020b7c54
     add r1, r1, r0
     bic r0, r0, #0x1f
 .L_020b7c5c:
@@ -214710,11 +214710,11 @@ func_020b7c54: ; 0x020b7c54
     cmp r0, r1
     blt .L_020b7c5c
     bx lr
-    arm_func_end func_020b7c54
+    arm_func_end invalidate_lines
 
-    .global func_020b7c70
-    arm_func_start func_020b7c70
-func_020b7c70: ; 0x020b7c70
+    .global clean_lines
+    arm_func_start clean_lines
+clean_lines: ; 0x020b7c70
     add r1, r1, r0
     bic r0, r0, #0x1f
 .L_020b7c78:
@@ -214723,7 +214723,7 @@ func_020b7c70: ; 0x020b7c70
     cmp r0, r1
     blt .L_020b7c78
     bx lr
-    arm_func_end func_020b7c70
+    arm_func_end clean_lines
 
     .global func_020b7c8c
     arm_func_start func_020b7c8c
@@ -215277,13 +215277,13 @@ wait_irq: ; 0x020b82a0
     bx lr
     arm_func_end wait_irq
 
-    .global func_020b82ac
-    arm_func_start func_020b82ac
-func_020b82ac: ; 0x020b82ac
+    .global busy_wait
+    arm_func_start busy_wait
+busy_wait: ; 0x020b82ac
     subs r0, r0, #0x4
-    bhs func_020b82ac
+    bhs busy_wait
     bx lr
-    arm_func_end func_020b82ac
+    arm_func_end busy_wait
 
     .global func_020b82b8
     arm_func_start func_020b82b8
@@ -215336,12 +215336,12 @@ init_channel_12: ; 0x020b8310
 .L_020b8344:
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020b8344
     ldr r1, .L_020b8374
     mov r0, #0xc
-    bl func_020b977c
+    bl register_channel
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -215565,9 +215565,9 @@ func_020b8540: ; 0x020b8540
     bx lr
     arm_func_end func_020b8540
 
-    .global func_020b85d4
-    arm_func_start func_020b85d4
-func_020b85d4: ; 0x020b85d4
+    .global copy_bytes
+    arm_func_start copy_bytes
+copy_bytes: ; 0x020b85d4
     cmp r2, #0x0
     bxeq lr
     tst r1, #0x1
@@ -215654,7 +215654,7 @@ func_020b85d4: ; 0x020b85d4
     orr r0, r2, r0
     strh r0, [r1, #0x0]
     bx lr
-    arm_func_end func_020b85d4
+    arm_func_end copy_bytes
 
     .global func_020b8704
     arm_func_start func_020b8704
@@ -215868,7 +215868,7 @@ init_channel_7: ; 0x020b8924
     bxne lr
     mov r1, #0x1
     str r1, [r0, #0x0]
-    bl func_020b9218
+    bl init_queue
     bl func_020b93e4
     add sp, sp, #0x4
     ldmia sp!, {lr}
@@ -215897,15 +215897,15 @@ queue_command: ; 0x020b8964
     ldr r1, [sp, #0x18]
     str r4, [r0, #0x10]
     str r1, [r0, #0x14]
-    bl func_020b9064
+    bl link_record
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr
     arm_func_end queue_command
 
-    .global func_020b89bc
-    arm_func_start func_020b89bc
-func_020b89bc: ; 0x020b89bc
+    .global queue_three
+    arm_func_start queue_three
+queue_three: ; 0x020b89bc
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov lr, r1
@@ -215919,11 +215919,11 @@ func_020b89bc: ; 0x020b89bc
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b89bc
+    arm_func_end queue_three
 
-    .global func_020b89f0
-    arm_func_start func_020b89f0
-func_020b89f0: ; 0x020b89f0
+    .global queue_21
+    arm_func_start queue_21
+queue_21: ; 0x020b89f0
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov lr, r1
@@ -215937,7 +215937,7 @@ func_020b89f0: ; 0x020b89f0
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b89f0
+    arm_func_end queue_21
 
     .global func_020b8a24
     arm_func_start func_020b8a24
@@ -215998,9 +215998,9 @@ func_020b8aa8: ; 0x020b8aa8
     bx lr
     arm_func_end func_020b8aa8
 
-    .global func_020b8ad4
-    arm_func_start func_020b8ad4
-func_020b8ad4: ; 0x020b8ad4
+    .global queue_17
+    arm_func_start queue_17
+queue_17: ; 0x020b8ad4
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov lr, r1
@@ -216014,7 +216014,7 @@ func_020b8ad4: ; 0x020b8ad4
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b8ad4
+    arm_func_end queue_17
 
     .global func_020b8b08
     arm_func_start func_020b8b08
@@ -216032,9 +216032,9 @@ func_020b8b08: ; 0x020b8b08
     bx lr
     arm_func_end func_020b8b08
 
-    .global func_020b8b34
-    arm_func_start func_020b8b34
-func_020b8b34: ; 0x020b8b34
+    .global queue_23
+    arm_func_start queue_23
+queue_23: ; 0x020b8b34
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov r2, r1
@@ -216046,7 +216046,7 @@ func_020b8b34: ; 0x020b8b34
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b8b34
+    arm_func_end queue_23
 
     .global func_020b8b60
     arm_func_start func_020b8b60
@@ -216064,9 +216064,9 @@ func_020b8b60: ; 0x020b8b60
     bx lr
     arm_func_end func_020b8b60
 
-    .global func_020b8b8c
-    arm_func_start func_020b8b8c
-func_020b8b8c: ; 0x020b8b8c
+    .global queue_reply
+    arm_func_start queue_reply
+queue_reply: ; 0x020b8b8c
     stmdb sp!, {r4, r5, r6, lr}
     sub sp, sp, #0x8
     mov r4, r2
@@ -216074,7 +216074,7 @@ func_020b8b8c: ; 0x020b8b8c
     ldr r2, [sp, #0x18]
     mov r6, r0
     mov r1, r3
-    bl func_020b9390
+    bl set_reply
     str r0, [sp, #0x0]
     mov r1, r6
     mov r2, r5
@@ -216084,11 +216084,11 @@ func_020b8b8c: ; 0x020b8b8c
     add sp, sp, #0x8
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
-    arm_func_end func_020b8b8c
+    arm_func_end queue_reply
 
-    .global func_020b8bd0
-    arm_func_start func_020b8bd0
-func_020b8bd0: ; 0x020b8bd0
+    .global queue_ten
+    arm_func_start queue_ten
+queue_ten: ; 0x020b8bd0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x4
     mov r7, r2
@@ -216102,7 +216102,7 @@ func_020b8bd0: ; 0x020b8bd0
     ands r0, r4, #0x1
     beq .L_020b8c04
     mov r0, r5
-    bl func_020b93c4
+    bl bump_tag
 .L_020b8c04:
     add r5, r5, #0x1
     mov r4, r4, lsr #0x1
@@ -216121,11 +216121,11 @@ func_020b8bd0: ; 0x020b8bd0
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
-    arm_func_end func_020b8bd0
+    arm_func_end queue_ten
 
-    .global func_020b8c40
-    arm_func_start func_020b8c40
-func_020b8c40: ; 0x020b8c40
+    .global queue_nine
+    arm_func_start queue_nine
+queue_nine: ; 0x020b8c40
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov lr, r1
@@ -216139,22 +216139,22 @@ func_020b8c40: ; 0x020b8c40
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b8c40
+    arm_func_end queue_nine
 
-    .global func_020b8c74
-    arm_func_start func_020b8c74
-func_020b8c74: ; 0x020b8c74
+    .global report_sum
+    arm_func_start report_sum
+report_sum: ; 0x020b8c74
     ldr ip, .L_020b8c88
     mov r2, r1
     mov r1, #0x6
     mov r3, #0x2
     bx ip
-.L_020b8c88: .word func_020b89bc
-    arm_func_end func_020b8c74
+.L_020b8c88: .word queue_three
+    arm_func_end report_sum
 
-    .global func_020b8c8c
-    arm_func_start func_020b8c8c
-func_020b8c8c: ; 0x020b8c8c
+    .global queue_one
+    arm_func_start queue_one
+queue_one: ; 0x020b8c8c
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     mov r2, #0x0
@@ -216166,11 +216166,11 @@ func_020b8c8c: ; 0x020b8c8c
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020b8c8c
+    arm_func_end queue_one
 
-    .global func_020b8cb8
-    arm_func_start func_020b8cb8
-func_020b8cb8: ; 0x020b8cb8
+    .global pop_record
+    arm_func_start pop_record
+pop_record: ; 0x020b8cb8
     ldr r1, .L_020b8ce8
     ldr r0, [r1, #0x0]
     cmp r0, #0x0
@@ -216185,11 +216185,11 @@ func_020b8cb8: ; 0x020b8cb8
     bx lr
 .L_020b8ce8: .word data_0214b2a8
 .L_020b8cec: .word data_0214b2b8
-    arm_func_end func_020b8cb8
+    arm_func_end pop_record
 
-    .global func_020b8cf0
-    arm_func_start func_020b8cf0
-func_020b8cf0: ; 0x020b8cf0
+    .global send_zero
+    arm_func_start send_zero
+send_zero: ; 0x020b8cf0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, #0x7
@@ -216198,28 +216198,28 @@ func_020b8cf0: ; 0x020b8cf0
     mov r0, r5
     mov r1, r4
     mov r2, r4
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     blt .L_020b8d00
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020b8cf0
+    arm_func_end send_zero
 
-    .global func_020b8d24
-    arm_func_start func_020b8d24
-func_020b8d24: ; 0x020b8d24
+    .global wait_channel
+    arm_func_start wait_channel
+wait_channel: ; 0x020b8d24
     stmdb sp!, {r4, r5, r6, lr}
     ldr r1, .L_020b8d8c
     mov r0, #0x7
-    bl func_020b977c
+    bl register_channel
     bl return_zero
     cmp r0, #0x0
     ldmneia sp!, {r4, r5, r6, lr}
     bxne lr
     mov r0, #0x7
     mov r1, #0x1
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     ldmneia sp!, {r4, r5, r6, lr}
     bxne lr
@@ -216228,50 +216228,50 @@ func_020b8d24: ; 0x020b8d24
     mov r4, #0x1
 .L_020b8d68:
     mov r0, r6
-    bl func_020b82ac
+    bl busy_wait
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020b8d68
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
-.L_020b8d8c: .word func_020b8d90
-    arm_func_end func_020b8d24
+.L_020b8d8c: .word on_channel_7
+    arm_func_end wait_channel
 
-    .global func_020b8d90
-    arm_func_start func_020b8d90
-func_020b8d90: ; 0x020b8d90
+    .global on_channel_7
+    arm_func_start on_channel_7
+on_channel_7: ; 0x020b8d90
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, r1
     bl disable_irq
     mov r4, r0
     mov r0, r5
-    bl func_020b9330
+    bl dispatch_reply
     mov r0, r4
     bl restore_irq
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020b8d90
+    arm_func_end on_channel_7
 
-    .global func_020b8dc0
-    arm_func_start func_020b8dc0
-func_020b8dc0: ; 0x020b8dc0
+    .global count_held
+    arm_func_start count_held
+count_held: ; 0x020b8dc0
     stmdb sp!, {r4, lr}
-    bl func_020b8e0c
+    bl count_free
     mov r4, r0
-    bl func_020b8de0
+    bl count_queued
     rsb r1, r4, #0x100
     sub r0, r1, r0
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020b8dc0
+    arm_func_end count_held
 
-    .global func_020b8de0
-    arm_func_start func_020b8de0
-func_020b8de0: ; 0x020b8de0
+    .global count_queued
+    arm_func_start count_queued
+count_queued: ; 0x020b8de0
     ldr r1, .L_020b8e08
     mov r0, #0x0
     ldr r1, [r1, #0x0]
@@ -216284,11 +216284,11 @@ func_020b8de0: ; 0x020b8de0
     bne .L_020b8df4
     bx lr
 .L_020b8e08: .word data_0214b2b0
-    arm_func_end func_020b8de0
+    arm_func_end count_queued
 
-    .global func_020b8e0c
-    arm_func_start func_020b8e0c
-func_020b8e0c: ; 0x020b8e0c
+    .global count_free
+    arm_func_start count_free
+count_free: ; 0x020b8e0c
     ldr r1, .L_020b8e34
     mov r0, #0x0
     ldr r1, [r1, #0x0]
@@ -216301,11 +216301,11 @@ func_020b8e0c: ; 0x020b8e0c
     bne .L_020b8e20
     bx lr
 .L_020b8e34: .word data_0214b2a8
-    arm_func_end func_020b8e0c
+    arm_func_end count_free
 
-    .global func_020b8e38
-    arm_func_start func_020b8e38
-func_020b8e38: ; 0x020b8e38
+    .global count_reached
+    arm_func_start count_reached
+count_reached: ; 0x020b8e38
     ldr r1, .L_020b8e70
     ldr r1, [r1, #0x0]
     cmp r0, r1
@@ -216322,11 +216322,11 @@ func_020b8e38: ; 0x020b8e38
     movhs r0, #0x0
     bx lr
 .L_020b8e70: .word data_0214b2ac
-    arm_func_end func_020b8e38
+    arm_func_end count_reached
 
-    .global func_020b8e74
-    arm_func_start func_020b8e74
-func_020b8e74: ; 0x020b8e74
+    .global read_count
+    arm_func_start read_count
+read_count: ; 0x020b8e74
     ldr r0, .L_020b8e94
     ldr r0, [r0, #0x0]
     cmp r0, #0x0
@@ -216338,15 +216338,15 @@ func_020b8e74: ; 0x020b8e74
 .L_020b8e94: .word data_0214b2b0
 .L_020b8e98: .word data_0214b2ac
 .L_020b8e9c: .word data_0214b2c8
-    arm_func_end func_020b8e74
+    arm_func_end read_count
 
-    .global func_020b8ea0
-    arm_func_start func_020b8ea0
-func_020b8ea0: ; 0x020b8ea0
+    .global wait_count
+    arm_func_start wait_count
+wait_count: ; 0x020b8ea0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, r0
-    bl func_020b8e38
+    bl count_reached
     cmp r0, #0x0
     addne sp, sp, #0x4
     ldmneia sp!, {r4, r5, lr}
@@ -216354,18 +216354,18 @@ func_020b8ea0: ; 0x020b8ea0
     mov r4, #0x0
 .L_020b8ec4:
     mov r0, r4
-    bl func_020b9134
+    bl reclaim_list
     cmp r0, #0x0
     bne .L_020b8ec4
     mov r0, r5
-    bl func_020b8e38
+    bl count_reached
     cmp r0, #0x0
     addne sp, sp, #0x4
     ldmneia sp!, {r4, r5, lr}
     bxne lr
-    bl func_020b8cf0
+    bl send_zero
     mov r0, r5
-    bl func_020b8e38
+    bl count_reached
     cmp r0, #0x0
     addne sp, sp, #0x4
     ldmneia sp!, {r4, r5, lr}
@@ -216373,19 +216373,19 @@ func_020b8ea0: ; 0x020b8ea0
     mov r4, #0x1
 .L_020b8f0c:
     mov r0, r4
-    bl func_020b9134
+    bl reclaim_list
     mov r0, r5
-    bl func_020b8e38
+    bl count_reached
     cmp r0, #0x0
     beq .L_020b8f0c
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020b8ea0
+    arm_func_end wait_count
 
-    .global func_020b8f30
-    arm_func_start func_020b8f30
-func_020b8f30: ; 0x020b8f30
+    .global file_queue
+    arm_func_start file_queue
+file_queue: ; 0x020b8f30
     stmdb sp!, {r4, lr}
     ldr r1, .L_020b9048
     mov r4, r0
@@ -216404,7 +216404,7 @@ func_020b8f30: ; 0x020b8f30
     bxeq lr
 .L_020b8f70:
     mov r0, #0x1
-    bl func_020b9134
+    bl reclaim_list
     ldr r0, .L_020b904c
     ldr r0, [r0, #0x0]
     cmp r0, #0x8
@@ -216412,12 +216412,12 @@ func_020b8f30: ; 0x020b8f30
 .L_020b8f88:
     ldr r0, .L_020b9050
     mov r1, #0x1800
-    bl func_020b7c70
+    bl clean_lines
     ldr r1, .L_020b9048
     mov r0, #0x7
     ldr r1, [r1, #0x0]
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     bge .L_020b8fdc
     cmp r4, #0x0
@@ -216429,7 +216429,7 @@ func_020b8f30: ; 0x020b8f30
     mov r0, #0x7
     ldr r1, [r1, #0x0]
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     blt .L_020b8fc0
 .L_020b8fdc:
@@ -216467,11 +216467,11 @@ func_020b8f30: ; 0x020b8f30
 .L_020b9058: .word data_0214b2cc
 .L_020b905c: .word data_0214b2c8
 .L_020b9060: .word data_0214b2b4
-    arm_func_end func_020b8f30
+    arm_func_end file_queue
 
-    .global func_020b9064
-    arm_func_start func_020b9064
-func_020b9064: ; 0x020b9064
+    .global link_record
+    arm_func_start link_record
+link_record: ; 0x020b9064
     ldr r2, .L_020b9090
     ldr r1, [r2, #0x0]
     cmp r1, #0x0
@@ -216485,7 +216485,7 @@ func_020b9064: ; 0x020b9064
     bx lr
 .L_020b9090: .word data_0214b2b4
 .L_020b9094: .word data_0214b2b0
-    arm_func_end func_020b9064
+    arm_func_end link_record
 
     .global take_record
     arm_func_start take_record
@@ -216497,7 +216497,7 @@ take_record: ; 0x020b9098
     movne r0, #0x0
     ldmneia sp!, {r4, lr}
     bxne lr
-    bl func_020b8cb8
+    bl pop_record
     cmp r0, #0x0
     ldmneia sp!, {r4, lr}
     bxne lr
@@ -216505,43 +216505,43 @@ take_record: ; 0x020b9098
     moveq r0, #0x0
     ldmeqia sp!, {r4, lr}
     bxeq lr
-    bl func_020b8dc0
+    bl count_held
     cmp r0, #0x0
     ble .L_020b9108
     mov r4, #0x0
 .L_020b90e4:
     mov r0, r4
-    bl func_020b9134
+    bl reclaim_list
     cmp r0, #0x0
     bne .L_020b90e4
-    bl func_020b8cb8
+    bl pop_record
     cmp r0, #0x0
     beq .L_020b9110
     ldmia sp!, {r4, lr}
     bx lr
 .L_020b9108:
     mov r0, #0x1
-    bl func_020b8f30
+    bl file_queue
 .L_020b9110:
-    bl func_020b8cf0
+    bl send_zero
     mov r4, #0x1
 .L_020b9118:
     mov r0, r4
-    bl func_020b9134
-    bl func_020b8cb8
+    bl reclaim_list
+    bl pop_record
     cmp r0, #0x0
     beq .L_020b9118
     ldmia sp!, {r4, lr}
     bx lr
     arm_func_end take_record
 
-    .global func_020b9134
-    arm_func_start func_020b9134
-func_020b9134: ; 0x020b9134
+    .global reclaim_list
+    arm_func_start reclaim_list
+reclaim_list: ; 0x020b9134
     stmdb sp!, {r4, lr}
     cmp r0, #0x0
     bne .L_020b9160
-    bl func_020b9494
+    bl fresh_word
     ldr r1, .L_020b9200
     ldr r1, [r1, #0x0]
     cmp r1, r0
@@ -216550,7 +216550,7 @@ func_020b9134: ; 0x020b9134
     ldmia sp!, {r4, lr}
     bx lr
 .L_020b9160:
-    bl func_020b9494
+    bl fresh_word
     ldr r1, .L_020b9200
     ldr r1, [r1, #0x0]
     cmp r1, r0
@@ -216599,14 +216599,14 @@ func_020b9134: ; 0x020b9134
 .L_020b920c: .word data_0214b2b8
 .L_020b9210: .word data_0214b2c4
 .L_020b9214: .word data_0214b2a8
-    arm_func_end func_020b9134
+    arm_func_end reclaim_list
 
-    .global func_020b9218
-    arm_func_start func_020b9218
-func_020b9218: ; 0x020b9218
+    .global init_queue
+    arm_func_start init_queue
+init_queue: ; 0x020b9218
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x4
-    bl func_020b8d24
+    bl wait_channel
     ldr r3, .L_020b92f8
     ldr r0, .L_020b92fc
     mov r4, #0x0
@@ -216655,9 +216655,9 @@ func_020b9218: ; 0x020b9218
     str r2, [r0, #0x4]
     ldr r1, [r1, #0x0]
     str r1, [r0, #0x8]
-    bl func_020b9064
+    bl link_record
     mov r0, r8
-    bl func_020b8f30
+    bl file_queue
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
@@ -216675,11 +216675,11 @@ func_020b9218: ; 0x020b9218
 .L_020b9324: .word data_0214b2c8
 .L_020b9328: .word data_0214b300
 .L_020b932c: .word data_0214cde0
-    arm_func_end func_020b9218
+    arm_func_end init_queue
 
-    .global func_020b9330
-    arm_func_start func_020b9330
-func_020b9330: ; 0x020b9330
+    .global dispatch_reply
+    arm_func_start dispatch_reply
+dispatch_reply: ; 0x020b9330
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r3, .L_020b938c
@@ -216704,11 +216704,11 @@ func_020b9330: ; 0x020b9330
     ldmia sp!, {lr}
     bx lr
 .L_020b938c: .word data_0214cd80
-    arm_func_end func_020b9330
+    arm_func_end dispatch_reply
 
-    .global func_020b9390
-    arm_func_start func_020b9390
-func_020b9390: ; 0x020b9390
+    .global set_reply
+    arm_func_start set_reply
+set_reply: ; 0x020b9390
     mov r3, #0xc
     mul r3, r0, r3
     ldr r0, .L_020b93c0
@@ -216722,11 +216722,11 @@ func_020b9390: ; 0x020b9390
     ldrb r0, [ip, #0x8]
     bx lr
 .L_020b93c0: .word data_0214cd80
-    arm_func_end func_020b9390
+    arm_func_end set_reply
 
-    .global func_020b93c4
-    arm_func_start func_020b93c4
-func_020b93c4: ; 0x020b93c4
+    .global bump_tag
+    arm_func_start bump_tag
+bump_tag: ; 0x020b93c4
     ldr r2, .L_020b93e0
     mov r1, #0xc
     mla r1, r0, r1, r2
@@ -216735,7 +216735,7 @@ func_020b93c4: ; 0x020b93c4
     strb r0, [r1, #0x0]
     bx lr
 .L_020b93e0: .word data_0214cd80
-    arm_func_end func_020b93c4
+    arm_func_end bump_tag
 
     .global func_020b93e4
     arm_func_start func_020b93e4
@@ -216790,20 +216790,20 @@ func_020b9414: ; 0x020b9414
     cmp r3, #0x10
     blt .L_020b946c
     mov r1, #0x280
-    bl func_020b7c70
+    bl clean_lines
     ldmia sp!, {r4, lr}
     bx lr
     arm_func_end func_020b9414
 
-    .global func_020b9494
-    arm_func_start func_020b9494
-func_020b9494: ; 0x020b9494
+    .global fresh_word
+    arm_func_start fresh_word
+fresh_word: ; 0x020b9494
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_020b94c4
     mov r1, #0x280
     ldr r0, [r0, #0x0]
-    bl func_020b7c54
+    bl invalidate_lines
     ldr r0, .L_020b94c4
     ldr r0, [r0, #0x0]
     ldr r0, [r0, #0x0]
@@ -216811,17 +216811,17 @@ func_020b9494: ; 0x020b9494
     ldmia sp!, {lr}
     bx lr
 .L_020b94c4: .word data_0214cde0
-    arm_func_end func_020b9494
+    arm_func_end fresh_word
 
-    .global func_020b94c8
-    arm_func_start func_020b94c8
-func_020b94c8: ; 0x020b94c8
+    .global second_word
+    arm_func_start second_word
+second_word: ; 0x020b94c8
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r0, .L_020b94f8
     mov r1, #0x280
     ldr r0, [r0, #0x0]
-    bl func_020b7c54
+    bl invalidate_lines
     ldr r0, .L_020b94f8
     ldr r0, [r0, #0x0]
     ldr r0, [r0, #0x4]
@@ -216829,11 +216829,11 @@ func_020b94c8: ; 0x020b94c8
     ldmia sp!, {lr}
     bx lr
 .L_020b94f8: .word data_0214cde0
-    arm_func_end func_020b94c8
+    arm_func_end second_word
 
-    .global func_020b94fc
-    arm_func_start func_020b94fc
-func_020b94fc: ; 0x020b94fc
+    .global pack_level
+    arm_func_start pack_level
+pack_level: ; 0x020b94fc
     ldr r1, .L_020b9564
     cmp r0, r1
     movlt r0, r1
@@ -216865,7 +216865,7 @@ func_020b94fc: ; 0x020b94fc
 .L_020b9564: .word 0xfffffd2d
 .L_020b9568: .word 0x2d3
 .L_020b956c: .word data_0211c950
-    arm_func_end func_020b94fc
+    arm_func_end pack_level
 
     .global func_020b9570
     arm_func_start func_020b9570
@@ -216958,9 +216958,9 @@ func_020b957c: ; 0x020b957c
 .L_020b969c: .word 0x4000188
     arm_func_end func_020b957c
 
-    .global func_020b96a0
-    arm_func_start func_020b96a0
-func_020b96a0: ; 0x020b96a0
+    .global send_fifo
+    arm_func_start send_fifo
+send_fifo: ; 0x020b96a0
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     ldr r3, [sp, #0x0]
@@ -217007,11 +217007,11 @@ func_020b96a0: ; 0x020b96a0
     bx lr
 .L_020b974c: .word 0x4000184
 .L_020b9750: .word 0x4000188
-    arm_func_end func_020b96a0
+    arm_func_end send_fifo
 
-    .global func_020b9754
-    arm_func_start func_020b9754
-func_020b9754: ; 0x020b9754
+    .global channel_ready
+    arm_func_start channel_ready
+channel_ready: ; 0x020b9754
     ldr r2, .L_020b9778
     mov r3, #0x1
     add r1, r2, r1, lsl #0x2
@@ -217022,11 +217022,11 @@ func_020b9754: ; 0x020b9754
     mov r0, r3
     bx lr
 .L_020b9778: .word 0x27ffc00
-    arm_func_end func_020b9754
+    arm_func_end channel_ready
 
-    .global func_020b977c
-    arm_func_start func_020b977c
-func_020b977c: ; 0x020b977c
+    .global register_channel
+    arm_func_start register_channel
+register_channel: ; 0x020b977c
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r4, r0
@@ -217058,7 +217058,7 @@ func_020b977c: ; 0x020b977c
     bx lr
 .L_020b97e8: .word data_0214cde8
 .L_020b97ec: .word 0x27ffc00
-    arm_func_end func_020b977c
+    arm_func_end register_channel
 
     .global func_020b97f0
     arm_func_start func_020b97f0
@@ -217136,12 +217136,12 @@ func_020b97f0: ; 0x020b97f0
 .L_020b98f0: .word 0x4000180
     arm_func_end func_020b97f0
 
-    .global func_020b98f4
-    arm_func_start func_020b98f4
-func_020b98f4: ; 0x020b98f4
+    .global result_zero
+    arm_func_start result_zero
+result_zero: ; 0x020b98f4
     mov r0, #0x0
     bx lr
-    arm_func_end func_020b98f4
+    arm_func_end result_zero
 
     .global func_020b98fc
     arm_func_start func_020b98fc
@@ -217180,7 +217180,7 @@ func_020b9924: ; 0x020b9924
     add r1, sp, #0x0
     mov r2, #0x8
     str r3, [sp, #0xc]
-    bl func_020ba240
+    bl pull_bytes
     ldr r1, [sp, #0x0]
     mov r0, r5
     str r1, [r5, #0x2c]
@@ -217188,15 +217188,15 @@ func_020b9924: ; 0x020b9924
     mov r1, #0x7
     str r2, [r5, #0x30]
     str r4, [r5, #0x34]
-    bl func_020ba2fc
+    bl ask_parent
     add sp, sp, #0x14
     ldmia sp!, {r4, r5, lr}
     bx lr
     arm_func_end func_020b9924
 
-    .global func_020b99a0
-    arm_func_start func_020b99a0
-func_020b99a0: ; 0x020b99a0
+    .global build_path
+    arm_func_start build_path
+build_path: ; 0x020b99a0
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0xdc
     mov r4, r0
@@ -217204,7 +217204,7 @@ func_020b99a0: ; 0x020b99a0
     add r0, sp, #0x98
     add r11, r4, #0x2c
     str r1, [sp, #0x0]
-    bl func_020bb238
+    bl blank_block
     ldr r0, [r4, #0x8]
     str r0, [sp, #0xa0]
     ldr r0, [r4, #0xc]
@@ -217229,7 +217229,7 @@ func_020b99a0: ; 0x020b99a0
 .L_020b9a14:
     mov r0, r8
     mov r1, r10
-    bl func_020ba1fc
+    bl step_up
     add r2, sp, #0x4
     cmp r10, #0x0
     mov r0, r8
@@ -217237,7 +217237,7 @@ func_020b99a0: ; 0x020b99a0
     ldreq r9, [sp, #0xc0]
     str r2, [sp, #0xc4]
     str r7, [sp, #0xc8]
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     bne .L_020b9a78
 .L_020b9a48:
@@ -217251,7 +217251,7 @@ func_020b99a0: ; 0x020b99a0
 .L_020b9a64:
     mov r0, r8
     mov r1, r6
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     beq .L_020b9a48
 .L_020b9a78:
@@ -217290,20 +217290,20 @@ func_020b99a0: ; 0x020b99a0
     beq .L_020b9b7c
     add r0, sp, #0x98
     mov r1, r5
-    bl func_020ba1fc
+    bl step_up
     add r8, sp, #0x98
     mov r6, #0x3
     mov r7, #0x1
 .L_020b9b0c:
     ldr r1, [sp, #0xc0]
     mov r0, r8
-    bl func_020ba1fc
+    bl step_up
     add r2, sp, #0x4
     mov r0, r8
     mov r1, r6
     str r2, [sp, #0xc4]
     str r7, [sp, #0xc8]
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     bne .L_020b9b70
 .L_020b9b38:
@@ -217319,7 +217319,7 @@ func_020b99a0: ; 0x020b99a0
 .L_020b9b5c:
     mov r0, r8
     mov r1, r6
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     beq .L_020b9b38
 .L_020b9b70:
@@ -217357,15 +217357,15 @@ func_020b99a0: ; 0x020b99a0
     ldr r0, [sp, #0x0]
     mov r1, r7
     mov r2, r8
-    bl func_020b85d4
+    bl copy_bytes
     add r1, r9, r8
     ldr r0, .L_020b9d5c
     add r1, r7, r1
     mov r2, #0x2
-    bl func_020b85d4
+    bl copy_bytes
     add r0, sp, #0x98
     mov r1, r5
-    bl func_020ba1fc
+    bl step_up
     cmp r4, #0x10000
     beq .L_020b9c94
     add r3, sp, #0x4
@@ -217374,7 +217374,7 @@ func_020b99a0: ; 0x020b99a0
     mov r1, #0x3
     str r3, [sp, #0xc4]
     str r2, [sp, #0xc8]
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     bne .L_020b9c70
     add r9, sp, #0x98
@@ -217389,7 +217389,7 @@ func_020b99a0: ; 0x020b99a0
 .L_020b9c5c:
     mov r0, r9
     mov r1, r8
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     beq .L_020b9c44
 .L_020b9c70:
@@ -217399,7 +217399,7 @@ func_020b99a0: ; 0x020b99a0
     add r0, sp, #0x18
     mov r2, r4
     sub r1, r1, r4
-    bl func_020b85d4
+    bl copy_bytes
     sub r6, r6, r4
     b .L_020b9ca4
 .L_020b9c94:
@@ -217418,7 +217418,7 @@ func_020b99a0: ; 0x020b99a0
 .L_020b9cc0:
     ldr r1, [sp, #0xc0]
     mov r0, r10
-    bl func_020ba1fc
+    bl step_up
     add r2, r7, r6
     mov r0, r10
     mov r1, r4
@@ -217426,7 +217426,7 @@ func_020b99a0: ; 0x020b99a0
     str r9, [sp, #0xc8]
     strb r8, [r2, #-0x1]
     sub r6, r6, #0x1
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     bne .L_020b9d40
 .L_020b9cf4:
@@ -217441,13 +217441,13 @@ func_020b99a0: ; 0x020b99a0
     add r0, sp, #0x18
     mov r2, r5
     sub r1, r1, r5
-    bl func_020b85d4
+    bl copy_bytes
     sub r6, r6, r5
     b .L_020b9d40
 .L_020b9d2c:
     mov r0, r10
     mov r1, r4
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     beq .L_020b9cf4
 .L_020b9d40:
@@ -217460,11 +217460,11 @@ func_020b99a0: ; 0x020b99a0
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
 .L_020b9d5c: .word data_021219d0
-    arm_func_end func_020b99a0
+    arm_func_end build_path
 
-    .global func_020b9d60
-    arm_func_start func_020b9d60
-func_020b9d60: ; 0x020b9d60
+    .global walk_path
+    arm_func_start walk_path
+walk_path: ; 0x020b9d60
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0x9c
     mov r10, r0
@@ -217472,7 +217472,7 @@ func_020b9d60: ; 0x020b9d60
     ldr r9, [r10, #0x38]
     mov r1, #0x2
     str r2, [sp, #0x0]
-    bl func_020ba2fc
+    bl ask_parent
     ldrb r1, [r9, #0x0]
     cmp r1, #0x0
     beq .L_020b9f50
@@ -217531,7 +217531,7 @@ func_020b9d60: ; 0x020b9d60
     beq .L_020b9e54
     ldr r1, [r10, #0x28]
     mov r0, r10
-    bl func_020ba1fc
+    bl step_up
 .L_020b9e54:
     add r9, r9, #0x2
     b .L_020b9f34
@@ -217547,7 +217547,7 @@ func_020b9d60: ; 0x020b9d60
 .L_020b9e7c:
     mov r0, r10
     mov r1, r4
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x0
     addne sp, sp, #0x9c
     movne r0, #0x1
@@ -217562,7 +217562,7 @@ func_020b9d60: ; 0x020b9d60
     mov r0, r9
     mov r1, r11
     mov r2, r7
-    bl func_020ba198
+    bl match_name
     cmp r0, #0x0
     bne .L_020b9e7c
     cmp r8, #0x0
@@ -217574,7 +217574,7 @@ func_020b9d60: ; 0x020b9d60
     ldr r1, [sp, #0x4]
     mov r0, r10
     add r9, r9, r7
-    bl func_020ba2fc
+    bl ask_parent
     b .L_020b9f34
 .L_020b9ef8:
     ldr r0, [sp, #0x0]
@@ -217612,11 +217612,11 @@ func_020b9d60: ; 0x020b9d60
     add sp, sp, #0x9c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    arm_func_end func_020b9d60
+    arm_func_end walk_path
 
-    .global func_020b9f7c
-    arm_func_start func_020b9f7c
-func_020b9f7c: ; 0x020b9f7c
+    .global read_name
+    arm_func_start read_name
+read_name: ; 0x020b9f7c
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0xc
     mov r5, r0
@@ -217628,7 +217628,7 @@ func_020b9f7c: ; 0x020b9f7c
     add r1, sp, #0x0
     mov r2, #0x1
     str r3, [sp, #0x8]
-    bl func_020ba240
+    bl pull_bytes
     ldrb r0, [sp, #0x0]
     and r1, r0, #0x7f
     mov r0, r0, asr #0x7
@@ -217649,7 +217649,7 @@ func_020b9f7c: ; 0x020b9f7c
     bne .L_020ba010
     add r0, sp, #0x4
     add r1, r4, #0x14
-    bl func_020ba240
+    bl pull_bytes
     ldr r0, [r4, #0x10]
     mov r1, #0x0
     add r0, r4, r0
@@ -217661,7 +217661,7 @@ func_020b9f7c: ; 0x020b9f7c
     add r0, sp, #0x4
     add r1, sp, #0x2
     mov r2, #0x2
-    bl func_020ba240
+    bl pull_bytes
     ldr r1, [r5, #0x8]
     ldr r0, .L_020ba08c
     str r1, [r4, #0x0]
@@ -217689,11 +217689,11 @@ func_020b9f7c: ; 0x020b9f7c
     ldmia sp!, {r4, r5, lr}
     bx lr
 .L_020ba08c: .word 0xfff
-    arm_func_end func_020b9f7c
+    arm_func_end read_name
 
-    .global func_020ba090
-    arm_func_start func_020ba090
-func_020ba090: ; 0x020ba090
+    .global load_block
+    arm_func_start load_block
+load_block: ; 0x020ba090
     stmdb sp!, {r4, r5, r6, lr}
     sub sp, sp, #0x10
     mov r6, r0
@@ -217707,7 +217707,7 @@ func_020ba090: ; 0x020ba090
     add r1, sp, #0x0
     mov r2, #0x8
     str r3, [sp, #0xc]
-    bl func_020ba240
+    bl pull_bytes
     add r3, r6, #0x1c
     ldmia r4, {r0, r1, r2}
     stmia r3, {r0, r1, r2}
@@ -217733,11 +217733,11 @@ func_020ba090: ; 0x020ba090
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
 .L_020ba124: .word 0xfff
-    arm_func_end func_020ba090
+    arm_func_end load_block
 
-    .global func_020ba128
-    arm_func_start func_020ba128
-func_020ba128: ; 0x020ba128
+    .global advance_next
+    arm_func_start advance_next
+advance_next: ; 0x020ba128
     stmdb sp!, {r4, lr}
     add lr, r0, #0x28
     ldr r3, [r0, #0x34]
@@ -217752,11 +217752,11 @@ func_020ba128: ; 0x020ba128
     blx ip
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020ba128
+    arm_func_end advance_next
 
-    .global func_020ba160
-    arm_func_start func_020ba160
-func_020ba160: ; 0x020ba160
+    .global advance_block
+    arm_func_start advance_block
+advance_block: ; 0x020ba160
     stmdb sp!, {r4, lr}
     add lr, r0, #0x28
     ldr r3, [r0, #0x34]
@@ -217771,11 +217771,11 @@ func_020ba160: ; 0x020ba160
     blx ip
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020ba160
+    arm_func_end advance_block
 
-    .global func_020ba198
-    arm_func_start func_020ba198
-func_020ba198: ; 0x020ba198
+    .global match_name
+    arm_func_start match_name
+match_name: ; 0x020ba198
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     cmp r2, #0x0
@@ -217803,11 +217803,11 @@ func_020ba198: ; 0x020ba198
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020ba198
+    arm_func_end match_name
 
-    .global func_020ba1fc
-    arm_func_start func_020ba1fc
-func_020ba1fc: ; 0x020ba1fc
+    .global step_up
+    arm_func_start step_up
+step_up: ; 0x020ba1fc
     stmdb sp!, {lr}
     sub sp, sp, #0x4
     add ip, r0, #0xc
@@ -217821,15 +217821,15 @@ func_020ba1fc: ; 0x020ba1fc
     strh r2, [r0, #0x32]
     strh r1, [r0, #0x30]
     mov r1, #0x2
-    bl func_020ba2fc
+    bl ask_parent
     add sp, sp, #0x4
     ldmia sp!, {lr}
     bx lr
-    arm_func_end func_020ba1fc
+    arm_func_end step_up
 
-    .global func_020ba240
-    arm_func_start func_020ba240
-func_020ba240: ; 0x020ba240
+    .global pull_bytes
+    arm_func_start pull_bytes
+pull_bytes: ; 0x020ba240
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     mov r8, r0
     ldr r6, [r8, #0x0]
@@ -217865,7 +217865,7 @@ func_020ba240: ; 0x020ba240
     b .L_020ba2c4
 .L_020ba2bc:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
 .L_020ba2c4:
     ldr r0, [r6, #0x10]
     ands r0, r0, #0x200
@@ -217882,11 +217882,11 @@ func_020ba240: ; 0x020ba240
     str r0, [r1, #0x0]
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     bx lr
-    arm_func_end func_020ba240
+    arm_func_end pull_bytes
 
-    .global func_020ba2fc
-    arm_func_start func_020ba2fc
-func_020ba2fc: ; 0x020ba2fc
+    .global ask_parent
+    arm_func_start ask_parent
+ask_parent: ; 0x020ba2fc
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x4
     mov r4, r0
@@ -217965,7 +217965,7 @@ func_020ba2fc: ; 0x020ba2fc
     b .L_020ba41c
 .L_020ba414:
     mov r0, r5
-    bl func_020b728c
+    bl yield_heap
 .L_020ba41c:
     ldr r0, [r7, #0x10]
     ands r0, r0, #0x200
@@ -217995,23 +217995,23 @@ func_020ba2fc: ; 0x020ba2fc
     bic r2, r1, #0x100
     mov r1, r6
     str r2, [r3, #0x0]
-    bl func_020ba4a0
+    bl set_state
 .L_020ba48c:
     mov r0, r6
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
 .L_020ba49c: .word data_0211cc24
-    arm_func_end func_020ba2fc
+    arm_func_end ask_parent
 
-    .global func_020ba4a0
-    arm_func_start func_020ba4a0
-func_020ba4a0: ; 0x020ba4a0
+    .global set_state
+    arm_func_start set_state
+set_state: ; 0x020ba4a0
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #0x4
     mov r5, r0
     mov r4, r1
-    bl func_020bb2e4
+    bl detach_block
     add r2, r5, #0xc
     ldr r1, [r2, #0x0]
     add r0, r5, #0x18
@@ -218022,7 +218022,7 @@ func_020ba4a0: ; 0x020ba4a0
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
-    arm_func_end func_020ba4a0
+    arm_func_end set_state
 
     .global func_020ba4dc
     arm_func_start func_020ba4dc
@@ -218056,7 +218056,7 @@ func_020ba4fc: ; 0x020ba4fc
     add r1, r6, #0x1f
     add r0, sp, #0x4
     bic r4, r1, #0x1f
-    bl func_020bb238
+    bl blank_block
     ldr r2, [r7, #0x20]
     mvn r0, #0x0
     str r0, [sp, #0x0]
@@ -218070,7 +218070,7 @@ func_020ba4fc: ; 0x020ba4fc
     mov r1, r4
     bl func_020bae68
     add r0, sp, #0x4
-    bl func_020baf24
+    bl reset_block
     str r4, [r7, #0x20]
     ldr r0, [r7, #0x24]
     ldr r2, [r7, #0x28]
@@ -218087,7 +218087,7 @@ func_020ba4fc: ; 0x020ba4fc
     mov r1, r4
     bl func_020bae68
     add r0, sp, #0x4
-    bl func_020baf24
+    bl reset_block
     str r4, [r7, #0x28]
     ldr r0, .L_020ba5e8
     str r6, [r7, #0x38]
@@ -218228,13 +218228,13 @@ func_020ba744: ; 0x020ba744
     bic r2, r1, #0x100
     mov r1, r4
     str r2, [r3, #0x0]
-    bl func_020ba4a0
+    bl set_state
     mov r0, r5
-    bl func_020baa2c
+    bl scan_parent
     cmp r0, #0x0
     ldmeqia sp!, {r4, r5, r6, lr}
     bxeq lr
-    bl func_020ba98c
+    bl follow_head
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
 .L_020ba7a4:
@@ -218254,9 +218254,9 @@ func_020ba744: ; 0x020ba744
     bx lr
     arm_func_end func_020ba744
 
-    .global func_020ba7dc
-    arm_func_start func_020ba7dc
-func_020ba7dc: ; 0x020ba7dc
+    .global start_block
+    arm_func_start start_block
+start_block: ; 0x020ba7dc
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     mov r7, r0
@@ -218277,7 +218277,7 @@ func_020ba7dc: ; 0x020ba7dc
     beq .L_020ba848
     mov r0, r7
     mov r1, #0x3
-    bl func_020ba4a0
+    bl set_state
     mov r0, r4
     bl restore_irq
     add sp, sp, #0x4
@@ -218292,7 +218292,7 @@ func_020ba7dc: ; 0x020ba7dc
     strne r0, [r1, #0x0]
     mov r0, r7
     add r1, r6, #0x14
-    bl func_020bb29c
+    bl append_block
     ldr r0, [r6, #0x10]
     ands r0, r0, #0x10
     movne r0, #0x1
@@ -218320,7 +218320,7 @@ func_020ba7dc: ; 0x020ba7dc
     cmp r0, #0x0
     bne .L_020ba930
     mov r0, r7
-    bl func_020ba98c
+    bl follow_head
     add sp, sp, #0x4
     mov r0, #0x1
     ldmia sp!, {r4, r5, r6, r7, lr}
@@ -218340,7 +218340,7 @@ func_020ba7dc: ; 0x020ba7dc
     bx lr
 .L_020ba914:
     add r0, r7, #0x18
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x18]
     cmp r7, r0
     bne .L_020ba914
@@ -218348,27 +218348,27 @@ func_020ba7dc: ; 0x020ba7dc
     bl restore_irq
 .L_020ba930:
     mov r0, r7
-    bl func_020ba944
+    bl run_block
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr
-    arm_func_end func_020ba7dc
+    arm_func_end start_block
 
-    .global func_020ba944
-    arm_func_start func_020ba944
-func_020ba944: ; 0x020ba944
+    .global run_block
+    arm_func_start run_block
+run_block: ; 0x020ba944
     stmdb sp!, {r4, lr}
     mov r4, r0
     ldr r1, [r4, #0x10]
-    bl func_020ba2fc
+    bl ask_parent
     mov r1, r0
     mov r0, r4
-    bl func_020ba4a0
+    bl set_state
     ldr r0, [r4, #0x8]
-    bl func_020baa2c
+    bl scan_parent
     cmp r0, #0x0
     beq .L_020ba974
-    bl func_020ba98c
+    bl follow_head
 .L_020ba974:
     ldr r0, [r4, #0x14]
     cmp r0, #0x0
@@ -218376,11 +218376,11 @@ func_020ba944: ; 0x020ba944
     movne r0, #0x0
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020ba944
+    arm_func_end run_block
 
-    .global func_020ba98c
-    arm_func_start func_020ba98c
-func_020ba98c: ; 0x020ba98c
+    .global follow_head
+    arm_func_start follow_head
+follow_head: ; 0x020ba98c
     stmdb sp!, {r4, r5, r6, r7, lr}
     sub sp, sp, #0x4
     movs r5, r0
@@ -218411,23 +218411,23 @@ func_020ba98c: ; 0x020ba98c
     bl restore_irq
     ldr r1, [r5, #0x10]
     mov r0, r5
-    bl func_020ba2fc
+    bl ask_parent
     cmp r0, #0x6
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, lr}
     bxeq lr
     mov r0, r4
-    bl func_020baa2c
+    bl scan_parent
     movs r5, r0
     bne .L_020ba9b0
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr
-    arm_func_end func_020ba98c
+    arm_func_end follow_head
 
-    .global func_020baa2c
-    arm_func_start func_020baa2c
-func_020baa2c: ; 0x020baa2c
+    .global scan_parent
+    arm_func_start scan_parent
+scan_parent: ; 0x020baa2c
     stmdb sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x44
     mov r6, r0
@@ -218461,7 +218461,7 @@ func_020baa2c: ; 0x020baa2c
     cmp r1, r0
     mov r1, r7
     streq r4, [r6, #0x18]
-    bl func_020ba4a0
+    bl set_state
     cmp r4, #0x0
     ldreq r4, [r6, #0x18]
 .L_020baab8:
@@ -218532,7 +218532,7 @@ func_020baa2c: ; 0x020baa2c
     ands r0, r0, #0x400
     beq .L_020babd0
     add r0, sp, #0x0
-    bl func_020bb238
+    bl blank_block
     str r6, [sp, #0x8]
     ldr r2, [r6, #0x48]
     add r0, sp, #0x0
@@ -218561,7 +218561,7 @@ func_020baa2c: ; 0x020baa2c
     add sp, sp, #0x44
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
-    arm_func_end func_020baa2c
+    arm_func_end scan_parent
 
     .global func_020bac24
     arm_func_start func_020bac24
@@ -218598,7 +218598,7 @@ func_020bac74: ; 0x020bac74
     sub sp, sp, #0x4
     mov r0, r2
     mov r2, r3
-    bl func_020b85d4
+    bl copy_bytes
     mov r0, #0x0
     add sp, sp, #0x4
     ldmia sp!, {lr}
@@ -218614,7 +218614,7 @@ func_020bac98: ; 0x020bac98
     mov r0, r1
     add r1, ip, r2
     mov r2, r3
-    bl func_020b85d4
+    bl copy_bytes
     mov r0, #0x0
     add sp, sp, #0x4
     ldmia sp!, {lr}
@@ -218629,7 +218629,7 @@ func_020bacc4: ; 0x020bacc4
     ldr r0, [r0, #0x1c]
     add r0, r0, r2
     mov r2, r3
-    bl func_020b85d4
+    bl copy_bytes
     mov r0, #0x0
     add sp, sp, #0x4
     ldmia sp!, {lr}
@@ -218699,7 +218699,7 @@ func_020bad94: ; 0x020bad94
     mov r1, #0x3
     str r2, [r0, #0x30]
     bx ip
-.L_020badac: .word func_020ba7dc
+.L_020badac: .word start_block
     arm_func_end func_020bad94
 
     .global func_020badb0
@@ -218714,7 +218714,7 @@ func_020badb0: ; 0x020badb0
     stmia r3, {r0, r1, r2}
     mov r0, r4
     mov r1, #0x2
-    bl func_020ba7dc
+    bl start_block
     cmp r0, #0x0
     addne r2, r4, #0xc
     ldrne r1, [r2, #0x0]
@@ -218798,7 +218798,7 @@ func_020bae78: ; 0x020bae78
     strne r0, [r1, #0x0]
 .L_020baecc:
     add r0, r6, #0x18
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0xc]
     ands r0, r0, #0x1
     movne r0, #0x1
@@ -218811,7 +218811,7 @@ func_020bae78: ; 0x020bae78
     cmp r5, #0x0
     beq .L_020baf0c
     mov r0, r6
-    bl func_020ba944
+    bl run_block
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
 .L_020baf0c:
@@ -218823,13 +218823,13 @@ func_020bae78: ; 0x020bae78
     bx lr
     arm_func_end func_020bae78
 
-    .global func_020baf24
-    arm_func_start func_020baf24
-func_020baf24: ; 0x020baf24
+    .global reset_block
+    arm_func_start reset_block
+reset_block: ; 0x020baf24
     stmdb sp!, {r4, lr}
     mov r1, #0x8
     mov r4, r0
-    bl func_020ba7dc
+    bl start_block
     cmp r0, #0x0
     moveq r0, #0x0
     ldmeqia sp!, {r4, lr}
@@ -218845,7 +218845,7 @@ func_020baf24: ; 0x020baf24
     str r1, [r2, #0x0]
     ldmia sp!, {r4, lr}
     bx lr
-    arm_func_end func_020baf24
+    arm_func_end reset_block
 
     .global func_020baf70
     arm_func_start func_020baf70
@@ -218865,7 +218865,7 @@ func_020baf70: ; 0x020baf70
     mov r1, #0x6
     str r3, [r4, #0x2c]
     str r2, [r4, #0x30]
-    bl func_020ba7dc
+    bl start_block
     cmp r0, #0x0
     moveq r0, #0x0
     ldmeqia sp!, {r4, lr}
@@ -218895,7 +218895,7 @@ func_020baff0: ; 0x020baff0
     str ip, [r4, #0x34]
     str r2, [r4, #0x2c]
     str r3, [r4, #0x30]
-    bl func_020ba7dc
+    bl start_block
     cmp r0, #0x0
     moveq r0, #0x0
     ldmeqia sp!, {r4, lr}
@@ -218937,7 +218937,7 @@ func_020bb04c: ; 0x020bb04c
     streq r0, [r1, #0x0]
     mov r0, r7
     mov r1, #0x0
-    bl func_020ba7dc
+    bl start_block
     cmp r5, #0x0
     bne .L_020bb0c8
     mov r0, r7
@@ -219045,16 +219045,16 @@ func_020bb0d8: ; 0x020bb0d8
     mov r0, r8
     mov r1, #0x4
     streq r6, [r8, #0x40]
-    bl func_020ba7dc
+    bl start_block
     add sp, sp, #0x10
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
 .L_020bb234: .word data_0214ce6c
     arm_func_end func_020bb0d8
 
-    .global func_020bb238
-    arm_func_start func_020bb238
-func_020bb238: ; 0x020bb238
+    .global blank_block
+    arm_func_start blank_block
+blank_block: ; 0x020bb238
     mov r3, #0x0
     str r3, [r0, #0x0]
     ldr r2, [r0, #0x0]
@@ -219065,7 +219065,7 @@ func_020bb238: ; 0x020bb238
     str r1, [r0, #0x10]
     str r3, [r0, #0xc]
     bx lr
-    arm_func_end func_020bb238
+    arm_func_end blank_block
 
     .global func_020bb260
     arm_func_start func_020bb260
@@ -219087,9 +219087,9 @@ func_020bb260: ; 0x020bb260
 .L_020bb298: .word data_0214ce78
     arm_func_end func_020bb260
 
-    .global func_020bb29c
-    arm_func_start func_020bb29c
-func_020bb29c: ; 0x020bb29c
+    .global append_block
+    arm_func_start append_block
+append_block: ; 0x020bb29c
     ldr r3, [r0, #0x0]
     ldr r2, [r0, #0x4]
     cmp r3, #0x0
@@ -219110,11 +219110,11 @@ func_020bb29c: ; 0x020bb29c
     mov r1, #0x0
     str r1, [r0, #0x4]
     bx lr
-    arm_func_end func_020bb29c
+    arm_func_end append_block
 
-    .global func_020bb2e4
-    arm_func_start func_020bb2e4
-func_020bb2e4: ; 0x020bb2e4
+    .global detach_block
+    arm_func_start detach_block
+detach_block: ; 0x020bb2e4
     ldr r2, [r0, #0x0]
     ldr r1, [r0, #0x4]
     cmp r2, #0x0
@@ -219126,7 +219126,7 @@ func_020bb2e4: ; 0x020bb2e4
     ldr r1, [r0, #0x0]
     str r1, [r0, #0x4]
     bx lr
-    arm_func_end func_020bb2e4
+    arm_func_end detach_block
 
     .global func_020bb310
     arm_func_start func_020bb310
@@ -219692,7 +219692,7 @@ func_020bba08: ; 0x020bba08
     orr r1, r1, r0
     mov r0, #0x6
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     movlt r0, #0x0
     blt .L_020bba9c
@@ -219700,7 +219700,7 @@ func_020bba08: ; 0x020bba08
     mov r0, #0x6
     orr r1, r6, r1
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     movlt r0, #0x0
     movge r0, #0x1
@@ -219776,7 +219776,7 @@ func_020bbb74: ; 0x020bbb74
     mov r0, #0x6
     mov r1, #0x3000000
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     movge r0, #0x1
     movlt r0, #0x0
@@ -219954,12 +219954,12 @@ init_ipc: ; 0x020bbda4
 .L_020bbdfc:
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020bbdfc
     ldr r1, .L_020bbe30
     mov r0, #0x6
-    bl func_020b977c
+    bl register_channel
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -220278,7 +220278,7 @@ send_command: ; 0x020bc1d4
     bne .L_020bc268
     bl wait_irq
     ldr r0, .L_020bc300
-    bl func_020b82ac
+    bl busy_wait
     ands r0, r4, #0x8
     beq .L_020bc2a0
     ldr r0, .L_020bc304
@@ -220326,7 +220326,7 @@ func_020bc308: ; 0x020bc308
     mov r0, r5
     mov r1, r6
     mov r2, r4
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     bne .L_020bc318
     ldmia sp!, {r4, r5, r6, lr}
@@ -220751,12 +220751,12 @@ init_channel_8: ; 0x020bc840
 .L_020bc884:
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020bc884
     ldr r1, .L_020bc8f0
     mov r0, #0x8
-    bl func_020b977c
+    bl register_channel
     mov r3, #0x0
     ldr r0, .L_020bc8f4
     mov r2, r3
@@ -221395,12 +221395,12 @@ init_channel_5: ; 0x020bd0e4
 .L_020bd134:
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020bd134
     ldr r1, .L_020bd168
     mov r0, #0x5
-    bl func_020b977c
+    bl register_channel
     add sp, sp, #0x4
     ldmia sp!, {r4, r5, lr}
     bx lr
@@ -221418,7 +221418,7 @@ func_020bd16c: ; 0x020bd16c
     and r1, r0, #0x7f00
     mov r0, #0x5
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     movge r0, #0x1
     movlt r0, #0x0
@@ -221502,7 +221502,7 @@ func_020bd220: ; 0x020bd220
     add r4, r6, #0xd4
 .L_020bd240:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x34]
     ands r0, r0, #0x4
     bne .L_020bd240
@@ -221538,7 +221538,7 @@ func_020bd27c: ; 0x020bd27c
     bl func_020b84f4
     ldr r0, .L_020bd31c
     mov r1, #0x20
-    bl func_020b7c70
+    bl clean_lines
     ldr r0, .L_020bd318
     mov r2, #0x0
     mov r1, #0x4
@@ -221557,7 +221557,7 @@ func_020bd27c: ; 0x020bd27c
     bl func_020b71e4
     ldr r1, .L_020bd32c
     mov r0, #0xb
-    bl func_020b977c
+    bl register_channel
     add sp, sp, #0xc
     ldmia sp!, {lr}
     bx lr
@@ -221646,7 +221646,7 @@ func_020bd3d8: ; 0x020bd3d8
     add r9, r5, #0x10
 .L_020bd428:
     mov r0, r9
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r5, #0x8]
     cmp r0, r8
     bne .L_020bd428
@@ -221730,7 +221730,7 @@ func_020bd50c: ; 0x020bd50c
     bne .L_020bd544
     mov r0, r4
     str r5, [r7, #0xd0]
-    bl func_020b728c
+    bl yield_heap
     b .L_020bd528
 .L_020bd544:
     mov r0, r6
@@ -221818,7 +221818,7 @@ func_020bd618: ; 0x020bd618
     add r7, r5, #0xd4
 .L_020bd640:
     mov r0, r7
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r5, #0x34]
     ands r0, r0, #0x4
     bne .L_020bd640
@@ -221874,7 +221874,7 @@ func_020bd6c0: ; 0x020bd6c0
     add r4, r6, #0xd4
 .L_020bd6f0:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x34]
     ands r0, r0, #0x4
     bne .L_020bd6f0
@@ -221935,7 +221935,7 @@ func_020bd794: ; 0x020bd794
     add r4, r6, #0xd4
 .L_020bd7c4:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x34]
     ands r0, r0, #0x4
     bne .L_020bd7c4
@@ -222000,10 +222000,10 @@ func_020bd868: ; 0x020bd868
     movhi r9, r7
     mov r1, r8
     mov r2, r9
-    bl func_020b85d4
+    bl copy_bytes
     mov r0, r8
     mov r1, r9
-    bl func_020b7c70
+    bl clean_lines
     bl func_020b7c8c
     ldr r1, [r10, #0x0]
     mov r0, r10
@@ -222066,7 +222066,7 @@ func_020bd958: ; 0x020bd958
     cmp r9, #0x100
     mov r1, r7
     movhi r9, r7
-    bl func_020b7c54
+    bl invalidate_lines
     ldr r2, [r10, #0x18]
     ldr r1, [r10, #0x0]
     mov r0, r10
@@ -222083,7 +222083,7 @@ func_020bd958: ; 0x020bd958
     ldr r1, [r10, #0x1c]
     mov r0, r8
     mov r2, r9
-    bl func_020b85d4
+    bl copy_bytes
     ldr r0, [r6, #0x0]
     add r0, r0, r9
     str r0, [r6, #0x0]
@@ -222219,7 +222219,7 @@ func_020bdb4c: ; 0x020bdb4c
     add r4, r6, #0xd4
 .L_020bdb84:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r6, #0x34]
     ands r0, r0, #0x4
     bne .L_020bdb84
@@ -222443,7 +222443,7 @@ func_020bdd98: ; 0x020bdd98
     mov r4, r0
     ldr r0, [r9, #0x1c]
     ldr r1, [r9, #0x20]
-    bl func_020b7c70
+    bl clean_lines
     ldr r0, [r9, #0x1c]
     ldr r1, [r9, #0x20]
     bl func_020b7c98
@@ -222647,7 +222647,7 @@ func_020be0f0: ; 0x020be0f0
     ldr r1, [r5, #0x1c]
     mov r2, r4
     add r0, r0, r3
-    bl func_020b85d4
+    bl copy_bytes
     add r1, r5, #0x18
     ldr r0, [r1, #0x0]
     add r2, r5, #0x1c
@@ -222688,7 +222688,7 @@ func_020be194: ; 0x020be194
     orr r2, r1, #0x2
     mov r1, #0x1
     str r2, [r3, #0x0]
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     bne .L_020be200
     mov r6, #0x64
@@ -222696,10 +222696,10 @@ func_020be194: ; 0x020be194
     mov r4, #0x1
 .L_020be1e4:
     mov r0, r6
-    bl func_020b82ac
+    bl busy_wait
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020be1e4
 .L_020be200:
@@ -222710,7 +222710,7 @@ func_020be194: ; 0x020be194
 .L_020be210:
     ldr r0, [r10, #0x0]
     mov r1, #0x20
-    bl func_020b7c70
+    bl clean_lines
     bl func_020b7c8c
     mov r6, #0xb
     mov r5, #0x1
@@ -222725,7 +222725,7 @@ func_020be194: ; 0x020be194
     mov r0, r6
     mov r1, r9
     mov r2, r5
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     blt .L_020be240
     cmp r9, #0x0
@@ -222735,7 +222735,7 @@ func_020be194: ; 0x020be194
     mov r0, r6
     mov r1, r8
     mov r2, r5
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     blt .L_020be264
 .L_020be27c:
@@ -222746,7 +222746,7 @@ func_020be194: ; 0x020be194
     beq .L_020be2a4
 .L_020be290:
     mov r0, r4
-    bl func_020b728c
+    bl yield_heap
     ldr r0, [r10, #0x34]
     ands r0, r0, #0x20
     bne .L_020be290
@@ -222779,7 +222779,7 @@ func_020be2e0: ; 0x020be2e0
     mov r1, r7
     mov r0, #0xe
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, lr}
@@ -222792,7 +222792,7 @@ func_020be2e0: ; 0x020be2e0
     mov r0, r5
     mov r1, r7
     mov r2, r4
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     bne .L_020be318
     add sp, sp, #0x4
@@ -222856,7 +222856,7 @@ func_020be3d4: ; 0x020be3d4
     bl func_020b9570
     ldr r1, .L_020be404
     mov r0, #0xe
-    bl func_020b977c
+    bl register_channel
     ldr r0, .L_020be408
     mov r1, #0x0
     str r1, [r0, #0x0]
@@ -222876,7 +222876,7 @@ func_020be40c: ; 0x020be40c
     mov r1, r7
     mov r0, #0xd
     mov r2, #0x0
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     addeq sp, sp, #0x4
     ldmeqia sp!, {r4, r5, r6, r7, lr}
@@ -222890,7 +222890,7 @@ func_020be40c: ; 0x020be40c
     mov r0, r5
     mov r1, r7
     mov r2, r4
-    bl func_020b96a0
+    bl send_fifo
     cmp r0, #0x0
     bne .L_020be444
     add sp, sp, #0x4
@@ -223297,19 +223297,19 @@ init_channel_13: ; 0x020be96c
 .L_020be9a4:
     mov r0, r5
     mov r1, r4
-    bl func_020b9754
+    bl channel_ready
     cmp r0, #0x0
     beq .L_020be9a4
     ldr r1, .L_020be9fc
     mov r0, #0xd
-    bl func_020b977c
+    bl register_channel
     bl func_020be7b0
     mov r0, #0xd
     mov r1, #0x0
-    bl func_020b977c
+    bl register_channel
     ldr r1, .L_020bea00
     mov r0, #0xd
-    bl func_020b977c
+    bl register_channel
     ldr r0, .L_020bea04
     mov r1, #0x0
     str r1, [r0, #0x0]
@@ -225335,9 +225335,9 @@ func_020c0308: ; 0x020c0308
 .L_020c086c: .word 0x40000092
     arm_func_end func_020c0308
 
-    .global func_020c0870
-    arm_func_start func_020c0870
-func_020c0870: ; 0x020c0870
+    .global divide_signed
+    arm_func_start divide_signed
+divide_signed: ; 0x020c0870
     eor ip, r0, r1
     and ip, ip, #0x80000000
     cmp r0, #0x0
@@ -225470,7 +225470,7 @@ func_020c0870: ; 0x020c0870
     ands r3, ip, #0x1
     rsbne r1, r1, #0x0
     bx lr
-    arm_func_end func_020c0870
+    arm_func_end divide_signed
 
     .global func_020c0a7c
     arm_func_start func_020c0a7c
@@ -259584,15 +259584,15 @@ data_0211c950:
     .byte 0x67, 0x68, 0x69, 0x6a, 0x6c, 0x6d, 0x6e, 0x6f, 0x71, 0x72, 0x73, 0x75, 0x76, 0x77, 0x79, 0x7a
     .byte 0x7c, 0x7d, 0x7e, 0x7f
 data_0211cc24:
-    .word func_020ba160
-    .word func_020ba128
-    .word func_020ba090
-    .word func_020b9f7c
-    .word func_020b9d60
-    .word func_020b99a0
+    .word advance_block
+    .word advance_next
+    .word load_block
+    .word read_name
+    .word walk_path
+    .word build_path
     .word func_020b9924
     .word func_020b98fc
-    .word func_020b98f4
+    .word result_zero
 data_0211cc48:
     .byte 0x01, 0x09, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x10, 0x00, 0x01, 0x00
     .byte 0x4f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
